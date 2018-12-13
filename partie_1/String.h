@@ -1,10 +1,7 @@
 typedef struct{
-	int tailleStr;
+	unsigned int tailleStr;
 	char * chaine;
 }String;
-
-#define REUSSITE 0
-#define ECHEC 1
 
 String newString(int taille);
 int tailleMaxString(String str);
