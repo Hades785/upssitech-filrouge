@@ -2,4 +2,4 @@
 #include <stdio.h>
 #include <string.h>
 
-void indexation_audio(/*TODO*/);
+void indexation_texte(/*TODO*/);
