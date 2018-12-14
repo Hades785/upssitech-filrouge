@@ -5,6 +5,12 @@
 #include <stdio.h>
 #include <string.h>
 
+/**
+ * DESCRIPTION PLACEHOLDER
+ *
+ * @param  PLACEHOLDER
+ * @return PLACEHOLDER
+ */
 void indexation_audio(/*TODO*/);
 
 #endif
