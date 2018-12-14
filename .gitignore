@@ -53,3 +53,6 @@ dkms.conf
 
 # test documents
 documents/
+
+# misc
+*.kdev4
