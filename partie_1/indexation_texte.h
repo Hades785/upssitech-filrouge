@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
+#include <String.h>
 
 /**
  * DESCRIPTION PLACEHOLDER
@@ -11,6 +11,6 @@
  * @param  PLACEHOLDER
  * @return PLACEHOLDER
  */
-void indexation_texte(/*TODO*/);
+void indexation_texte(char[] repertoire);
 
 #endif
