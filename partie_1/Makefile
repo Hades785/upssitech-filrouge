@@ -30,4 +30,4 @@ recherche_audio.o: recherche_audio.c recherche_audio.h indexation_audio.h
 
 .PHONY: clean
 clean:
-	@rm -f *.o app
+	@rm -f *.o *.out
