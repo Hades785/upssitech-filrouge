@@ -2,9 +2,14 @@
 #include "indexation.h"
 #include "recherche.h"
 
+/**
+ * Affichage du menu principal.
+ */
+void display_main_menu() {
+    printf("Bonjour");
+}
+
 int main(int argc, const char* argv[]) {
-    indexer(MODE_INDEX_TEXTE);
-    rechercher(MODE_RECH_TEXTE);
-    printf("TEST SUCCESS\n");
+    display_main_menu();
     return EXIT_SUCCESS;
 }
