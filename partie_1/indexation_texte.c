@@ -13,6 +13,8 @@ void indexation_texte(char[] repertoire)
 		do
         {
             int caractereActuel = fgetc(fichier); // On lit le caractère
+			
+			motActuel = 
 
             printf("%c", caractereActuel); // On l'affiche
 
