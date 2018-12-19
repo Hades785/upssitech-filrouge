@@ -2,28 +2,31 @@
 #include <dirent.h>
 #include "indexation.h"
 #include "recherche.h"
+#include "sds.h"
 
 /**
  * Indexation du repertoire
   */
 void indexation_main()
 {
-	char[] chemin;
+	char[] chemin_parent;
+	sds chemin;
+	chemin_parent = new char[300];
 	
 	// Indexation
 	// Une condition sera ajoutee pour qu elle ne soit pas re effectuee
 	// a chaque demarrage du logiciel.
-	chemin = new char[300];
 	do
 	{
 	printf("Saisissez le chemin absolu du repertoire contenant les fichiers a indexer limite a 300 caracteres):\n")
-	scanf("%s", chemin);
-	DIR* dir = opendir(chemin); // verification de l existence
+	scanf("%s", chemin_parent);
+	chemin = sdsnew(chemin_parent);
+	DIR* dir = opendir(chemin_parent); // verification de l existence
 	} while(!dir)
 		
-	indexer(MODE_INDEX_TEXTE, chemin);
-	indexer(MODE_INDEX_IMAGE, chemin);
-	indexer(MODE_INDEX_AUDIO, chemin);
+	indexer(MODE_INDEX_TEXTE, sdscat(chemin, "/texte"));
+	indexer(MODE_INDEX_IMAGE, sdscat(chemin, "/image"));
+	indexer(MODE_INDEX_AUDIO, sdscat(chemin, "/audio"));
 }
 
 /**
