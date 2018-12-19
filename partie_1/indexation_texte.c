@@ -8,7 +8,7 @@ void indexation_texte(char[] repertoire)
 	
 	if (fichier != NULL)
 	{
-		String motActuel = newString(int taille); //TODO
+		sds motActuel = sdsempty();
         // On lit le fichier
 		do
         {
