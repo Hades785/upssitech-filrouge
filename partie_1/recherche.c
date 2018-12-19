@@ -4,12 +4,15 @@
 
 void rechercher(int mode /*TODO*/) {
     switch(mode) {
-        case MODE_RECH_TEXTE:
-            printf("Blop\n");
+        case MODE_RECH_TEXTE_MOT:
             break;
-        case MODE_RECH_IMAGE:
+        case MODE_RECH_TEXTE_FICHIER:
             break;
-        case MODE_RECH_AUDIO:
+        case MODE_RECH_IMAGE_COULEUR:
+            break;
+        case MODE_RECH_IMAGE_FICHIER:
+            break;
+        case MODE_RECH_AUDIO_FICHIER:
             break;
         default:
             break;
