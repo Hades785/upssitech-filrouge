@@ -52,4 +52,7 @@ Mkfile.old
 dkms.conf
 
 # test documents
-documents/*
+documents/
+
+# misc
+*.kdev4
