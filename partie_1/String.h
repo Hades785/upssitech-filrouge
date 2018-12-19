@@ -8,6 +8,7 @@ typedef struct{
 #define ECHEC 1
 
 String newString(int taille);
+int initString(String * str,int taille);
 int tailleMaxString(String str);//donne la taille du tableau stockant le string
 int agrandirString(String * str,int nbPlus);//nbPlus = le nombre de cases supplementaires
 void reduireString(String * str,int nbMoins);//nbMoins = le nombre de cases a enlever

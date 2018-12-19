@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "sauvegarde_descripteurs.h"
+
 //la premiere ligne du fichier contient le nombre de descripteurs contenus
 //chaque ligne suivante contient un descripteur
 Capsule loadDescripteurs(unsigned char * successFlag,String fichierDescripteur){
 	FILE * fichier = fopen(fichierDescripteur.chaine,"r");
+	char * ligne[TAILLE_BUF];
 	Capsule caps;
 	if(fichier == NULL){
 		* successFlag = ECHEC;
@@ -20,10 +22,22 @@ Capsule loadDescripteurs(unsigned char * successFlag,String fichierDescripteur){
 		return caps;
 	}
 	int car;
-	do{
+	for(unsigned int i = caps.nbDescripteurs-1;i >= 0;i--){
+		do{//on cherche le premier '{'
+			car = fgetc(fichier);
+		}while(car != '{' && car != EOF);
+		
+		if(initString(caps.descripteurs[i],TAILLE_BUF) == ECHEC){
+			*successFlag = ECHEC;
+			caps.nbDescripteurs = 0;
+			caps.descripteurs = NULL;
+			return caps;
+		}
 		car = fgetc(fichier);
-	}while(car != '{' && car != EOF);
-	
+		while(car != '}' && car != EOF){
+			
+		}
+	}
 	
 	fclose(fichier);
 	* successFlag = REUSSITE;
