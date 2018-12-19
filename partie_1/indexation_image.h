@@ -3,8 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
-#include "String.h"
+#include "sds.h"
 
 typedef struct{
 	unsigned char R,G,B;
@@ -17,7 +16,7 @@ typedef struct{
 }Image;
 
 //format du descripteur image:
-"[id,cheminAbsolu],[h0,h1,h2,...]"
+//"[id,cheminAbsolu],[h0,h1,h2,...]"
 
 unsigned int simplification(Pixel pixel,unsigned char nbBits);
 //pixel : structure contenant les valeurs des trois couleurs
@@ -32,17 +31,17 @@ void histogramme(unsigned int * histo,Image image,unsigned char nbBits);
 //image : l'image a traiter
 //nbBits : la simplification a appliquer sur l'image
 
-Image decodeImage(String fichierImage);
+Image decodeImage(sds fichierImage);
 //Cette fonction remplis une image de pixels a partir du contenu textuel des images proposees
 
 Pixel newPixel(unsigned char R,unsigned char G,unsigned char B);
 //renvoie un pixel avec les valeurs donnees
 
-String createDescripteurString(unsigned int * histo,String cheminAbsolu,int id);
+sds createDescripteur(unsigned int * histo,sds cheminAbsolu,int id);
 //cette fonction renvoie un descripteur contenant les informations donnees
-//ce string respecte le format donne en haut de ce fichier.h
+//ce string respecte le format donne en haut de ce fichier .h
 
-String indexation_image(String cheminFichier);
+sds indexation_image(sds cheminFichier);
 //cette fonction cree un descripteur a partir du fichier dont le chemin est passe en parametre
 
 //OPTION !
