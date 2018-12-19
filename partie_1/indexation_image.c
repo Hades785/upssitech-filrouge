@@ -1,4 +1,4 @@
-#include "gen_image.h"
+#include "indexation_image.h"
 
 unsigned int simplification(Pixel pixel,unsigned char nbBits){
 	unsigned char simpR,simpG,simpB;
