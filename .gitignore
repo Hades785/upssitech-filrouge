@@ -50,3 +50,9 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# test documents
+documents/
+
+# misc
+*.kdev4

@@ -1,3 +1,6 @@
+#ifndef __INDEXATION_IMAGE__
+#define __INDEXATION_IMAGE__
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
