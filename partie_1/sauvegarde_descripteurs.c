@@ -10,8 +10,8 @@ Capsule loadDescripteurs(unsigned char * successFlag,const sds fichierDescripteu
 	char buf[TAILLE_BUF];
 	Capsule caps;
 	
-	printf("init lecture");
-	getchar();
+	//printf("init lecture");
+	//getchar();
 	
 	if(fichier == NULL){
 		* successFlag = ECHEC;
@@ -20,8 +20,8 @@ Capsule loadDescripteurs(unsigned char * successFlag,const sds fichierDescripteu
 		return caps;
 	}
 	
-	printf("lecture nombre");
-	getchar();
+	//printf("lecture nombre");
+	//getchar();
 	
 	fscanf(fichier,"%u",&caps.nbDescripteurs);
 	sds * descs = malloc(sizeof(sds)*caps.nbDescripteurs);
@@ -32,8 +32,8 @@ Capsule loadDescripteurs(unsigned char * successFlag,const sds fichierDescripteu
 		return caps;
 	}
 	
-	printf("parsing");
-	getchar();
+	//printf("nombre: %u\nparsing",caps.nbDescripteurs);
+	//getchar();
 	
 	char * pt;
 	
@@ -41,26 +41,38 @@ Capsule loadDescripteurs(unsigned char * successFlag,const sds fichierDescripteu
 	int car;
 	for(unsigned int i = 0;i < caps.nbDescripteurs;i++){
 		//on cherche le premier '{'
+		//printf("descripteur courant: %u\n",i);
 		do{
 			car = fgetc(fichier);
+			/*if(car != '\n')
+				printf("car : %c\n",car);
+			else
+				printf("car : \\n\n");*/
 		}while(car != '{' && car != EOF);
 		if(car == EOF) break;
 		
 		sds s = sdsnew("");
+		//printf("new sds: %s\n",s);
 		int j;
 		do{
 			pt = fgets(buf,TAILLE_BUF,fichier);
+			//printf("getted from file: %s\n",pt);
 			unsigned int temp = strlen(buf);
 			for(j = 0;j < temp;j++){
 				//on recherche la brace fermante '}'
+				/*if(buf[j] != '\n')
+					printf("car : %c\n",buf[j]);
+				else
+					printf("car : \\n\n");*/
 				if(buf[j] == '}'){
 					buf[j] = '\0';
 					break;
 				}
 			}
 			s = sdscat(s,buf);
+			//printf("String final: %s\n",s);
 			nbDescReel++;
-		}while(j >= 0 && pt != NULL);
+		}while(j == 0 && pt != NULL);
 		descs[i]=s;
 	}
 	

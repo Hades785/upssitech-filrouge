@@ -30,5 +30,11 @@ int main(){
 	getchar();
 	caps = loadDescripteurs(&flag,"fTestDesc1.desc");
 	
+	printf("fin lecture, affichage");
+	getchar();
+	
+	printf("0: %s\n",caps.descripteurs[0]);
+	printf("1: %s\n",caps.descripteurs[1]);
+	printf("2: %s\n",caps.descripteurs[2]);
 	return 0;
 }
