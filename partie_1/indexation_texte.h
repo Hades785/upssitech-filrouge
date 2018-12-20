@@ -11,6 +11,6 @@
  * @param  PLACEHOLDER
  * @return PLACEHOLDER
  */
-void indexation_texte(char[] repertoire);
+sds indexation_texte(const sds accesFichier);
 
 #endif
