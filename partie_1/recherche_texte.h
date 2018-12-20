@@ -13,7 +13,7 @@
  * @param sds motscles
  * @param sds repertoire
  */
-void recherche_texte_motscles(sds motscles, sds repertoire);
+void recherche_texte_motscles(sds motscles, const sds[] descripteurs);
 
 /**
  * DESCRIPTION Donne la liste des fichiers le plus semblable a celui donne
@@ -22,6 +22,6 @@ void recherche_texte_motscles(sds motscles, sds repertoire);
  * @param  sds fichier
  * @param sds repertoire
  */
-void recherche_texte_fichier(sds fichier, sds repertoire);
+void recherche_texte_fichier(sds fichier, const sds[] descripteurs);
 
 #endif
