@@ -6,11 +6,11 @@
 #include "sds.h"
 
 /**
- * DESCRIPTION PLACEHOLDER
+ * Indexe un fichier audio donne.
  *
- * @param  PLACEHOLDER
- * @return PLACEHOLDER
+ * @param  chemin_fichier Chemin vers le fichier a indexer.
+ * @return Descripteur du fichier donne.
  */
-void indexation_audio(/*TODO*/);
+sds indexation_audio(sds const chemin_fichier);
 
 #endif
