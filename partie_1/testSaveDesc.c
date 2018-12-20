@@ -3,8 +3,12 @@
 
 int main(){
 	Capsule caps;
-	freeCapsule(&caps);
+	printf("init capsule");
+	getchar();
+	initCapsule(&caps,3);
 	caps.nbDescripteurs = 3;
+	printf("remplissage capsule");
+	getchar();
 	sds s = sdsnew("bonjour");
 	caps.descripteurs[0] = s;
 	s = sdsnew("comment");
@@ -13,6 +17,18 @@ int main(){
 	caps.descripteurs[2] = s;
 	
 	unsigned char flag;
-	saveDescripteurs(&flag,caps,sdsnew("fTestDesc1.desc"));
+	printf("sauvegarde");
+	getchar();
+	saveDescripteurs(&flag,caps,"fTestDesc1.desc");
+	printf("free");
+	getchar();
+	freeCapsule(&caps);
 	printf("done");
+	getchar();
+	
+	printf("lecture");
+	getchar();
+	caps = loadDescripteurs(&flag,"fTestDesc1.desc");
+	
+	return 0;
 }
