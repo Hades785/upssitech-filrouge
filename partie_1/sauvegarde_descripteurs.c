@@ -4,9 +4,9 @@
 
 //la premiere ligne du fichier contient le nombre de descripteurs contenus
 //chaque ligne suivante contient un descripteur
-Capsule loadDescripteurs(unsigned char * successFlag,String fichierDescripteur){
+Capsule loadDescripteurs(unsigned char * successFlag,const sds fichierDescripteur){
 	FILE * fichier = fopen(fichierDescripteur.chaine,"r");
-	char * ligne[TAILLE_BUF];
+	char * buf[TAILLE_BUF];
 	Capsule caps;
 	if(fichier == NULL){
 		* successFlag = ECHEC;
@@ -14,36 +14,45 @@ Capsule loadDescripteurs(unsigned char * successFlag,String fichierDescripteur){
 		caps.descripteurs = NULL;
 		return caps;
 	}
+	
 	fscanf(fichier,"%u",&caps.nbDescripteurs);
-	caps.descripteurs = malloc(sizeof(String)*caps.nbDescripteurs);
+	caps.descripteurs = malloc(sizeof(sds)*caps.nbDescripteurs);
 	if(caps.descripteurs == NULL){
 		caps.nbDescripteurs = 0;
+		caps.descripteurs = NULL;
 		* successFlag = ECHEC;
 		return caps;
 	}
+	
 	int car;
 	for(unsigned int i = caps.nbDescripteurs-1;i >= 0;i--){
-		do{//on cherche le premier '{'
+		//on cherche le premier '{'
+		do{
 			car = fgetc(fichier);
 		}while(car != '{' && car != EOF);
+		if(car == EOF) break;
 		
-		if(initString(caps.descripteurs[i],TAILLE_BUF) == ECHEC){
-			*successFlag = ECHEC;
-			caps.nbDescripteurs = 0;
-			caps.descripteurs = NULL;
-			return caps;
-		}
-		car = fgetc(fichier);
-		while(car != '}' && car != EOF){
-			
-		}
+		sds s = sdsnew("");
+		int j;
+		do{
+			fgets(buf,TAILLE_BUF,fichier);
+			for(j = strlen(buf)-1;j >= 0;j--){
+				//on recherche la brace fermante '}'
+				if(buf[j] == '}'){
+					buf[j] = '\0';
+					break;
+				}
+			}
+			s = sdscat(s,buf);
+		}while(j >= 0);
+		caps.descripteurs[i]=s;
 	}
 	
 	fclose(fichier);
-	* successFlag = REUSSITE;
+	* successFlag = SUCCES;
 	return caps;
 }
-void saveDescripteurs(unsigned char * successFlag,Capsule capsule,String fichierDescripteurs){
+void saveDescripteurs(unsigned char * successFlag,const Capsule capsule,const sds fichierDescripteurs){
 	FILE * fichier = fopen(fichierDescripteur.chaine,"w");
 	if(fichier == NULL){
 		* successFlag = ECHEC;
@@ -56,5 +65,23 @@ void saveDescripteurs(unsigned char * successFlag,Capsule capsule,String fichier
 	}
 	
 	fclose(fichier);
-	* successFlag = REUSSITE;
+	* successFlag = SUCCES;
+}
+void freeCapsule(Capsule * caps){
+	for(unsigned int i = caps->nbDescripteurs-1;i >= 0;i--){
+		sdsfree(caps->descripteurs[i]);
+	}
+	free(caps->descripteurs);
+	caps->descripteurs = NULL;
+	caps->nbDescripteurs = 0;
+}
+
+unsigned char initCapsule(Capsule * caps,const unsigned int nbDescripteurs){
+	caps->nbDescripteurs = nbDescripteurs;
+	caps->descripteurs = malloc(sizeof(sds)*nbDescripteurs);
+	if(caps->descripteurs == NULL){
+		caps->nbDescripteurs = 0;
+		return ECHEC;
+	}
+	return SUCCES;
 }
