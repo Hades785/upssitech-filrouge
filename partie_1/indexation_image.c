@@ -1,3 +1,4 @@
+#include <math.h>
 #include "indexation_image.h"
 
 unsigned int simplification(Pixel pixel,unsigned char nbBits){
@@ -16,3 +17,24 @@ Pixel newPixel(unsigned char R,unsigned char G,unsigned char B){
 	pix.B = B;
 	return pix;
 }
+
+
+unsigned int *histogramme(Image im,unsigned char nbBits)
+{   int a,k=0;
+	int * histo=malloc(pow(2,3*nbBits)*sizeof(*histo));
+	{ *(histo+k)=0;
+	for(int i=0;i<im.tailleX;i++)
+		for(int j=0;j<im.tailleY;j++)
+			if(k==simplification(im.Image[i][j],nbBits))
+			(*(histo+k))++;
+			k++;
+	} while(k!=pow(2,3*nbBits));
+	while(k)
+	
+	
+ return histo;
+}
+
+
+ 
+

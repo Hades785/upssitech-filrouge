@@ -12,7 +12,7 @@ typedef struct{
 typedef struct{
 	unsigned int tailleX;
 	unsigned int tailleY;
-	Pixel [][] image;
+	Pixel **Image; //un pointeur vers un tableau à deux dimension (notre image) 
 }Image;
 
 //format du descripteur image:
@@ -24,10 +24,10 @@ unsigned int simplification(Pixel pixel,unsigned char nbBits);
 //return : la concatenation des trois codes couleur simplifie
 //		longueur binaire du return : 3*nbBits cales sur les poids faibles
 
-void histogramme(unsigned int * histo,Image image,unsigned char nbBits);
-//*histo est un pointeur vers un tableau de taille 2^nbBits (minimum).
+unsigned int *histogramme(Image im,unsigned char nbBits)
+//cette fonction renvoie un pointeur vers un tableau contenant le nombre d'occurences pour chaque valeur de l'intervalle [0 2^(3*nbBIts)]
 // WARN : la fonction de vérifie pas ni n'agrandis le tableau, un depassement est possible.
-//cette fonction va remlir ce tableau avec le nombre d'occurence de chaque valeur possible(indice du tableau)
+//cette fonction va remlir ce tableau avec le nombre d'occurence de chaque valeur possible(indice du tableau) 
 //image : l'image a traiter
 //nbBits : la simplification a appliquer sur l'image
 
