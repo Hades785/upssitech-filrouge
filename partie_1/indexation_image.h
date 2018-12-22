@@ -26,6 +26,9 @@ unsigned int simplification(Pixel pixel,unsigned char nbBits);
 //return : la concatenation des trois codes couleur simplifie
 //		longueur binaire du return : 3*nbBits cales sur les poids faibles
 
+Pixel newPixel(unsigned char R,unsigned char G,unsigned char B);
+//renvoie un pixel avec les valeurs donnees
+
 unsigned int *histogramme(Image im,unsigned char nbBits);
 //cette fonction renvoie un pointeur vers un tableau contenant le nombre d'occurences pour chaque valeur de l'intervalle [0 2^(3*nbBIts)]
 // WARN : la fonction de vérifie pas ni n'agrandis le tableau, un depassement est possible.
@@ -35,9 +38,6 @@ unsigned int *histogramme(Image im,unsigned char nbBits);
 
 Image decodeImage(sds fichierImage);
 //Cette fonction remplis une image de pixels a partir du contenu textuel des images proposees
-
-Pixel newPixel(unsigned char R,unsigned char G,unsigned char B);
-//renvoie un pixel avec les valeurs donnees
 
 sds createDescripteur(unsigned int * histo,sds cheminAbsolu,int id);
 //cette fonction renvoie un descripteur contenant les informations donnees

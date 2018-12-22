@@ -18,7 +18,6 @@ Pixel newPixel(unsigned char R,unsigned char G,unsigned char B){
 	return pix;
 }
 
-
 unsigned int *histogramme(Image im,unsigned char nbBits){
 	unsigned int p = pow(2,3*nbBits);
 	unsigned int * histo = malloc(p*sizeof(unsigned int));
@@ -32,4 +31,8 @@ unsigned int *histogramme(Image im,unsigned char nbBits){
 		}
 	}
 	return histo;
+}
+
+sds createDescripteur(unsigned int * histo,sds cheminAbsolu,int id){
+	
 }
