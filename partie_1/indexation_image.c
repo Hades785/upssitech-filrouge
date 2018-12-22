@@ -25,9 +25,9 @@ unsigned int *histogramme(Image im,unsigned char nbBits){
 	for(unsigned int i = 0;i < p;i++){
 		histo[i] = 0;
 	}
-	for(unsigned int i=0;i<im.tailleX;i++){
-		for(unsigned int j=0;j<im.tailleY;j++){
-			histo[simplification(im.Image[i][j],nbBits)]++;
+	for(unsigned int x=0;x<im.tailleX;x++){
+		for(unsigned int y=0;y<im.tailleY;y++){
+			histo[simplification((im.Image+(x*tailleY)+y),nbBits)]++;
 		}
 	}
 	return histo;

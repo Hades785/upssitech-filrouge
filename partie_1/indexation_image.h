@@ -14,7 +14,7 @@ typedef struct{
 typedef struct{
 	unsigned int tailleX;
 	unsigned int tailleY;
-	Pixel **Image; //un pointeur vers un tableau à deux dimension (notre image) 
+	Pixel *image; //un pointeur vers un tableau à deux dimension (notre image) 
 }Image;
 
 //format du descripteur image:
