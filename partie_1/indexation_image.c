@@ -19,24 +19,17 @@ Pixel newPixel(unsigned char R,unsigned char G,unsigned char B){
 }
 
 
-unsigned int *histogramme(Image im,unsigned char nbBits)
-{   int k=0;
-	int * histo=malloc(pow(2,3*nbBits)*sizeof(*histo));
+unsigned int *histogramme(Image im,unsigned char nbBits){
+	unsigned int p = pow(2,3*nbBits);
+	unsigned int * histo = malloc(p*sizeof(unsigned int));
 	assert(histo!=NULL);
-	do
-	{ *(histo+k)=0;
-	for(int i=0;i<im.tailleX;i++)
-		for(int j=0;j<im.tailleY;j++)
-			if(k==simplification(im.Image[i][j],nbBits))
-			(*(histo+k))++;
-			k++;
-	} while(k!=pow(2,3*nbBits));
-	while(k)
-	
-	
- return histo;
+	for(unsigned int i = 0;i < p;i++){
+		histo[i] = 0;
+	}
+	for(unsigned int i=0;i<im.tailleX;i++){
+		for(unsigned int j=0;j<im.tailleY;j++){
+			histo[simplification(im.Image[i][j],nbBits)]++;
+		}
+	}
+	return histo;
 }
-
-
- 
-
