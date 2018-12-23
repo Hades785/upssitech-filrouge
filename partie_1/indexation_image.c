@@ -33,6 +33,12 @@ unsigned int *histogramme(Image im,unsigned char nbBits){
 	return histo;
 }
 
-sds createDescripteur(unsigned int * histo,sds cheminAbsolu,int id){
-	
+sds createDescripteur(const unsigned int * histo,const sds cheminAbsolu,const int id){
+	sds s = sdscatprintf(sdsempty(),"%u,%s],[",id,cheminAbsolu);
+	unsigned int p = pow(2,3*nbBits);
+	for(unsigned int i = 0;i < (p-1);i++){
+		s = sdscatprintf(s,"%u,",histo[i]);
+	}
+	s = sdscatprintf(s,"%u]",histo[p-1]);
+	return s;
 }

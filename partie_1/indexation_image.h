@@ -30,9 +30,7 @@ Pixel newPixel(unsigned char R,unsigned char G,unsigned char B);
 //renvoie un pixel avec les valeurs donnees
 
 unsigned int *histogramme(Image im,unsigned char nbBits);
-//cette fonction renvoie un pointeur vers un tableau contenant le nombre d'occurences pour chaque valeur de l'intervalle [0 2^(3*nbBIts)]
-// WARN : la fonction de vérifie pas ni n'agrandis le tableau, un depassement est possible.
-//cette fonction va remlir ce tableau avec le nombre d'occurence de chaque valeur possible(indice du tableau) 
+//cette fonction renvoie un pointeur vers un tableau contenant le nombre d'occurences pour chaque valeur de l'intervalle [0   2^(3*nbBIts)-1]
 //image : l'image a traiter
 //nbBits : la simplification a appliquer sur l'image
 
