@@ -3,6 +3,8 @@
 
 #define NB_RESULTAT_RECHERCHE 10
 
+#define SUCCES 0
+#define ECHEC 1
 
 // Constantes Indexation Audio
 #define NB_SAMPLE_WINDOW 1000 // 1000 echantillons -> 1/16 s

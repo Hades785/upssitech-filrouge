@@ -1,6 +1,6 @@
 app.out: main.o indexation.o indexation_texte.o indexation_image.o indexation_audio.o recherche.o recherche_texte.o recherche_image.o recherche_audio.o
 	@gcc -o app.out main.o indexation.o indexation_texte.o indexation_image.o indexation_audio.o recherche.o recherche_texte.o recherche_image.o recherche_audio.o
-
+	
 main.o: main.c indexation.h recherche.h
 	@gcc -c main.c
 
@@ -27,6 +27,17 @@ recherche_image.o: recherche_image.c recherche_image.h indexation_image.h
 
 recherche_audio.o: recherche_audio.c recherche_audio.h indexation_audio.h
 	@gcc -c recherche_audio.c
+	
+sds.o: sds.c sds.h sdsalloc.h
+	@gcc -c sds.c
+	
+sauvegarde_descripteurs.o: sauvegarde_descripteurs.c sauvegarde_descripteurs.h sds.h
+	@gcc -c sauvegarde_descripteurs.c
+	
+testSaveDesc.out: testSaveDesc.c sauvegarde_descripteurs.h sds.h sauvegarde_descripteurs.o sds.o
+	@gcc -c testSaveDesc.c
+	@gcc -o testSaveDesc.out testSaveDesc.o sauvegarde_descripteurs.o sds.o
+	./testSaveDesc.out
 
 .PHONY: clean
 clean:
