@@ -1,3 +1,4 @@
+
 #include "indexation_image.h"
 
 unsigned int simplification(Pixel pixel,unsigned char nbBits){
@@ -15,4 +16,29 @@ Pixel newPixel(unsigned char R,unsigned char G,unsigned char B){
 	pix.G = G;
 	pix.B = B;
 	return pix;
+}
+
+unsigned int *histogramme(const Image im,unsigned char nbBits){
+	unsigned int p = pow(2,3*nbBits);
+	unsigned int * histo = malloc(p*sizeof(unsigned int));
+	assert(histo!=NULL);
+	for(unsigned int i = 0;i < p;i++){
+		histo[i] = 0;
+	}
+	for(unsigned int x=0;x<im.tailleX;x++){
+		for(unsigned int y=0;y<im.tailleY;y++){
+			histo[simplification((im.Image+(x*tailleY)+y),nbBits)]++;
+		}
+	}
+	return histo;
+}
+
+sds createDescripteur(const unsigned int * histo,const sds cheminAbsolu,int id){
+	sds s = sdscatprintf(sdsempty(),"%u,%s],[",id,cheminAbsolu);
+	unsigned int p = pow(2,3*nbBits);
+	for(unsigned int i = 0;i < (p-1);i++){
+		s = sdscatprintf(s,"%u,",histo[i]);
+	}
+	s = sdscatprintf(s,"%u]",histo[p-1]);
+	return s;
 }

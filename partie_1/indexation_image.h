@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "sds.h"
+#include <math.h>
+#include<assert.h>
 
 typedef struct{
 	unsigned char R,G,B;
@@ -12,7 +14,7 @@ typedef struct{
 typedef struct{
 	unsigned int tailleX;
 	unsigned int tailleY;
-	Pixel [][] image;
+	Pixel *image; //un pointeur vers un tableau à deux dimension (notre image) 
 }Image;
 
 //format du descripteur image:
@@ -24,24 +26,22 @@ unsigned int simplification(Pixel pixel,unsigned char nbBits);
 //return : la concatenation des trois codes couleur simplifie
 //		longueur binaire du return : 3*nbBits cales sur les poids faibles
 
-void histogramme(unsigned int * histo,Image image,unsigned char nbBits);
-//*histo est un pointeur vers un tableau de taille 2^nbBits (minimum).
-// WARN : la fonction de vérifie pas ni n'agrandis le tableau, un depassement est possible.
-//cette fonction va remlir ce tableau avec le nombre d'occurence de chaque valeur possible(indice du tableau)
-//image : l'image a traiter
-//nbBits : la simplification a appliquer sur l'image
-
-Image decodeImage(sds fichierImage);
-//Cette fonction remplis une image de pixels a partir du contenu textuel des images proposees
-
 Pixel newPixel(unsigned char R,unsigned char G,unsigned char B);
 //renvoie un pixel avec les valeurs donnees
 
-sds createDescripteur(unsigned int * histo,sds cheminAbsolu,int id);
+unsigned int *histogramme(const Image im,unsigned char nbBits);
+//cette fonction renvoie un pointeur vers un tableau contenant le nombre d'occurences pour chaque valeur de l'intervalle [0   2^(3*nbBIts)-1]
+//image : l'image a traiter
+//nbBits : la simplification a appliquer sur l'image
+
+Image decodeImage(const sds fichierImage);
+//Cette fonction remplis une image de pixels a partir du contenu textuel des images proposees
+
+sds createDescripteur(const unsigned int * histo,const sds cheminAbsolu,int id);
 //cette fonction renvoie un descripteur contenant les informations donnees
 //ce string respecte le format donne en haut de ce fichier .h
 
-sds indexation_image(sds cheminFichier);
+sds indexation_image(const sds cheminFichier);
 //cette fonction cree un descripteur a partir du fichier dont le chemin est passe en parametre
 
 //OPTION !
