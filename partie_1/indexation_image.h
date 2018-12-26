@@ -29,19 +29,19 @@ unsigned int simplification(Pixel pixel,unsigned char nbBits);
 Pixel newPixel(unsigned char R,unsigned char G,unsigned char B);
 //renvoie un pixel avec les valeurs donnees
 
-unsigned int *histogramme(Image im,unsigned char nbBits);
+unsigned int *histogramme(const Image im,unsigned char nbBits);
 //cette fonction renvoie un pointeur vers un tableau contenant le nombre d'occurences pour chaque valeur de l'intervalle [0   2^(3*nbBIts)-1]
 //image : l'image a traiter
 //nbBits : la simplification a appliquer sur l'image
 
-Image decodeImage(sds fichierImage);
+Image decodeImage(const sds fichierImage);
 //Cette fonction remplis une image de pixels a partir du contenu textuel des images proposees
 
-sds createDescripteur(unsigned int * histo,sds cheminAbsolu,int id);
+sds createDescripteur(const unsigned int * histo,const sds cheminAbsolu,int id);
 //cette fonction renvoie un descripteur contenant les informations donnees
 //ce string respecte le format donne en haut de ce fichier .h
 
-sds indexation_image(sds cheminFichier);
+sds indexation_image(const sds cheminFichier);
 //cette fonction cree un descripteur a partir du fichier dont le chemin est passe en parametre
 
 //OPTION !
