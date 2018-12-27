@@ -48,3 +48,6 @@ sds indexation_image(const sds cheminFichier);
 //Image visuSimplify(Image image,unsigned char nbBits);
 //fonction simplifiant les couleurs avec nbBits et renvoyant une image.
 //ne sert qu'a visualiser.
+
+
+#endif

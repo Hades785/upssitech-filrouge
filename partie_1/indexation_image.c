@@ -3,11 +3,11 @@
 
 unsigned int simplification(Pixel pixel,unsigned char nbBits){
 	unsigned char simpR,simpG,simpB;
-	unsigned char nbBitsD = (8-nbBits)
+	unsigned char nbBitsD = (8-nbBits);
 	simpR = pixel.R >> nbBitsD;
 	simpG = pixel.G >> nbBitsD;
 	simpB = pixel.B >> nbBitsD;
-	return = (((((unsigned int)simpR) << nbBits) + simpG) << nbBits) + simpB;
+	return (((((unsigned int)simpR) << nbBits) + simpG) << nbBits) + simpB;
 }
 
 Pixel newPixel(unsigned char R,unsigned char G,unsigned char B){
@@ -27,13 +27,13 @@ unsigned int *histogramme(const Image im,unsigned char nbBits){
 	}
 	for(unsigned int x=0;x<im.tailleX;x++){
 		for(unsigned int y=0;y<im.tailleY;y++){
-			histo[simplification((im.Image+(x*tailleY)+y),nbBits)]++;
+			histo[simplification(*(im.image+(x*im.tailleY)+y),nbBits)]++;
 		}
 	}
 	return histo;
 }
 
-sds createDescripteur(const unsigned int * histo,const sds cheminAbsolu,int id){
+/*sds createDescripteur(const unsigned int * histo,const sds cheminAbsolu,int id){
 	sds s = sdscatprintf(sdsempty(),"%u,%s],[",id,cheminAbsolu);
 	unsigned int p = pow(2,3*nbBits);
 	for(unsigned int i = 0;i < (p-1);i++){
@@ -41,7 +41,7 @@ sds createDescripteur(const unsigned int * histo,const sds cheminAbsolu,int id){
 	}
 	s = sdscatprintf(s,"%u]",histo[p-1]);
 	return s;
-}
+}*/
 
 
 

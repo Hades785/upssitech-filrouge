@@ -28,6 +28,12 @@ recherche_image.o: recherche_image.c recherche_image.h indexation_image.h
 recherche_audio.o: recherche_audio.c recherche_audio.h indexation_audio.h
 	@gcc -c recherche_audio.c
 
+test.out: TestIndixationImage.o indexation_image.o 
+	@gcc -o TestIndixationImage.o indexation_image.o -lm
+
+TestIndixationImage.o: TestIndixationImage.c indexation_image.h
+	@gcc -c TestIndixationImage.c 
+
 .PHONY: clean
 clean:
 	@rm -f *.o *.out
