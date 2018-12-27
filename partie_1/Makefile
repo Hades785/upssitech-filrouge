@@ -27,6 +27,14 @@ recherche_image.o: recherche_image.c recherche_image.h indexation_image.h
 
 recherche_audio.o: recherche_audio.c recherche_audio.h indexation_audio.h
 	@gcc -c recherche_audio.c
+	
+sds.o: sds.c sds.h sdsalloc.h
+	@gcc -c sds.c
+	
+tstCreateDescripteurImage.out: tstCreateDescripteurImage.c indexation_image.h sds.h indexation_image.o sds.o
+	@gcc -c tstCreateDescripteurImage.c
+	@gcc -o tstCreateDescripteurImage.out tstCreateDescripteurImage.o sds.o indexation_image.o
+	./tstCreateDescripteurImage.out
 
 .PHONY: clean
 clean:
