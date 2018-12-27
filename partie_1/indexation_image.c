@@ -18,7 +18,7 @@ Pixel newPixel(unsigned char R,unsigned char G,unsigned char B){
 	return pix;
 }
 
-unsigned int *histogramme(Image im,unsigned char nbBits){
+unsigned int *histogramme(const Image im,unsigned char nbBits){
 	unsigned int p = pow(2,3*nbBits);
 	unsigned int * histo = malloc(p*sizeof(unsigned int));
 	assert(histo!=NULL);
@@ -33,7 +33,7 @@ unsigned int *histogramme(Image im,unsigned char nbBits){
 	return histo;
 }
 
-sds createDescripteur(const unsigned int * histo,const sds cheminAbsolu,const int id){
+sds createDescripteur(const unsigned int * histo,const sds cheminAbsolu,int id){
 	sds s = sdscatprintf(sdsempty(),"%u,%s],[",id,cheminAbsolu);
 	unsigned int p = pow(2,3*nbBits);
 	for(unsigned int i = 0;i < (p-1);i++){
