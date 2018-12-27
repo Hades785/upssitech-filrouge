@@ -10,6 +10,7 @@ int main(){
 		41,42,43,44,45,46,47,48,
 		49,50,51,52,53,54,55,56,
 		57,58,59,60,61,62,63,64};
-	sds bonjour = createDescripteur(histo,2,sdsnew("bonjour"),42,6,80);
-	printf("%s",bonjour);
+	sds bonjour = createDescripteur(histo,2,sdsnew("bonjour"),42,20,2.5);
+	printf("%s\n",bonjour);
+	return 0;
 }

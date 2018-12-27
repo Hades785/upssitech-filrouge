@@ -2,11 +2,11 @@
 
 unsigned int simplification(Pixel pixel,unsigned char nbBits){
 	unsigned char simpR,simpG,simpB;
-	unsigned char nbBitsD = (8-nbBits)
+	unsigned char nbBitsD = (8-nbBits);
 	simpR = pixel.R >> nbBitsD;
 	simpG = pixel.G >> nbBitsD;
 	simpB = pixel.B >> nbBitsD;
-	return = (((((unsigned int)simpR) << nbBits) + simpG) << nbBits) + simpB;
+	return (((((unsigned int)simpR) << nbBits) + simpG) << nbBits) + simpB;
 }
 
 Pixel newPixel(unsigned char R,unsigned char G,unsigned char B){
@@ -26,20 +26,21 @@ unsigned int *histogramme(const Image im,unsigned char nbBits){
 	}
 	for(unsigned int x=0;x<im.tailleX;x++){
 		for(unsigned int y=0;y<im.tailleY;y++){
-			histo[simplification((im.Image+(x*tailleY)+y),nbBits)]++;
+			histo[simplification(*(im.image+(x*im.tailleY)+y),nbBits)]++;
 		}
 	}
 	return histo;
 }
 
-sds createDescripteur(const unsigned int * histo,unsigned char nbBits,const sds cheminAbsolu,int id,unsigned int nbCouleursMax,unsigned int seuilMin){
+sds createDescripteur(const unsigned int * histo,unsigned char nbBits,const sds cheminAbsolu,int id,unsigned int nbCouleursMax,float seuilMin){
 	sds s = sdscatprintf(sdsempty(),"[%u,%s,",id,cheminAbsolu);
 	unsigned int p = pow(2,3*nbBits);
 	unsigned int total = 0,seuil;
 	for(unsigned int i = 0;i < p;i++){
 		total += histo[i];
 	}
-	seuil = (unsigned int) (total * ((float)seuilMin)/100);
+	seuil = (unsigned int) (total * seuilMin/100);
+	//printf("seuilMin: %u, percentage: %f, total: %u, seuil: %u\n",seuilMin,((float)seuilMin)/100,total,seuil);
 	
 	unsigned int * tabCouleur = malloc(sizeof(unsigned int)*nbCouleursMax);//tableau de stockage des codes couleurs
 	unsigned int * tabOccur = malloc(sizeof(unsigned int)*nbCouleursMax);//tableau de stockage des nombres d'occurence
@@ -71,6 +72,13 @@ sds createDescripteur(const unsigned int * histo,unsigned char nbBits,const sds 
 			if(occ == 0)
 				break;
 		}
+		/*printf("liste:\n");
+		printf("\t1:%u=%u\n",tabCouleur[0],tabOccur[0]);
+		printf("\t2:%u=%u\n",tabCouleur[1],tabOccur[1]);
+		printf("\t3:%u=%u\n",tabCouleur[2],tabOccur[2]);
+		printf("\t4:%u=%u\n",tabCouleur[3],tabOccur[3]);
+		printf("\t5:%u=%u\n",tabCouleur[4],tabOccur[4]);
+		printf("\t6:%u=%u\n",tabCouleur[5],tabOccur[5]);*/
 	}
 	
 	//on compte de nombre d'entree valides
@@ -82,13 +90,14 @@ sds createDescripteur(const unsigned int * histo,unsigned char nbBits,const sds 
 			break;
 	}
 	
-	if(nbVal = 0)nbVal = 1;//on en prends au moins une quoi qu'il arrive
+	if(nbVal == 0)nbVal = 1;//on en prends au moins une quoi qu'il arrive
 	
 	s = sdscatprintf(s,"%u],[",nbVal);
 	
 	for(unsigned int i = 0;i < (nbVal-1);i++){
 		s = sdscatprintf(s,"%u=%u,",tabCouleur[i],tabOccur[i]);
 	}
-	s = sdscatprintf(s,"%u=%u]",tabCouleur[i],tabOccur[i]);
+	
+	s = sdscatprintf(s,"%u=%u]",tabCouleur[(nbVal-1)],tabOccur[(nbVal-1)]);
 	return s;
 }
