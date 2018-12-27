@@ -18,7 +18,7 @@ typedef struct{
 }Image;
 
 //format du descripteur image:
-//"[id,cheminAbsolu],[h0,h1,h2,...]"
+//"[id,cheminAbsolu,nbCouleurs],[c0=nbOcc0,c1=nbOcc1,c2=nbOcc2,...]"
 
 unsigned int simplification(Pixel pixel,unsigned char nbBits);
 //pixel : structure contenant les valeurs des trois couleurs
@@ -37,12 +37,16 @@ unsigned int *histogramme(const Image im,unsigned char nbBits);
 Image decodeImage(const sds fichierImage);
 //Cette fonction remplis une image de pixels a partir du contenu textuel des images proposees
 
-sds createDescripteur(const unsigned int * histo,const sds cheminAbsolu,int id);
+sds createDescripteur(const unsigned int * histo,unsigned char nbBits,const sds cheminAbsolu,int id,unsigned int nbCouleursMax,unsigned int seuilMin);
 //cette fonction renvoie un descripteur contenant les informations donnees
 //ce string respecte le format donne en haut de ce fichier .h
+//nbCouleursMax et seuilMin sont passes par indexation_image
 
-sds indexation_image(const sds cheminFichier);
+sds indexation_image(const sds cheminFichier,unsigned int nbCouleursMax,unsigned int seuilMin);
 //cette fonction cree un descripteur a partir du fichier dont le chemin est passe en parametre
+//nbCouleurMax definit le nombre de couleurs maximum enregistree,
+//seuilMin [1 - 99] definit le pourcentage de couverture de l'image minimum requis pour etre enregistree
+//la couleur majoritaire est toujours enregistree quelle que soit ces conditions
 
 //OPTION !
 //Image visuSimplify(Image image,unsigned char nbBits);
