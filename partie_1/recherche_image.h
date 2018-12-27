@@ -7,11 +7,12 @@
 #include "indexation_image.h"
 
 /**
- * DESCRIPTION PLACEHOLDER
+ * 
  *
  * @param  PLACEHOLDER
  * @return PLACEHOLDER
  */
-void recherche_image(/*TODO*/);
+sds * recherche_image(const sds couleur,const sds fichier);
+
 
 #endif
