@@ -42,3 +42,67 @@ sds createDescripteur(const unsigned int * histo,const sds cheminAbsolu,const in
 	s = sdscatprintf(s,"%u]",histo[p-1]);
 	return s;
 }
+
+
+
+void decodeImage(Image * im,sds fichierImage) 
+    {
+
+    FILE * fichier=NULL;
+    unsigned int nbr_matrice;
+    unsigned int temp;
+       
+    fichier=fopen(fichierImage,"r");
+    if(fichier!=NULL)
+    {
+        fscanf(fichier,"%u",&im->tailleX); //lecture des dimensions X & Yde l'image   
+        fscanf(fichier,"%u",&im->tailleY);
+        fscanf(fichier,"%u",&nbr_matrice);//lecture nombre matrice de pixel (1-> noir & blanc/3->couleur )
+
+        
+        im->image = malloc(im->tailleX * im->tailleY * sizeof(Pixel));
+
+      if(nbr_matrice==1) //si l'image est noir & blanc 
+       {
+           for(unsigned int y = 0;y < im->tailleY;y++){
+            for(unsigned int x = 0;x < im->tailleX;x++){
+                fscanf(fichier,"%u",&temp);
+                (*(im->image+(x*im->tailleY)+y)).R = (unsigned char) temp; //les 3 composantes RGB ont la même valeur
+                (*(im->image+(x*im->tailleY)+y)).G = (unsigned char) temp;
+                (*(im->image+(x*im->tailleY)+y)).B = (unsigned char) temp;
+            }
+        }  
+
+      }
+       else //si l'image est en couleur 
+       { 
+        for(unsigned int y = 0;y < im->tailleY;y++){
+            for(unsigned int x = 0;x < im->tailleX;x++){
+                fscanf(fichier,"%u",&temp);
+                (*(im->image+(x*im->tailleY)+y)).R = (unsigned char) temp;
+          
+
+            }
+        }
+       
+
+        
+        for(unsigned int y = 0;y < im->tailleY;y++){
+            for(unsigned int x = 0;x < im->tailleX;x++){
+                fscanf(fichier,"%u",&temp);
+               (*(im->image+(x*im->tailleY)+y)).G = (unsigned char) temp;
+            }
+        }
+        
+        for(unsigned int y = 0;y < im->tailleY;y++){
+            for(unsigned int x = 0;x < im->tailleX;x++){
+                fscanf(fichier,"%u",&temp);
+                (*(im->image+(x*im->tailleY)+y)).B = (unsigned char) temp;
+            }
+        }
+      }
+    }
+    fclose(fichier);
+    
+ }
+
