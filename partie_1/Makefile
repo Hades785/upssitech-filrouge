@@ -11,7 +11,7 @@ indexation_texte.o: indexation_texte.c indexation_texte.h
 	@gcc -c indexation_texte.c
 
 indexation_image.o: indexation_image.c indexation_image.h
-	@gcc -c indexation_image.c -lm
+	@gcc -c indexation_image.c
 
 indexation_audio.o: indexation_audio.c indexation_audio.h
 	@gcc -c indexation_audio.c
