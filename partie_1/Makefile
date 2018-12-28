@@ -11,7 +11,7 @@ indexation_texte.o: indexation_texte.c indexation_texte.h
 	@gcc -c indexation_texte.c
 
 indexation_image.o: indexation_image.c indexation_image.h
-	@gcc -c indexation_image.c
+	@gcc -c indexation_image.c -lm
 
 indexation_audio.o: indexation_audio.c indexation_audio.h
 	@gcc -c indexation_audio.c
@@ -30,7 +30,7 @@ recherche_audio.o: recherche_audio.c recherche_audio.h indexation_audio.h
 	
 sds.o: sds.c sds.h sdsalloc.h
 	@gcc -c sds.c
-	
+
 sauvegarde_descripteurs.o: sauvegarde_descripteurs.c sauvegarde_descripteurs.h sds.h
 	@gcc -c sauvegarde_descripteurs.c
 	
@@ -38,6 +38,17 @@ testSaveDesc.out: testSaveDesc.c sauvegarde_descripteurs.h sds.h sauvegarde_desc
 	@gcc -c testSaveDesc.c
 	@gcc -o testSaveDesc.out testSaveDesc.o sauvegarde_descripteurs.o sds.o
 	./testSaveDesc.out
+
+tstCreateDescripteurImage.out: tstCreateDescripteurImage.c indexation_image.h sds.h indexation_image.o sds.o
+	@gcc -c tstCreateDescripteurImage.c
+	@gcc -o tstCreateDescripteurImage.out tstCreateDescripteurImage.o sds.o indexation_image.o -lm
+	./tstCreateDescripteurImage.out
+
+test.out: TestIndixationImage.o indexation_image.o 
+	@gcc -o TestIndixationImage.o indexation_image.o -lm
+
+TestIndixationImage.o: TestIndixationImage.c indexation_image.h
+	@gcc -c TestIndixationImage.c 
 
 .PHONY: clean
 clean:
