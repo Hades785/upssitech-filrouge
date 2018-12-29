@@ -10,8 +10,8 @@ indexation.o: indexation.c indexation.h indexation_texte.h indexation_image.h in
 indexation_texte.o: indexation_texte.c indexation_texte.h
 	@gcc -c indexation_texte.c
 
-indexation_image.o: indexation_image.c indexation_image.h
-	@gcc -c indexation_image.c -lm
+indexation_image.o: indexation_image.c indexation_image.h sds.h
+	@gcc -c indexation_image.c  -lm
 
 indexation_audio.o: indexation_audio.c indexation_audio.h
 	@gcc -c indexation_audio.c
@@ -36,11 +36,12 @@ tstCreateDescripteurImage.out: tstCreateDescripteurImage.c indexation_image.h sd
 	@gcc -o tstCreateDescripteurImage.out tstCreateDescripteurImage.o sds.o indexation_image.o -lm
 	./tstCreateDescripteurImage.out
 
-test.out: TestIndixationImage.o indexation_image.o 
-	@gcc -o TestIndixationImage.o indexation_image.o -lm
+test_image.out: TestIndexationImage.o indexation_image.o 
+	@gcc -g -o test_image.out TestIndexationImage.o indexation_image.o sds.o -lm
 
-TestIndixationImage.o: TestIndixationImage.c indexation_image.h
-	@gcc -c TestIndixationImage.c 
+TestIndexationImage.o: TestIndexationImage.c indexation_image.h
+	@gcc -c TestIndexationImage.c 
+
 
 .PHONY: clean
 clean:
