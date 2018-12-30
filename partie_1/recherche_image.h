@@ -1,10 +1,36 @@
 #ifndef __RECHERCHE_IMAGE__
 #define __RECHERCHE_IMAGE__
 
-#include <stdlib.h>
-#include <stdio.h>
 #include "sds.h"
-#include "indexation_image.h"
+#include "sauvegarde_descripteurs.h"
+
+#define NOIR			000000
+#define BLANC			111111
+#define ROUGE			110000
+#define VERT			001100
+#define BLEU			000011
+#define CYAN			001111
+#define MAGENTA			110011
+#define JAUNE			111100
+#define DEFAULT_COLOR	000000
+
+#define NOIR_T		"noir"
+#define BLANC_T		"blanc"
+#define ROUGE_T		"rouge"
+#define VERT_T		"vert"
+#define BLEU_T		"bleu"
+#define CYAN_T		"cyan"
+#define MAGENTA_T	"magenta"
+#define JAUNE_T		"jaune"
+
+#define DIVISEUR_PROX_COULEUR 3
+
+/**
+La comparaison se base sur un systeme de points
+	- plus la couleur demandee est presente, plus l'image obtient de points
+	- si une couleur proche est presente, elle obtient les memes points mais divises par DIVISEUR_PROX_COULEUR*le nombre de bits d'ecart
+	
+*/
 
 /**
  * renvoie un tableau de sds
@@ -18,5 +44,8 @@
  */
 sds * recherche_image(const sds couleur,const Capsule caps,unsigned int nbResMax);
 
+sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbResMax);
+
+sds * recherche_image(const sds fichier,const Capsule caps,unsigned int nbResMax);
 
 #endif
