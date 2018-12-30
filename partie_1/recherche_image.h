@@ -25,16 +25,16 @@
 
 #define NB_POINTS_SIM 3
 #define DIVISEUR_PAR_BIT 3
+//le tri se fait selon un calcul de points:
 //le calcul est base sur la somme [prop col x ob] * [prop col y ba] * NB_POINTS_SIM * (DIVISEUR_PAR_BIT ^ [nombre de bits de difference])
 //pour toute les combinaisons de x et y balayant les couleurs de chacun
 //ce calcul est fait en float
+//le nombre de bits de difference est en realite la difference entre la valeur recherchee et la valeur de la couleur trouvee
 
-/**
-La comparaison se base sur un systeme de points
-	- plus la couleur demandee est presente, plus l'image obtient de points
-	- si une couleur proche est presente, elle obtient les memes points mais divises par DIVISEUR_PROX_COULEUR*le nombre de bits d'ecart
-	
-*/
+//(lire propostion de la couleur x de l'objectif/base de donnee)
+//(nombre de points par combinaison)
+
+//l'image obtenant le plus de points se retrouve en premiere position des resultats
 
 /**
  * renvoie un tableau de sds
@@ -46,10 +46,10 @@ La comparaison se base sur un systeme de points
  * @return un tableau de resultats se terminant par un pointeur vers null (de taille nbResMax)
  * ne pas oublier de free ce tableau ainsi que tout ses sds
  */
-sds * recherche_image(const sds couleur,const Capsule caps,unsigned int nbResMax);
+sds * recherche_image(const sds couleur,const Capsule caps,unsigned int nbResMax,unsigned char nbBits);
 
-sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbResMax);
+sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbResMax,unsigned char nbBits);
 
-sds * recherche_image(const sds fichier,const Capsule caps,unsigned int nbResMax);
+sds * recherche_image(const sds fichier,const Capsule caps,unsigned int nbResMax,unsigned char nbBits);
 
 #endif
