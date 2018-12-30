@@ -23,7 +23,11 @@
 #define MAGENTA_T	"magenta"
 #define JAUNE_T		"jaune"
 
-#define DIVISEUR_PROX_COULEUR 3
+#define NB_POINTS_SIM 3
+#define DIVISEUR_PAR_BIT 3
+//le calcul est base sur la somme [prop col x ob] * [prop col y ba] * NB_POINTS_SIM * (DIVISEUR_PAR_BIT ^ [nombre de bits de difference])
+//pour toute les combinaisons de x et y balayant les couleurs de chacun
+//ce calcul est fait en float
 
 /**
 La comparaison se base sur un systeme de points

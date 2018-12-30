@@ -92,7 +92,7 @@ sds createDescripteur(const unsigned int * histo,unsigned char nbBits,const sds 
 	
 	if(nbVal == 0)nbVal = 1;//on en prends au moins une quoi qu'il arrive
 	
-	s = sdscatprintf(s,"%u],[",nbVal);
+	s = sdscatprintf(s,"%u,%u],[",nbVal,total);
 	
 	for(unsigned int i = 0;i < (nbVal-1);i++){
 		s = sdscatprintf(s,"%u=%u,",tabCouleur[i],tabOccur[i]);
