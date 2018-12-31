@@ -42,7 +42,7 @@ sds createDescripteur(const unsigned int * histo,unsigned char nbBits,const sds 
 //ce string respecte le format donne en haut de ce fichier .h
 //nbCouleursMax et seuilMin sont passes par indexation_image
 
-sds indexation_image(const sds cheminFichier,unsigned int nbCouleursMax,float seuilMin);
+sds indexation_image(const sds cheminFichier,unsigned int nbCouleursMax,float seuilMin,int id ,unsigned char nbBits);
 //cette fonction cree un descripteur a partir du fichier dont le chemin est passe en parametre
 //nbCouleurMax definit le nombre de couleurs maximum enregistree,
 //seuilMin [1 - 99] definit le pourcentage de couverture de l'image minimum requis pour etre enregistree

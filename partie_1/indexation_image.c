@@ -159,3 +159,11 @@ void decodeImage(Image * im,sds fichierImage)
 	}
 	
 }
+
+
+sds indexation_image(const sds cheminFichier,unsigned int nbCouleursMax,float seuilMin,int id ,unsigned char nbBits)
+{ 	Image im;
+	decodeImage(&im,cheminFichier);
+	int *histo=histogramme(im,nbBits);
+	return createDescripteur(histo,nbBits,cheminFichier,id,nbCouleursMax,seuilMin);
+}
