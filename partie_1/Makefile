@@ -44,12 +44,11 @@ tstCreateDescripteurImage.out: tstCreateDescripteurImage.c indexation_image.h sd
 	@gcc -o tstCreateDescripteurImage.out tstCreateDescripteurImage.o sds.o indexation_image.o -lm
 	./tstCreateDescripteurImage.out
 
-test_image.out: TestIndexationImage.o indexation_image.o 
-	@gcc -g -o test_image.out TestIndexationImage.o indexation_image.o sds.o -lm
-
-TestIndexationImage.o: TestIndexationImage.c indexation_image.h
-	@gcc -c TestIndexationImage.c 
-
+.PHONY: test_image.out
+test_image.out: indexation_image.o sds.o TestIndexationImage.c indexation_image.h
+	@gcc -c TestIndexationImage.c
+	@gcc -o test_image.out TestIndexationImage.o indexation_image.o sds.o -lm
+	./test_image.out
 
 .PHONY: clean
 clean:
