@@ -84,7 +84,7 @@ sds createDescripteur(const unsigned int * histo,unsigned char nbBits,const sds 
 	//on compte de nombre d'entree valides
 	unsigned int nbVal = 0;
 	for(unsigned int i = 0;i < nbCouleursMax;i++){
-		if(tabOccur[i] >= seuil)
+		if(tabOccur[i] >= seuil && tabOccur[i] > 0)
 			nbVal++;
 		else
 			break;
@@ -92,7 +92,7 @@ sds createDescripteur(const unsigned int * histo,unsigned char nbBits,const sds 
 	
 	if(nbVal == 0)nbVal = 1;//on en prends au moins une quoi qu'il arrive
 	
-	s = sdscatprintf(s,"%u],[",nbVal);
+	s = sdscatprintf(s,"%u,%u],[",nbVal,total);
 	
 	for(unsigned int i = 0;i < (nbVal-1);i++){
 		s = sdscatprintf(s,"%u=%u,",tabCouleur[i],tabOccur[i]);

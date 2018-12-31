@@ -22,8 +22,8 @@ recherche.o: recherche.c recherche.h recherche_texte.h recherche_image.h recherc
 recherche_texte.o: recherche_texte.c recherche_texte.h indexation_texte.h
 	@gcc -c recherche_texte.c
 
-recherche_image.o: recherche_image.c recherche_image.h indexation_image.h
-	@gcc -c recherche_image.c
+recherche_image.o: recherche_image.c recherche_image.h indexation_image.h sds.h
+	@gcc -c recherche_image.c -lm
 
 recherche_audio.o: recherche_audio.c recherche_audio.h indexation_audio.h
 	@gcc -c recherche_audio.c
@@ -39,10 +39,17 @@ testSaveDesc.out: testSaveDesc.c sauvegarde_descripteurs.h sds.h sauvegarde_desc
 	@gcc -o testSaveDesc.out testSaveDesc.o sauvegarde_descripteurs.o sds.o
 	./testSaveDesc.out
 
+.PHONY: tstCreateDescripteurImage.out
 tstCreateDescripteurImage.out: tstCreateDescripteurImage.c indexation_image.h sds.h indexation_image.o sds.o
 	@gcc -c tstCreateDescripteurImage.c
 	@gcc -o tstCreateDescripteurImage.out tstCreateDescripteurImage.o sds.o indexation_image.o -lm
 	./tstCreateDescripteurImage.out
+	
+.PHONY: tstDecodeDescImage.out
+tstDecodeDescImage.out: tstDecodeDescImage.c recherche_image.h recherche_image.o sds.h sds.o
+	@gcc -c tstDecodeDescImage.c
+	@gcc -o tstDecodeDescImage.out tstDecodeDescImage.o sds.o recherche_image.o -lm
+	./tstDecodeDescImage.out
 
 .PHONY: test_image.out
 test_image.out: indexation_image.o sds.o TestIndexationImage.c indexation_image.h

@@ -18,7 +18,7 @@ typedef struct{
 }Image;
 
 //format du descripteur image:
-//"[id,cheminAbsolu,nbCouleurs],[c0=nbOcc0,c1=nbOcc1,c2=nbOcc2,...]"
+//"[id,cheminAbsolu,nbCouleurs,nbPixelsTotal],[c0=nbOcc0,c1=nbOcc1,c2=nbOcc2,...]"
 
 unsigned int simplification(Pixel pixel,unsigned char nbBits);
 //pixel : structure contenant les valeurs des trois couleurs
