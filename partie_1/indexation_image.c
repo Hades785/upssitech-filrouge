@@ -84,7 +84,7 @@ sds createDescripteur(const unsigned int * histo,unsigned char nbBits,const sds 
 	//on compte de nombre d'entree valides
 	unsigned int nbVal = 0;
 	for(unsigned int i = 0;i < nbCouleursMax;i++){
-		if(tabOccur[i] >= seuil)
+		if(tabOccur[i] >= seuil && tabOccur[i] > 0)
 			nbVal++;
 		else
 			break;

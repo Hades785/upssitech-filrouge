@@ -157,3 +157,80 @@ sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbRes
 	free(tabPoints);
 	return result;
 }
+
+sds * recherche_image_file(const sds fichier,const Capsule caps,unsigned int nbResMax,unsigned char nbBits,unsigned int nbCouleursMax,float seuilMin){
+	
+	float * tabPoints = malloc(sizeof(float)*nbResMax);
+	DescripteurImage ** tabDesc = malloc(sizeof(DescripteurImage*)*nbResMax);
+	assert(tabPoints != NULL && tabDesc != NULL);
+	
+	for(unsigned int i = 0;i < nbResMax;i++){
+		tabDesc[i] = NULL;
+		tabPoints[i] = 0;
+	}
+	
+	//on cree le descripteur de l'image donnee
+	DescripteurImage cible = decodeDescripteur(indexation_image(fichier,nbCouleursMax,seuilMin));
+	
+	//on fait le calcul du total de points pour pouvoir faire le classement en meme temps, et ainsi ne pas avoir a stocker un total par descripteur de la base.
+	
+	//on prepare les valeurs qui serviront au calcul
+	//la proportion dans l'image de chaque couleur
+	float * propCible = malloc(sizeof(float)*cible.nbCouleurs);
+	assert(propCible != NULL);
+	for(unsigned int i = 0;i < cible.nbCouleurs;i++){
+		propCible[i] = cible.nbOcc[i]/(float)cible.nbPixels;
+	}
+	
+	//pour chaque element de la base
+	unsigned int points;
+	for(unsigned int i = 0;i < caps.nbDescripteurs;i++){
+		//on en extrait le descripteur
+		DescripteurImage tempdes = decodeDescripteur(caps.descripteurs[i]);
+		DescripteurImage * descIm = &tempdes;
+		points = 0;
+		//pour chaque couleur de l'image de la base
+		for(unsigned int c = 0;c < descIm->nbCouleurs;c++){
+			//ici on compare toutes les couleurs de l'image cible
+			//on commence par preparer les valeurs de l'image a tester
+			float prop = descIm->nbOcc[c]/(float)descIm->nbPixels;
+			//pour chaque couleur de la cible
+			for(unsigned int u = 0;u < cible.nbCouleurs;u++){
+				unsigned int valDif = valDiff(cible.couleurs[u],descIm->couleurs[c],nbBits);
+				float factDiff = pow(DIVISEUR_PAR_BIT,valDif);
+				points+= propCible[u] * prop * NB_POINTS_SIM * factDiff;
+			}
+		}
+		
+		free(propCible);
+		
+		//on injecte ce resultat dans le classement
+		//pour cela on balaye le classement en descendant et en injectant
+		
+		for(unsigned int u = 0;u < nbResMax;u++){
+			//ici on ne lit que les points donc pas de veriication si le descripteur existe
+			if(tabPoints[u] <= points){
+				float temp = tabPoints[u];
+				tabPoints[u] = points;
+				points = temp;
+				
+				DescripteurImage * tempd = tabDesc[u];
+				tabDesc[u] = descIm;
+				descIm = tempd;
+			}
+			//temp et tempd ne contiennent que des copies de pointeurs temporairement, donc pas de free (aucune memoire n'est allouee)
+		}
+		freeDescIm(descIm);
+		//points est un type primitif, donc pas de free
+	}
+	
+	//on a maintenant notre classement, reste a composer le resultat de recherche
+	sds * result = resultGenerator(nbResMax,tabDesc);
+	//on free tout ce bazar
+	for(unsigned int i = 0;i < nbResMax;i++){
+		freeDescIm(tabDesc[i]);
+	}
+	free(tabDesc);
+	free(tabPoints);
+	return result;
+}
