@@ -36,6 +36,24 @@
 
 //l'image obtenant le plus de points se retrouve en premiere position des resultats
 
+//cette structure n'est pas destinee a etre utilisee depuis l'exerieur, de meme que les fonctions qui suivent
+typedef struct{
+	int id;
+	sds cheminAbs;
+	unsigned int nbCouleurs;
+	unsigned int nbPixels;
+	unsigned int * couleurs;
+	unsigned int * nbOcc;
+}DescripteurImage;
+
+DescripteurImage decodeDescripteur(const sds descripteur);
+
+void freeDescIm(DescripteurImage * descIm);
+
+unsigned int valDiff(unsigned int couleur1,unsigned int couleur2,unsigned char nbBits);
+
+sds * resultGenerator(unsigned int nbResMax,DescripteurImage ** tabDesc);
+
 /**
  * renvoie un tableau de sds
  * chaque sds est un resultat par ordre decroissant de match
@@ -46,10 +64,10 @@
  * @return un tableau de resultats se terminant par un pointeur vers null (de taille nbResMax)
  * ne pas oublier de free ce tableau ainsi que tout ses sds
  */
-sds * recherche_image(const sds couleur,const Capsule caps,unsigned int nbResMax,unsigned char nbBits);
+sds * recherche_image_col(const sds couleur,const Capsule caps,unsigned int nbResMax,unsigned char nbBits);
 
 sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbResMax,unsigned char nbBits);
 
-sds * recherche_image(const sds fichier,const Capsule caps,unsigned int nbResMax,unsigned char nbBits);
+sds * recherche_image_file(const sds fichier,const Capsule caps,unsigned int nbResMax,unsigned char nbBits);
 
 #endif

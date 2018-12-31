@@ -4,16 +4,6 @@
 #include <assert.h>
 #include <string.h>
 
-//cette structure n'est pas destinee a etre utilisee depuis l'exerieur, de meme que les fonctions qui suivent
-typedef struct{
-	int id;
-	sds cheminAbs;
-	unsigned int nbCouleurs;
-	unsigned int nbPixels;
-	unsigned int * couleurs;
-	unsigned int * nbOcc;
-}DescripteurImage;
-
 DescripteurImage decodeDescripteur(const sds descripteur){
 	char chemin[200];
 	DescripteurImage descIm;
@@ -23,11 +13,13 @@ DescripteurImage decodeDescripteur(const sds descripteur){
 	assert(descIm.couleurs != NULL && descIm.nbOcc != NULL);
 	char * debutNb = strchr(descripteur+1,'[');//+1 pour eviter celui de l'en tete
 	assert(debutNb != NULL);
+	//printf("gate0:%u",(debutNb-descripteur));getchar();
 	for(unsigned int i = 0;i < descIm.nbCouleurs;i++){
 		debutNb++;
-		sscanf(debutNb,"%u=%u",&(descIm.couleurs[i]),&(descIm.nbOcc[i]));
+		sscanf(debutNb,"%u=%u",&(descIm.couleurs[i]),&(descIm.nbOcc[i]));	//printf("gate1:%u,%u=%u",debutNb-descripteur,(descIm.couleurs[i]),(descIm.nbOcc[i]));getchar();
 		if(i < (descIm.nbCouleurs-1)){
-			debutNb = strchr(descripteur,',');
+			debutNb = strchr(debutNb,',');
+			//printf("gate2:%u",debutNb-descripteur);getchar();
 			assert(debutNb != NULL);
 		}
 	}
@@ -67,36 +59,36 @@ unsigned int valDiff(unsigned int couleur1,unsigned int couleur2,unsigned char n
 	return sum;
 }
 
-sds * resultGenerator(unsigned int nbResMax,DescripteurImage * tabDesc){
-	sds * tabRes = malloc(sizeof(*sds)*nbResMax);
+sds * resultGenerator(unsigned int nbResMax,DescripteurImage ** tabDesc){
+	sds * tabRes = malloc(sizeof(sds*)*nbResMax);
 	assert(tabRes != NULL);
 	for(unsigned int i = 0;i < nbResMax;i++){
 		//pour chacun des resultats on extrait une copie du sds (car les originaux vont etre detruits)
 		if(tabDesc[i] != NULL)
-			tabRes[i] = sdsdup(tabDesc[i].cheminAbs);
+			tabRes[i] = sdsdup(tabDesc[i]->cheminAbs);
 		else
 			tabRes[i] = NULL;
 	}
 }
 
-sds * recherche_image(const sds couleur,const Capsule caps,unsigned int nbResMax,unsigned char nbBits){
+sds * recherche_image_col(const sds couleur,const Capsule caps,unsigned int nbResMax,unsigned char nbBits){
 	if(strcmp(NOIR_T,couleur))
-		return recherche_image(NOIR,caps,nbResMax);
+		return recherche_image(NOIR,caps,nbResMax,nbBits);
 	if(strcmp(BLANC_T,couleur))
-		return recherche_image(BLANC,caps,nbResMax);
+		return recherche_image(BLANC,caps,nbResMax,nbBits);
 	if(strcmp(ROUGE_T,couleur))
-		return recherche_image(ROUGE,caps,nbResMax);
+		return recherche_image(ROUGE,caps,nbResMax,nbBits);
 	if(strcmp(VERT_T,couleur))
-		return recherche_image(VERT,caps,nbResMax);
+		return recherche_image(VERT,caps,nbResMax,nbBits);
 	if(strcmp(BLEU_T,couleur))
-		return recherche_image(BLEU,caps,nbResMax);
+		return recherche_image(BLEU,caps,nbResMax,nbBits);
 	if(strcmp(CYAN_T,couleur))
-		return recherche_image(CYAN,caps,nbResMax);
+		return recherche_image(CYAN,caps,nbResMax,nbBits);
 	if(strcmp(MAGENTA_T,couleur))
-		return recherche_image(MAGENTA,caps,nbResMax);
+		return recherche_image(MAGENTA,caps,nbResMax,nbBits);
 	if(strcmp(JAUNE_T,couleur))
-		return recherche_image(JAUNE,caps,nbResMax);
-	return recherche_image(DEFAULT_COLOR,caps,nbResMax);
+		return recherche_image(JAUNE,caps,nbResMax,nbBits);
+	return recherche_image(DEFAULT_COLOR,caps,nbResMax,nbBits);
 }
 
 sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbResMax,unsigned char nbBits){
@@ -108,7 +100,7 @@ sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbRes
 	float * tabPoints = malloc(sizeof(float)*nbResMax);
 	
 	//et un tableau pour stocker les descripteurs decodes du top du classement (y faut bien savoir qui a gagne)
-	DescripteurImage * tabDesc = malloc(sizeof(*DescripteurImage)*nbResMax);
+	DescripteurImage ** tabDesc = malloc(sizeof(DescripteurImage*)*nbResMax);
 	assert(tabPoints != NULL && tabDesc != NULL);
 	
 	for(unsigned int i = 0;i < nbResMax;i++){
@@ -123,13 +115,14 @@ sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbRes
 	unsigned int points;
 	for(unsigned int i = 0;i < caps.nbDescripteurs;i++){
 		//on en extrait le descripteur
-		DescripteurImage * descIm = &(decodeDescripteur(caps.descripteurs[i]));
+		DescripteurImage tempdes = decodeDescripteur(caps.descripteurs[i]);
+		DescripteurImage * descIm = &tempdes;
 		points = 0;
 		//pour chaque couleur de l'image de la base
 		for(unsigned int c = 0;c < descIm->nbCouleurs;c++){
 			//ici on compare directement a une couleur, donc on fait le meme calcul mais en considérant une image unie de la couleur donnee (100% de la couleur)
 			float prop = descIm->nbOcc[c]/(float)descIm->nbPixels;
-			unsigned int valDif = valDiff(couleur,descIm->couleurs[c]);
+			unsigned int valDif = valDiff(couleur,descIm->couleurs[c],nbBits);
 			float factDiff = pow(DIVISEUR_PAR_BIT,valDif);
 			points+= prop*NB_POINTS_SIM*factDiff;
 		}
