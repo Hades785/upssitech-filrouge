@@ -17,13 +17,13 @@
 void recherche_texte_motscles(sds motscles, const sds[] liste_base_texte, const sds[] table_index_texte);
 
 /**
- * DESCRIPTION Donne la liste des fichiers le plus semblable a celui donne
+ * DESCRIPTION Donne la liste des fichiers les plus semblables a celui donne
  * en parametre
  *
  * @param  sds fichier
  * @param sds[] liste_base_texte
- * @param sds[] descripteurs
+ * @param sds fichierDescripteurs
  */
-void recherche_texte_fichier(sds fichier, const sds[] liste_base_texte, const sds[] descripteurs);
+void recherche_texte_fichier(sds fichier, const sds[] liste_base_texte, const sds fichierDescripteurs);
 
 #endif
