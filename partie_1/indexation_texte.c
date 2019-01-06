@@ -3,6 +3,27 @@
 #include <math.h>
 
 
+void ajout_nombre_dans_sds(nbM, s)
+{
+	int nbDeChiffres = 0;
+	int val = nbM;
+	
+	while(val != 0) // On compte le nombre de chiffres qui constituent le nombre
+	{
+		nbDeChiffres++;
+		val /= 10;
+	}
+	
+	for(int i = 0 ; i < nbDeChiffres ; i++) // On insère le int dans le sds
+	{
+		int k = nbM - nbM%((int)pow(10,nbDeChiffres-1-i));
+		nbM -= k;
+		k /= pow(10,nbDeChiffres-1-i);
+		
+		s = sdscat(s, k + '0');
+	}
+}
+
 
 sds indexation_texte(const sds accesFichier)
 {
@@ -13,12 +34,11 @@ sds indexation_texte(const sds accesFichier)
 	if (fichier != NULL)
 	{
 		sds motActuel = sdsempty();
-		sds chaineTotale = sdsempty();
+		sds chaineTotale = sdsnew("[");
 		int carActuel = 0;
         int nbDeCar = 0;
-		
-		chaineTotale = sdscat(chaineTotale, '[');
-		
+		int nbDeMots = 0;
+		int nbDeMotsRetenus = 0;
 		
 		
 		// On lit le fichier
@@ -154,30 +174,48 @@ sds indexation_texte(const sds accesFichier)
 					{
 						chaineTotale = sdscatsds(chaineTotale, motActuel);
 						chaineTotale = sdscat(chaineTotale, ":1;");
+						nbDeMotsRetenus++;
 					}
 				}
+				
+				nbDeMots++;
 				
 				motActuel = sdsempty();
 			}
         }
 		while (carActuel != EOF); // fin de fichier
 		
-		
-
         fclose(fichier);
 		
-		chaineTotale = sdscat(chaineTotale, ']');
 		
-		sdsfree(motActuel); // On supprime les strings
-		sdsfree(chaineTotale);
 		
-		//return(); // Pour le retour, voir ludichat sur discord //TODO
+		if((int)sdslen(chaineTotale) > 1) // Si on a trouvé au moins 1 mot
+			chaineTotale[(int)sdslen(chaineTotale)-1] = ']'; // On remplace le dernier ';' par ']'
+		else
+			chaineTotale = sdscat(chaineTotale, ']');
+		
+		
+		sds s1 = sdsnew("[nombreDeMotsAuTotal:");
+		ajout_nombre_dans_sds(nbDeMots, s1);
+		
+		s1 = sdscat(s1,";nombreDeMotsRetenus:");
+		ajout_nombre_dans_sds(nbDeMotsRetenus, s1);
+		
+		s1 = sdscat(s1, ']');
+		
+		s1 = sdscatsds(s1, chaineTotale);
+		chaineTotale = s1;
+		
+		sdsfree(motActuel); // On libère l'espace mémoire
+		
+		return(chaineTotale);
     }
 	else
 	{
-		printf("Impossible d'ouvrir le fichier test.txt");
+		printf("Impossible d'ouvrir le fichier");
 		
-		//sds retour =
-		return()
+		sds retour = sdsempty();
+		retour = sdscat(retour, "[ERREUR]");
+		return(retour);
 	}
 }

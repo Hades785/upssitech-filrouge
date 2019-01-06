@@ -12,5 +12,6 @@
  * @return PLACEHOLDER
  */
 sds indexation_texte(const sds accesFichier);
+void ajout_nombre_dans_sds(nbM, s);
 
 #endif
