@@ -5,18 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "constantes.h"
-
-
-
-typedef struct
-{
-	unsigned int nbEle;
-	unsigned int size;
-	sds * mots;
-	unsigned int * nbOcc;
-}TabOcc;
-
-
+#include <assert.h>
 
 void afficher_tabocc(TabOcc t)
 {
@@ -26,7 +15,14 @@ void afficher_tabocc(TabOcc t)
 	}
 }
 
-
+long position_mot_dans_tabocc(TabOcc t, sds mot)
+{
+	for(unsigned int i = 0;i < t.nbEle;i++){
+		if(strcmp(t.mots[i], mot) == 0)
+			return i;
+	}
+	return -1;
+}
 
 void ajout_mot(TabOcc *t, sds mot){
 	long pos = position_mot_dans_tabocc(*t,mot);
@@ -47,6 +43,7 @@ void ajout_mot(TabOcc *t, sds mot){
 		t->nbEle++;
 	}else{
 		t->nbOcc[pos]++;
+		sdsfree(mot);
 	}
 }
 
@@ -54,9 +51,9 @@ TabOcc newTabOcc(){
 	TabOcc t;
 	t.nbEle = 0;
 	t.size = 20;
-	mots = malloc(sizeof(sds)*20);
-	nbOcc = malloc(sizeof(unsigned int)*20);
-	assert(mots != NULL && nbOcc != NULL);
+	t.mots = malloc(sizeof(sds)*20);
+	t.nbOcc = malloc(sizeof(unsigned int)*20);
+	assert(t.mots != NULL && t.nbOcc != NULL);
 	return t;
 }
 
@@ -68,45 +65,33 @@ unsigned int totalOccurences(TabOcc t){
 	return tt;
 }
 
-
-
-long position_mot_dans_tabocc(TabOcc t, sds mot)
-{
-	//on fait plutot comme sa
-	for(unsigned int i = 0;i < t.nbEle;i++){
-		if(strcmp(t.mots[i], mot) == 0)
-			return i;
-	}
-	return -1;
-	//sa permet de quitter des qu'on a une correspondance et pas se taper le reste de la liste pour rien.
-	/*
-	int present = 0;
-	int posi = 0;
-	
-	for (unsigned int i = 0 ; i < t.nbEle ; i++)
-	{
-		if(strcmp(t.mots[i], mot) == 0) // Les mots sont les mêmes
-		{
-			present = 1;
-			posi = i;
+void triTabOcc(TabOcc * t){
+	sds temps;
+	unsigned int tempu;
+	for(unsigned int i = 1;i < t->nbEle;i++){
+		for(unsigned int u = 0;u < (t->nbEle-i);u++){
+			if(t->nbOcc[u] < t->nbOcc[u+1]){
+				temps = t->mots[u];
+				tempu = t->nbOcc[u];
+				t->mots[u] = t->mots[u+1];
+				t->nbOcc[u] = t->nbOcc[u+1];
+				t->mots[u+1] = temps;
+				t->nbOcc[u+1] = tempu;
+			}
 		}
 	}
-	
-	if(present) // Si le mot est présent, on retourne sa position
-		return i;
-	else
-		return -1;*/
 }
 
 
-TabOcc lecture_fichier(const sds accesFichier, *unsigned int nbMotsTotal)
+/*TabOcc lecture_fichier(const sds accesFichier, *unsigned int nbMotsTotal)
 {
 	
-}
+}*/
 
-TabOcc tri_occurence(TabOcc tab)
+/*TabOcc tri_occurence(TabOcc tab)
 {
-	
+	TabOcc tab = newTabOcc();
+	for()
 }
 
 sds renvoie_descripteur(TabOcc tabTrié)
@@ -174,7 +159,7 @@ sds indexation_texte(const sds accesFichier,int valId)
 				else
 				{
 					tabocc.nbOcc[i]++;
-				}*/
+				}/////
 				if(sdslen(motActuel)>=TAILLE_MIN_MOT)
 					ajout_mot(&tabocc, motActuel);
 				nbDeMots++;
@@ -387,7 +372,7 @@ sds indexation_texte(const sds accesFichier,int valId)
 		sdsfree(motActuel);
 		sdsfree(chaineTotale);
 		
-		return(s1);*/
+		return(s1);////
     }
 	else
 	{
@@ -404,4 +389,4 @@ sds indexation_texte(const sds accesFichier,int valId)
 void gestion_descripteurs()
 {
 	// A faire plus tard...
-}
+}*/
