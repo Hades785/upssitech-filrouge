@@ -28,10 +28,14 @@ void afficher_tabocc(TabOcc t)
 
 
 
-void ajout_mot(TabOcc *t, sds mot){
+void ajout_mot(TabOcc *t, sds mot)
+{
 	long pos = position_mot_dans_tabocc(*t,mot);
-	if(pos == -1){
-		if(t->nbEle == t->size){
+	
+	if(pos == -1)
+	{
+		if(t->nbEle == t->size)
+		{
 			sds * newTabS = malloc(sizeof(sds)*(t->size+20));
 			unsigned int * newTabU = malloc(sizeof(unsigned int)*(t->size+20));
 			assert(newTabS != NULL && newTabU != NULL);
@@ -45,12 +49,15 @@ void ajout_mot(TabOcc *t, sds mot){
 		t->mots[t->nbEle] = mot;
 		t->nbOcc[t->nbEle] = 1;
 		t->nbEle++;
-	}else{
+	}
+	else
+	{
 		t->nbOcc[pos]++;
 	}
 }
 
-TabOcc newTabOcc(){
+TabOcc newTabOcc()
+{
 	TabOcc t;
 	t.nbEle = 0;
 	t.size = 20;
@@ -60,9 +67,12 @@ TabOcc newTabOcc(){
 	return t;
 }
 
-unsigned int totalOccurences(TabOcc t){
+unsigned int totalOccurences(TabOcc t)
+{
 	unsigned int tt = 0;
-	for(unsigned int i = 0;i < t.nbEle;i++){
+	
+	for(unsigned int i = 0;i < t.nbEle;i++)
+	{
 		tt+=t.nbOcc[i];
 	}
 	return tt;
@@ -72,36 +82,84 @@ unsigned int totalOccurences(TabOcc t){
 
 long position_mot_dans_tabocc(TabOcc t, sds mot)
 {
-	//on fait plutot comme sa
-	for(unsigned int i = 0;i < t.nbEle;i++){
+	for(unsigned int i = 0;i < t.nbEle;i++)
+	{
 		if(strcmp(t.mots[i], mot) == 0)
 			return i;
 	}
 	return -1;
-	//sa permet de quitter des qu'on a une correspondance et pas se taper le reste de la liste pour rien.
-	/*
-	int present = 0;
-	int posi = 0;
-	
-	for (unsigned int i = 0 ; i < t.nbEle ; i++)
-	{
-		if(strcmp(t.mots[i], mot) == 0) // Les mots sont les mêmes
-		{
-			present = 1;
-			posi = i;
-		}
-	}
-	
-	if(present) // Si le mot est présent, on retourne sa position
-		return i;
-	else
-		return -1;*/
 }
 
 
 TabOcc lecture_fichier(const sds accesFichier, *unsigned int nbMotsTotal)
 {
+	FILE* fichier;
+
+    fichier = fopen(accesFichier, "r");
 	
+	printf("début de la lecture_fichier"); getchar();
+	
+	
+	
+	if (fichier != NULL)
+	{
+		printf("On a pu ouvrir le fichier"); getchar();
+		
+		sds motActuel;
+		TabOcc tabocc = newTabOcc();
+		
+		char tabMots[TAILLE_MAX_MOT];//tableau de char
+		
+		do // Tant qu'on est pas arrivé à la fin du fichier
+		{
+			afficher_tabocc(tabocc);
+			
+			tabMots[0] = fgetc(fichier); // On lit le caractère
+			
+			if((tabMots[0] >= 'a' && tabMots[0] <= 'z') || (tabMots[0] >= 'A' && tabMots[0] <= 'Z')) // Si c'est une lettre
+			{
+				fscanf(fichier,"%30[äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒa-zA-Z]", &tabMots[1]);
+				motActuel = sdsnew(tabMots);
+				
+				if(sdslen(motActuel)>=TAILLE_MIN_MOT)
+					ajout_mot(&tabocc, motActuel);
+				
+				nbMotsTotal++;
+			}
+			else
+			{
+				switch(tabMots[0])
+				{
+					case '<':
+						printf("balise");getchar();
+						fscanf(fichier, "%*[^>]"); // On va jusqu'à la fin de la balise
+						fgetc(fichier);
+						break;
+						
+					case ' ':
+						printf("le char est un espace"); getchar();
+						break;
+						
+					default:
+						printf("le char n'est pas une lettre:%X",tabMots[0]); getchar();
+						break;
+				}
+			}
+		}
+		while (tabMots[0] != EOF); // fin de fichier
+		
+		fclose(fichier);
+		sdsfree(motActuel);
+		
+		return tabocc;
+    }
+	else
+	{
+		printf("On a pas pu ouvrir le fichier"); getchar();
+		
+		TabOcc tabocc = newTabOcc();
+		return tabocc;
+	}
 }
 
 TabOcc tri_occurence(TabOcc tab)
