@@ -38,6 +38,7 @@ void ajout_mot(TabOcc *t, sds mot)
 			assert(newTabS != NULL && newTabU != NULL);
 			memcpy(newTabS,t->mots,sizeof(sds)*t->size);
 			memcpy(newTabU,t->nbOcc,sizeof(unsigned int)*t->size);
+			t->size+=20;
 			free(t->mots);
 			free(t->nbOcc);
 			t->mots = newTabS;
@@ -124,6 +125,8 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 				
 				if(sdslen(motActuel)>=TAILLE_MIN_MOT)
 					ajout_mot(&tabocc, motActuel);
+				else
+					sdsfree(motActuel);
 				
 				nbMotsTotal++;
 			}
@@ -150,7 +153,6 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 		while (tabMots[0] != EOF); // fin de fichier
 		
 		fclose(fichier);
-		sdsfree(motActuel);
 		
 		printf("On va return le tabocc"); getchar();
 		
