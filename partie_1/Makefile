@@ -45,6 +45,12 @@ test_indexation_texte.out : test_indexation_texte.c sds.h sds.o indexation_texte
 	@gcc -o test_indexation_texte.out test_indexation_texte.o sds.o indexation_texte.o -lm
 	./test_indexation_texte.out
 	
+.PHONY: test_indexation_texte_lecture_fichier.out
+test_indexation_texte_lecture_fichier.out : test_indexation_texte_lecture_fichier.c sds.h sds.o indexation_texte.h indexation_texte.o
+	@gcc -c test_indexation_texte_lecture_fichier.c
+	@gcc -o test_indexation_texte_lecture_fichier.out test_indexation_texte_lecture_fichier.o sds.o indexation_texte.o -lm
+	./test_indexation_texte_lecture_fichier.out
+	
 .PHONY: tst_tabocc.out
 tst_tabocc.out:indexation_texte.h indexation_texte.o sds.h sds.o
 	@gcc -c tst_tabocc.c

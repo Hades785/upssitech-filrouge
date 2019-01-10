@@ -14,11 +14,17 @@ typedef struct
 
 void afficher_tabocc(TabOcc t);
 
+long position_mot_dans_tabocc(TabOcc t, sds mot);
+
 void ajout_mot(TabOcc *t, sds mot);
+
+unsigned int totalOccurences(TabOcc t);
 
 TabOcc newTabOcc();
 
 void triTabOcc(TabOcc * t);
+
+TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal);
 
 /**
  * DESCRIPTION PLACEHOLDER

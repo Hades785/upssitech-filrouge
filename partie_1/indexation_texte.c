@@ -13,6 +13,7 @@ void afficher_tabocc(TabOcc t)
 	{
 		printf("%s : %u | ", t.mots[i], t.nbOcc[i]);
 	}
+	printf("\n");
 }
 
 long position_mot_dans_tabocc(TabOcc t, sds mot)
@@ -93,7 +94,7 @@ void triTabOcc(TabOcc * t){
 }
 
 
-TabOcc lecture_fichier(const sds accesFichier, *unsigned int nbMotsTotal)
+TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 {
 	FILE* fichier;
 
@@ -150,6 +151,8 @@ TabOcc lecture_fichier(const sds accesFichier, *unsigned int nbMotsTotal)
 		
 		fclose(fichier);
 		sdsfree(motActuel);
+		
+		printf("On va return le tabocc"); getchar();
 		
 		return tabocc;
     }
