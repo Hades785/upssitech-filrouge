@@ -10,11 +10,11 @@
  * DESCRIPTION Donne la liste des fichiers contenant le plus les mots cles
  * donnes en parametre par l utilisateur
  *
- * @param sds motscles
+ * @param sds[] motscles
  * @param sds[] liste_base_texte
  * @param sds[] table_index_texte
  */
-void recherche_texte_motscles(sds motscles, const sds[] liste_base_texte, const sds[] table_index_texte);
+void recherche_texte_motscles(const sds[] motscles, const sds[] liste_base_texte, const sds[] table_index_texte);
 
 /**
  * DESCRIPTION Donne la liste des fichiers les plus semblables a celui donne

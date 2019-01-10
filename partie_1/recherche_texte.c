@@ -15,26 +15,35 @@ void recherche_texte_motscles(sds motscles, const sds[] liste_base_texte, const 
 	}
 }
 
+// Pour le moment, cette fonction recherche un fichier identique a celui passe en parametre
 void recherche_texte_fichier(sds fichier, const sds[] liste_base_texte, const sds fichierDescripteurs)
 {
-	sds descripteur; // le descripteur du fichier a rechercher
+	// format d un descripteur
+	// [id;nombreDeMotsAuTotal;nombreDeMotsRetenus][mot :occurence;mot2 :occurence2]
+	
+	sds descripteur, comparaison, resultat; // le descripteur du fichier a rechercher
 	unsigned char * flag;
 	Capsule capsule;
+	int comparaison, id;
 	
-	comparaison = sdsempty();
+	resultat = sdsnew("Fichier recherche non trouve.");
 	descripteur = sdsnew(indexation_texte(fichier));
 	capsule = loadDescripteurs(flag, fichierDescripteurs);
 	
 	for(int i = 0; i < capsule.nbDescripteurs; i++)
 	{
-		// comparaison de chaque descripteur dans fichier avec le descripteur
-		// creer pour le fichier recherche
-		//TODO
+		comparaison = int sdscmp(capsule.descripteurs[i], descripteur);
+		if (comparaison == 0)
+		{
+			sscanf(descripteur, "[%d;", &id);
+			resultats = getNom(id[i], liste_base_texte);
+		}
 	}
+	printf(resultat);
 }
 
 // lit la table d index et retourne les identifiants des fichiers contenant le plus le mot
-int[] lire_index(const sds[] table_index_texte, sds motscles)
+int[] lire_index(const sds[] table_index_texte, const sds[] motscles)
 {
 	//TODO
 }
