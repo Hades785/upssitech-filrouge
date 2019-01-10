@@ -33,9 +33,12 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal);
  * @return PLACEHOLDER
  */
 
-
+	// Cette fonction est chargée de créer le sds décrivant le fichier donné en paramètre.
+	// Le descripteur ainsi créer est de la forme :
+	// [valeur;valeur;valeur][mot :occurence;...;motN :occurenceN]
+	// (Les 3 premières valeurs sont : id ; nombreDeMotsAuTotal ; nombreDeMotsRetenus)
+	//[id;nbMotsTotal;nbMotsRetenus][mot1:occ1;mot2:occ2;...]
  
 sds indexation_texte(const sds accesFichier, int valId);
-void gestion_descripteurs();
 
 #endif
