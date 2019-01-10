@@ -1,30 +1,9 @@
 #include "indexation_texte.h"
 #include <ctype.h>
 #include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-
-sds ajout_nombre_dans_sds(int nbM, sds s)
-{
-	int nbDeChiffres = 0;
-	int val = nbM;
-	
-	while(val != 0) // On compte le nombre de chiffres qui constituent le nombre
-	{
-		nbDeChiffres++;
-		val /= 10;
-	}
-	
-	for(int i = 0 ; i < nbDeChiffres ; i++) // On insère le int dans le sds
-	{
-		int k = nbM - nbM%((int)pow(10,nbDeChiffres-1-i));
-		nbM -= k;
-		k /= pow(10,nbDeChiffres-1-i);
-		
-		s = sdscat(s, k + '0');
-	}
-	
-	return s;
-}
 
 
 sds indexation_texte(const sds accesFichier,int valId)
@@ -206,15 +185,7 @@ sds indexation_texte(const sds accesFichier,int valId)
 		
 		
 		sds s1 = sdsnew("[");
-		s1 = ajout_nombre_dans_sds(valId, s1);
-		
-		s1 = sdscat(s1, ';');
-		s1 = ajout_nombre_dans_sds(nbDeMots, s1);
-		
-		s1 = sdscat(s1, ';');
-		s1 = ajout_nombre_dans_sds(nbDeMotsRetenus, s1);
-		
-		s1 = sdscat(s1, ']');
+		s1 = sdscatprintf(s, "%d;%d;%d]", valId, nbDeMots, nbDeMotsRetenus);
 		
 		s1 = sdscatsds(s1, chaineTotale);
 		
@@ -238,34 +209,5 @@ sds indexation_texte(const sds accesFichier,int valId)
 
 void gestion_descripteurs()
 {
-	// On créer un sds qui renferme tous les descripteurs de tous les fichiers.
-	// Il est de la forme :
-	// [1][descripteur 1...][2][descripteur 2...]...etc.
-	
-	FILE *fichier;
-	
-	if ((fichier = fopen("base_descripteur_texte.txt", "r"))) // Si base_descripteur_texte.txt existe déjà
-	{
-		
-	}
-	else
-	{
-		fichier = fopen("base_descripteur_texte.txt", "w"); // On créer le fichier
-		
-		int cpt = 1;
-		sds s = sdsnew("[");
-		
-		ajout_nombre_dans_sds(cpt, s);
-		s = sdscat(s, ']');
-		s = sdscatsds(s, indexation_texte(nomDoc1));
-		cpt++;
-		
-		s = sdscat(s, '[');
-		ajout_nombre_dans_sds(cpt, s);
-		s = sdscat(s, ']');
-		s = sdscatsds(s, indexation_texte(nomDoc2));
-		cpt++;
-	}
-	
-	fclose(fichier);
+	// A faire plus tard...
 }

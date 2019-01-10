@@ -38,6 +38,11 @@ testSaveDesc.out: testSaveDesc.c sauvegarde_descripteurs.h sds.h sauvegarde_desc
 	@gcc -c testSaveDesc.c
 	@gcc -o testSaveDesc.out testSaveDesc.o sauvegarde_descripteurs.o sds.o
 	./testSaveDesc.out
+	
+test_indexation_texte.out : test_indexation_texte.c sds.h sds.o indexation_texte.h indexation_texte.o
+	@gcc -c test_indexation_texte.c
+	@gcc -o test_indexation_texte.out test_indexation_texte.o sds.o indexation_texte.o -lm
+	./test_indexation_texte
 
 .PHONY: clean
 clean:
