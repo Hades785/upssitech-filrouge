@@ -11,7 +11,7 @@
  * @return PLACEHOLDER
  */
 
-sds indexation_texte(const sds accesFichier);
+sds indexation_texte(const sds accesFichier, int valId);
 void gestion_descripteurs();
 
 #endif

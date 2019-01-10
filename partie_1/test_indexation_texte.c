@@ -5,7 +5,7 @@
 
 int main()
 {
-	printf(indexation_texte("/mnt/c/Users/Nicolas/Documents/Cours\ UPSSITECH/upssitech-filrouge/documents/texte/03-Mimer_un_signal_nerveux_pour.xml", 1));
+	printf("%s",indexation_texte("/mnt/c/Users/Nicolas/Documents/Cours UPSSITECH/upssitech-filrouge/documents/texte/03-Mimer_un_signal_nerveux_pour.xml", 1));
 	
 	return 0;
 }
