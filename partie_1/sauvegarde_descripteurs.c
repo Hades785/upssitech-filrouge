@@ -107,13 +107,15 @@ void freeCapsule(Capsule caps){
 }
 
 Capsule newCapsule(unsigned char * successFlag){
-	caps->descripteurs = malloc(sizeof(sds)*10);
-	if(caps->descripteurs == NULL){
+	Capsule caps;
+	caps.nbDescripteurs = 0;
+	caps.descripteurs = malloc(sizeof(sds)*10);
+	if(caps.descripteurs == NULL){
 		*successFlag = ECHEC;
-		return null;
+		caps.size = 0;
+		return caps;
 	}
-	caps->nbDescripteurs = 0;
-	caps->size = 10;
+	caps.size = 10;
 	*successFlag = SUCCES;
 	return caps;
 }
@@ -130,25 +132,25 @@ unsigned char resetCapsule(Capsule * caps){
 	return ECHEC;
 }
 
-unsigned char addElementCopy(Capsule * caps,sds element){
+unsigned char addElementCopy(Capsule * caps,const sds element){
 	return addElement(caps,sdsnew(element));
 }
 
 unsigned char addElement(Capsule * caps,sds element){
 	if(caps->nbDescripteurs == caps->size){
-		sds * newTab = malloc(sizeof(sds)*caps->size+10);
+		sds * newTab = malloc(sizeof(sds)*(caps->size+10));
 		if(newTab == NULL)
 			return ECHEC;
-		memccpy(newTab,caps->descripteurs,sizeof(sds)*size);
+		memcpy(newTab,caps->descripteurs,sizeof(sds)*(caps->size+10));
 		caps->size+=10;
 		free(caps->descripteurs);
 		caps->descripteurs = newTab;
 	}
-	caps->descripteurs[nbDescripteurs] = element;
+	caps->descripteurs[caps->nbDescripteurs] = element;
 	caps->nbDescripteurs++;
 	return SUCCES;
 }
 
-unsigned int nombreDescripteurs(Capsule caps){
+unsigned int nombreDescripteurs(const Capsule caps){
 	return caps.nbDescripteurs;
 }

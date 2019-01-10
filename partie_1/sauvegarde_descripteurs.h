@@ -45,7 +45,7 @@ void freeCapsule(Capsule caps);
  *
  * @return une capsule ne contenant aucun element et pret a en stocker (utiliser addElement)
  */
-Capsule newCapsule(unsigned char * successFlag)
+Capsule newCapsule(unsigned char * successFlag);
 
 /**
  * Reinitialise une capsule et libere son contenu.
@@ -55,7 +55,7 @@ Capsule newCapsule(unsigned char * successFlag)
  *
  * @return SUCCES ou ECHEC
  */
-unsigned char resetCapsule(Capsule * caps)
+unsigned char resetCapsule(Capsule * caps);
 
 /**
  * ajoute un element a la capsule.
@@ -64,7 +64,7 @@ unsigned char resetCapsule(Capsule * caps)
  * 
  * @return SUCCES ou ECHEC
  */
-unsigned char addElementCopy(Capsule * caps,sds element);
+unsigned char addElementCopy(Capsule * caps,const sds element);
 
 /**
  * ajoute un element a la capsule.
@@ -82,4 +82,4 @@ unsigned char addElement(Capsule * caps,sds element);
  * 
  * @return le nombre de sds dans le tableau de la capsule
  */
-unsigned int nombreDescripteurs(Capsule caps);
+unsigned int nombreDescripteurs(const Capsule caps);
