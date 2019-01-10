@@ -123,7 +123,7 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 				fscanf(fichier,"%30[äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒa-zA-Z]", &tabMots[1]);
 				motActuel = sdsnew(tabMots);
 				
-				if(sdslen(motActuel)>=TAILLE_MIN_MOT)
+				if(sdslen(motActuel)>=TAILLE_MIN_MOT && strstr(exclusions,motActuel) == NULL)
 					ajout_mot(&tabocc, motActuel);
 				else
 					sdsfree(motActuel);
