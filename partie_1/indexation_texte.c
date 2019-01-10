@@ -99,7 +99,20 @@ long position_mot_dans_tabocc(TabOcc t, sds mot)
 }
 
 
+TabOcc lecture_fichier(const sds accesFichier, *unsigned int nbMotsTotal)
+{
+	
+}
 
+TabOcc tri_occurence(TabOcc tab)
+{
+	
+}
+
+sds renvoie_descripteur(TabOcc tabTrié)
+{
+	
+}
 
 
 sds indexation_texte(const sds accesFichier,int valId)
