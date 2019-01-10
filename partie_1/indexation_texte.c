@@ -101,11 +101,8 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 
     fichier = fopen(accesFichier, "r");
 	
-	printf("début de la lecture_fichier"); getchar();
-	
 	if (fichier != NULL)
 	{
-		printf("On a pu ouvrir le fichier"); getchar();
 		
 		sds motActuel;
 		TabOcc tabocc = newTabOcc();
@@ -114,8 +111,6 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 		
 		do // Tant qu'on est pas arrivé à la fin du fichier
 		{
-			afficher_tabocc(tabocc);
-			
 			tabMots[0] = fgetc(fichier); // On lit le caractère
 			
 			if((tabMots[0] >= 'a' && tabMots[0] <= 'z') || (tabMots[0] >= 'A' && tabMots[0] <= 'Z')) // Si c'est une lettre
@@ -135,11 +130,10 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 				switch(tabMots[0])
 				{
 					case '<':
-						printf("balise");getchar();
 						fscanf(fichier, "%*[^>]"); // On va jusqu'à la fin de la balise
 						fgetc(fichier);
 						break;
-						
+					/*	
 					case ' ':
 						printf("le char est un espace"); getchar();
 						break;
@@ -147,14 +141,13 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 					default:
 						printf("le char n'est pas une lettre:%X",tabMots[0]); getchar();
 						break;
+					*/
 				}
 			}
 		}
 		while (tabMots[0] != EOF); // fin de fichier
 		
 		fclose(fichier);
-		
-		printf("On va return le tabocc"); getchar();
 		
 		return tabocc;
     }
