@@ -11,7 +11,8 @@
  * @param  PLACEHOLDER
  * @return PLACEHOLDER
  */
+sds ajout_nombre_dans_sds(int nbM, sds s);
 sds indexation_texte(const sds accesFichier);
-void ajout_nombre_dans_sds(nbM, s);
+void gestion_descripteurs();
 
 #endif

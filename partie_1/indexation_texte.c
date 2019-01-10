@@ -3,7 +3,7 @@
 #include <math.h>
 
 
-void ajout_nombre_dans_sds(nbM, s)
+sds ajout_nombre_dans_sds(int nbM, sds s)
 {
 	int nbDeChiffres = 0;
 	int val = nbM;
@@ -22,11 +22,18 @@ void ajout_nombre_dans_sds(nbM, s)
 		
 		s = sdscat(s, k + '0');
 	}
+	
+	return s;
 }
 
 
-sds indexation_texte(const sds accesFichier)
+sds indexation_texte(const sds accesFichier,int valId)
 {
+	// Cette fonction est chargée de créer le sds décrivant le fichier donné en paramètre.
+	// Le descripteur ainsi créer est de la forme :
+	// [valeur;valeur;valeur][mot :occurence;...;motN :occurenceN]
+	// (Les 3 premières valeurs sont : id ; nombreDeMotsAuTotal ; nombreDeMotsRetenus)
+	
 	FILE* fichier = NULL;
 
     fichier = fopen(accesFichier, "r");
@@ -55,7 +62,10 @@ sds indexation_texte(const sds accesFichier)
 					carActuel = fgetc(fichier);
 				}
 				
-				carActuel = fgetc(fichier);
+				if(carActuel != EOF)
+					carActuel = fgetc(fichier);
+				else
+					break;
 				
 				motActuel = sdsempty();
 			}
@@ -80,7 +90,7 @@ sds indexation_texte(const sds accesFichier)
 						// Si la 1ère lettre est la même, et que c'est aussi la 1ère lettre
 						// du mot dans chaineTotale. Pour éviter des mots avec des lettres en
 						// plus au début. Ex : fondé / infondé
-						if((chaineTotale[cpt] == motActuel[0]) && isalpha(chaineTotale[cpt-1]))
+						if((chaineTotale[cpt] == motActuel[0]) && !isalpha(chaineTotale[cpt-1]))
 						{
 							motPresent = 1;
 							int i = 0;
@@ -98,7 +108,7 @@ sds indexation_texte(const sds accesFichier)
 							// d'un autre plus long. Ex : robot / robotique
 							if(cpt+i+1 < (int)sdslen(chaineTotale))
 							{
-								if(chaineTotale[cpt+i+1] != ':')
+								if(chaineTotale[cpt+i+1] != ' ')
 									motPresent = 0;
 							}
 						}
@@ -115,7 +125,7 @@ sds indexation_texte(const sds accesFichier)
 						int ilsSontTousANeuf = 1;
 						
 						// On se place au début du nombre d'occurence
-						cpt += (int)sdslen(motActuel);
+						cpt += (int)sdslen(motActuel) + 1;
 						
 						while(isdigit(chaineTotale[cpt]))
 						{
@@ -147,7 +157,7 @@ sds indexation_texte(const sds accesFichier)
 							}
 							
 							chaineTotale = newS;
-							// On est passé par ex : de ...mot2:99;mot3... à ...mot2:99;;mot3...
+							// On est passé par ex : de ...mot2 :99;mot3... à ...mot2 :99;;mot3...
 							// A partir de ';', on a tout décalé à droite d'un rang
 							
 							
@@ -157,7 +167,7 @@ sds indexation_texte(const sds accesFichier)
 							{
 								chaineTotale[cpt-nbChiffre+i] = '0';
 							}
-							// Finalement, on passe par ex : de ...mot2:99;;mot3... à ...mot2:100;mot3...
+							// Finalement, on passe par ex : de ...mot2 :99;;mot3... à ...mot2 :100;mot3...
 						}
 						else
 						{
@@ -173,7 +183,7 @@ sds indexation_texte(const sds accesFichier)
 					else
 					{
 						chaineTotale = sdscatsds(chaineTotale, motActuel);
-						chaineTotale = sdscat(chaineTotale, ":1;");
+						chaineTotale = sdscat(chaineTotale, " :1;");
 						nbDeMotsRetenus++;
 					}
 				}
@@ -195,20 +205,24 @@ sds indexation_texte(const sds accesFichier)
 			chaineTotale = sdscat(chaineTotale, ']');
 		
 		
-		sds s1 = sdsnew("[nombreDeMotsAuTotal:");
-		ajout_nombre_dans_sds(nbDeMots, s1);
+		sds s1 = sdsnew("[");
+		s1 = ajout_nombre_dans_sds(valId, s1);
 		
-		s1 = sdscat(s1,";nombreDeMotsRetenus:");
-		ajout_nombre_dans_sds(nbDeMotsRetenus, s1);
+		s1 = sdscat(s1, ';');
+		s1 = ajout_nombre_dans_sds(nbDeMots, s1);
+		
+		s1 = sdscat(s1, ';');
+		s1 = ajout_nombre_dans_sds(nbDeMotsRetenus, s1);
 		
 		s1 = sdscat(s1, ']');
 		
 		s1 = sdscatsds(s1, chaineTotale);
-		chaineTotale = s1;
 		
-		sdsfree(motActuel); // On libère l'espace mémoire
+		// On libère l'espace mémoire :
+		sdsfree(motActuel);
+		sdsfree(chaineTotale);
 		
-		return(chaineTotale);
+		return(s1);
     }
 	else
 	{
@@ -218,4 +232,40 @@ sds indexation_texte(const sds accesFichier)
 		retour = sdscat(retour, "[ERREUR]");
 		return(retour);
 	}
+}
+
+
+
+void gestion_descripteurs()
+{
+	// On créer un sds qui renferme tous les descripteurs de tous les fichiers.
+	// Il est de la forme :
+	// [1][descripteur 1...][2][descripteur 2...]...etc.
+	
+	FILE *fichier;
+	
+	if ((fichier = fopen("base_descripteur_texte.txt", "r"))) // Si base_descripteur_texte.txt existe déjà
+	{
+		
+	}
+	else
+	{
+		fichier = fopen("base_descripteur_texte.txt", "w"); // On créer le fichier
+		
+		int cpt = 1;
+		sds s = sdsnew("[");
+		
+		ajout_nombre_dans_sds(cpt, s);
+		s = sdscat(s, ']');
+		s = sdscatsds(s, indexation_texte(nomDoc1));
+		cpt++;
+		
+		s = sdscat(s, '[');
+		ajout_nombre_dans_sds(cpt, s);
+		s = sdscat(s, ']');
+		s = sdscatsds(s, indexation_texte(nomDoc2));
+		cpt++;
+	}
+	
+	fclose(fichier);
 }
