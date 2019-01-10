@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "constantes.h"
 
 
 
@@ -27,15 +28,58 @@ void afficher_tabocc(TabOcc t)
 
 
 
-void ajout_mot(TabOcc *t, sds mot)
-{
-	
+void ajout_mot(TabOcc *t, sds mot){
+	long pos = position_mot_dans_tabocc(*t,mot);
+	if(pos == -1){
+		if(t->nbEle == t->size){
+			sds * newTabS = malloc(sizeof(sds)*(t->size+20));
+			unsigned int * newTabU = malloc(sizeof(unsigned int)*(t->size+20));
+			assert(newTabS != NULL && newTabU != NULL);
+			memcpy(newTabS,t->mots,sizeof(sds)*t->size);
+			memcpy(newTabU,t->nbOcc,sizeof(unsigned int)*t->size);
+			free(t->mots);
+			free(t->nbOcc);
+			t->mots = newTabS;
+			t->nbOcc = newTabU;
+		}
+		t->mots[t->nbEle] = mot;
+		t->nbOcc[t->nbEle] = 1;
+		t->nbEle++;
+	}else{
+		t->nbOcc[pos]++;
+	}
+}
+
+TabOcc newTabOcc(){
+	TabOcc t;
+	t.nbEle = 0;
+	t.size = 20;
+	mots = malloc(sizeof(sds)*20);
+	nbOcc = malloc(sizeof(unsigned int)*20);
+	assert(mots != NULL && nbOcc != NULL);
+	return t;
+}
+
+unsigned int totalOccurences(TabOcc t){
+	unsigned int tt = 0;
+	for(unsigned int i = 0;i < t.nbEle;i++){
+		tt+=t.nbOcc[i];
+	}
+	return tt;
 }
 
 
 
-int position_mot_dans_tabocc(TabOcc t, sds mot)
+long position_mot_dans_tabocc(TabOcc t, sds mot)
 {
+	//on fait plutot comme sa
+	for(unsigned int i = 0;i < t.nbEle;i++){
+		if(strcmp(t.mots[i], mot) == 0)
+			return i;
+	}
+	return -1;
+	//sa permet de quitter des qu'on a une correspondance et pas se taper le reste de la liste pour rien.
+	/*
 	int present = 0;
 	int posi = 0;
 	
@@ -51,7 +95,7 @@ int position_mot_dans_tabocc(TabOcc t, sds mot)
 	if(present) // Si le mot est présent, on retourne sa position
 		return i;
 	else
-		return -1;
+		return -1;*/
 }
 
 
@@ -64,8 +108,9 @@ sds indexation_texte(const sds accesFichier,int valId)
 	// Le descripteur ainsi créer est de la forme :
 	// [valeur;valeur;valeur][mot :occurence;...;motN :occurenceN]
 	// (Les 3 premières valeurs sont : id ; nombreDeMotsAuTotal ; nombreDeMotsRetenus)
+	//[id;nbMotsTotal;nbMotsRetenus][mot1:occ1;mot2:occ2;...]
 	
-	FILE* fichier = NULL;
+	FILE* fichier;
 
     fichier = fopen(accesFichier, "r");
 	
@@ -78,9 +123,9 @@ sds indexation_texte(const sds accesFichier,int valId)
 		int carActuel = 0;
         int nbDeCar = 0;
 		int nbDeMots = 0;
-		int nbDeMotsRetenus = 0;
+		//int nbDeMotsRetenus = 0;
 		
-		TabOcc tabocc;
+		TabOcc tabocc = newTabOcc();
 		
 		
 		
@@ -94,7 +139,7 @@ sds indexation_texte(const sds accesFichier,int valId)
 		
 		
 		
-		char tabMots[100];
+		char tabMots[TAILLE_MAX_MOT];//tableau de char
 		do
 		{
 			afficher_tabocc(tabocc);
@@ -103,10 +148,10 @@ sds indexation_texte(const sds accesFichier,int valId)
 			
 			if((tabMots[0] >= 'a' && tabMots[0] <= 'z') || (tabMots[0] >= 'A' && tabMots[0] <= 'Z')) // Si c'est une lettre
 			{
-				fscanf(fichier,"%98[äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒa-zA-Z]", &tabMots[1]);
+				fscanf(fichier,"%30[äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒa-zA-Z]", &tabMots[1]);
 				motActuel = sdsnew(tabMots);
-				
-				int num = position_mot_dans_tabocc(tabocc, motActuel);
+				//petite simplification
+				/*int num = position_mot_dans_tabocc(tabocc, motActuel);
 				
 				if(num == -1)
 				{
@@ -116,10 +161,11 @@ sds indexation_texte(const sds accesFichier,int valId)
 				else
 				{
 					tabocc.nbOcc[i]++;
-				}
-				
+				}*/
+				if(sdslen(motActuel)>=TAILLE_MIN_MOT)
+					ajout_mot(&tabocc, motActuel);
 				nbDeMots++;
-				sdsfree(motActuel);
+				//sdsfree(motActuel);//surtout pas, il est gardé par tabocc
 			}
 			else
 			{
