@@ -1,7 +1,7 @@
 #include "recherche_audio.h"
 #include "constantes.h"
 
-typedef struct {
+typedef struct _sample {
     sds* values;
     int count_values;
 } Sample;
