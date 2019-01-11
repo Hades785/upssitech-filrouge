@@ -117,8 +117,13 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 			
 			if((tabMots[0] >= 'a' && tabMots[0] <= 'z') || (tabMots[0] >= 'A' && tabMots[0] <= 'Z')) // Si c'est une lettre
 			{
-				fscanf(fichier,"%30[äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒa-zA-Z]", &tabMots[1]);
-				motActuel = sdsnew(tabMots);
+				fscanf(fichier,"%30[äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒ'a-zA-Z]", &tabMots[1]);
+				
+				if(tabMots[1] == '\'')
+					motActuel = sdsnew(&tabMots[2]);
+				else
+					motActuel = sdsnew(tabMots);
+				
 				
 				if(sdslen(motActuel)>=TAILLE_MIN_MOT && strstr(exclusions,motActuel) == NULL)
 					ajout_mot(&tabocc, motActuel);

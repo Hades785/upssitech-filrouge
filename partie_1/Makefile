@@ -7,7 +7,7 @@ main.o: main.c indexation.h recherche.h
 indexation.o: indexation.c indexation.h indexation_texte.h indexation_image.h indexation_audio.h
 	@gcc -c indexation.c
 
-indexation_texte.o: indexation_texte.c indexation_texte.h sds.h
+indexation_texte.o: indexation_texte.c indexation_texte.h sds.h constantes.h
 	@gcc -c indexation_texte.c
 
 indexation_image.o: indexation_image.c indexation_image.h
