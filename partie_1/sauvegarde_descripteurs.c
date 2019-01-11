@@ -133,7 +133,7 @@ unsigned char resetCapsule(Capsule * caps){
 }
 
 unsigned char addElementCopy(Capsule * caps,const sds element){
-	return addElement(caps,sdsnew(element));
+	return addElement(caps,sdsdup(element));
 }
 
 unsigned char addElement(Capsule * caps,sds element){
@@ -141,7 +141,7 @@ unsigned char addElement(Capsule * caps,sds element){
 		sds * newTab = malloc(sizeof(sds)*(caps->size+10));
 		if(newTab == NULL)
 			return ECHEC;
-		memcpy(newTab,caps->descripteurs,sizeof(sds)*(caps->size+10));
+		memcpy(newTab,caps->descripteurs,sizeof(sds)*(caps->size));
 		caps->size+=10;
 		free(caps->descripteurs);
 		caps->descripteurs = newTab;
