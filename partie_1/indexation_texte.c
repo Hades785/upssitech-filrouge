@@ -93,9 +93,26 @@ void triTabOcc(TabOcc * t){
 	}
 }
 
-void freeTabOcc(TabOcc * t){
+void freeTabOcc(TabOcc * t)
+{
 	free(t->mots);
 	free(t->nbOcc);
+}
+
+unsigned char test_alpha(char lettre)
+{
+	if((lettre >= 'a' && lettre <= 'z') || (lettre >= 'A' && lettre <= 'Z')) // Si c'est une lettre "classique"
+		return 1;
+	else
+	{
+		char ch[2];
+		ch[0] = lettre;ch[1] = 0;
+		
+		if(strstr(accents, ch) != NULL) // Si c'est une lettre accentuée
+			return 0;
+		else
+			return 2;
+	}
 }
 
 TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
@@ -115,9 +132,9 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 		{
 			tabMots[0] = fgetc(fichier); // On lit le caractère
 			
-			if((tabMots[0] >= 'a' && tabMots[0] <= 'z') || (tabMots[0] >= 'A' && tabMots[0] <= 'Z')) // Si c'est une lettre
+			if(test_alpha(tabMots[0]) != 2) // Si c'est une lettre
 			{
-				fscanf(fichier,"%30[äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒ'a-zA-Z]", &tabMots[1]);
+				fscanf(fichier,"%30[äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒ'a-zA-Z]", &tabMots[test_alpha(tabMots[0])]);
 				
 				if(tabMots[1] == '\'')
 					motActuel = sdsnew(&tabMots[2]);
