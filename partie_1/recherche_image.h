@@ -68,6 +68,6 @@ sds * recherche_image_col(const sds couleur,const Capsule caps,unsigned int nbRe
 
 sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbResMax,unsigned char nbBits);
 
-sds * recherche_image_file(const sds fichier,const Capsule caps,unsigned int nbResMax,unsigned char nbBits);
+sds * recherche_image_file(const sds fichier,const Capsule caps,unsigned int nbResMax,unsigned char nbBits,unsigned int nbCouleursMax,float seuilMin);
 
 #endif

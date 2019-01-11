@@ -57,6 +57,11 @@ test_image.out: indexation_image.o sds.o TestIndexationImage.c indexation_image.
 	@gcc -o test_image.out TestIndexationImage.o indexation_image.o sds.o -lm
 	./test_image.out
 
+test_recherche_image1.out: test_recherche_image1.c recherche_image.h recherche_image.o
+	@gcc -c test_recherche_image1.c
+	@gcc -o test_recherche_image1.out test_recherche_image1.o recherche_image.o 
+	./test_recherche_image1.out
+
 .PHONY: clean
 clean:
 	@rm -f *.o *.out
