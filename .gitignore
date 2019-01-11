@@ -54,5 +54,8 @@ dkms.conf
 # test documents
 documents/
 
-# misc
+# Descripteurs
+*.desc
+
+# KDevelop project
 *.kdev4
