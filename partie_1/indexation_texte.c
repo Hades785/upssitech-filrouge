@@ -155,27 +155,36 @@ TabOcc tri_occurence(TabOcc tab)
 {
 	triTabOcc(&tab);
 	TabOcc resp = newTabOcc();
+	
 	for(unsigned int i = 0;i < NB_RESULTAT_RECHERCHE;i++){
 		addMotStrict(&resp,tab.mots[i],tab.nbOcc[i]);
 	}
+	
 	return resp;
 }
 
 sds renvoie_descripteur(TabOcc tabTrie,int id,unsigned int nbMotsTotal)
 {
 	sds s = sdsempty();
-	unsigned int nbMotsRetenus = totalOccurences(tabTrie);
-	s = sdscatprintf(s,"[%d;%u;%u][",id,nbMotsTotal,nbMotsRetenus);
-	for(unsigned int i = 0;i < tabTrie.nbEle;i++){
+	//unsigned int nbMotsRetenus = totalOccurences(tabTrie);
+
+	s = sdscatprintf(s,"[%d;%u;%u][",id,nbMotsTotal,tabTrie.nbEle);
+
+	for(unsigned int i = 0;i < tabTrie.nbEle;i++)
+	{
 		s = sdscatprintf(s,"%s:%u",tabTrie.mots[i],tabTrie.nbOcc[i]);
+
 		if(i < tabTrie.nbEle-1)
 			s = sdscatprintf(s,";");
 	}
+	
 	s = sdscatprintf(s,"]");
+	
 	return s;
 }
 
-sds indexation_texte(const sds accesFichier,int valId){
+sds indexation_texte(const sds accesFichier,int valId)
+{
 	unsigned int nbMotsTotal;
 	TabOcc fichier = lecture_fichier(accesFichier, &nbMotsTotal);
 	TabOcc desc = tri_occurence(fichier);
