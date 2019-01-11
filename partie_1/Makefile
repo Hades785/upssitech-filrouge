@@ -34,6 +34,7 @@ sds.o: sds.c sds.h sdsalloc.h
 sauvegarde_descripteurs.o: sauvegarde_descripteurs.c sauvegarde_descripteurs.h sds.h
 	@gcc -c sauvegarde_descripteurs.c
 	
+.PHONY: testSaveDesc.out
 testSaveDesc.out: testSaveDesc.c sauvegarde_descripteurs.h sds.h sauvegarde_descripteurs.o sds.o
 	@gcc -c testSaveDesc.c
 	@gcc -o testSaveDesc.out testSaveDesc.o sauvegarde_descripteurs.o sds.o
