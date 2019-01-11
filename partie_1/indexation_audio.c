@@ -9,6 +9,7 @@ sds indexation_audio(const sds chemin_fichier) {
 
     // Scan tout le fichier
     while(!feof(file)) {
+        desc = sdscat(desc, "[");
         // Reset trame descripteur
         for(int j=0; j<NB_AMP_INTERVAL; ++j)
             desc_frame[j] = 0;
@@ -26,11 +27,12 @@ sds indexation_audio(const sds chemin_fichier) {
         // Transfert la trame descripteur dans le descripteur
         for(int i=0; i<NB_AMP_INTERVAL; ++i) {
             sds tmp = sdsfromlonglong(desc_frame[i]);
-            tmp = sdscat(tmp, " ");
+            if(i != NB_AMP_INTERVAL-1)
+                tmp = sdscat(tmp, " ");
             desc = sdscat(desc, tmp);
             sdsfree(tmp);
         }
-        desc = sdscat(desc, "\n");
+        desc = sdscat(desc, "]");
     }
 
     // Close opened file
