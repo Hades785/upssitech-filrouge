@@ -170,7 +170,7 @@ sds * recherche_image_file(const sds fichier,const Capsule caps,unsigned int nbR
 	}
 	
 	//on cree le descripteur de l'image donnee
-	DescripteurImage cible = decodeDescripteur(indexation_image(fichier,nbCouleursMax,seuilMin));
+	DescripteurImage cible = decodeDescripteur(indexation_image(fichier,nbCouleursMax,seuilMin,0,nbBits));
 	
 	//on fait le calcul du total de points pour pouvoir faire le classement en meme temps, et ainsi ne pas avoir a stocker un total par descripteur de la base.
 	

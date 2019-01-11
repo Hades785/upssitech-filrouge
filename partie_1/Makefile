@@ -46,9 +46,9 @@ tstCreateDescripteurImage.out: tstCreateDescripteurImage.c indexation_image.h sd
 	./tstCreateDescripteurImage.out
 	
 .PHONY: tstDecodeDescImage.out
-tstDecodeDescImage.out: tstDecodeDescImage.c recherche_image.h recherche_image.o sds.h sds.o
+tstDecodeDescImage.out: tstDecodeDescImage.c recherche_image.h recherche_image.o sds.h sds.o indexation_image.o indexation_image.h
 	@gcc -c tstDecodeDescImage.c
-	@gcc -o tstDecodeDescImage.out tstDecodeDescImage.o sds.o recherche_image.o -lm
+	@gcc -o tstDecodeDescImage.out tstDecodeDescImage.o sds.o recherche_image.o indexation_image.o -lm
 	./tstDecodeDescImage.out
 
 .PHONY: test_image.out
