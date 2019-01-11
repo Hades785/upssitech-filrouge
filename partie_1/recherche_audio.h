@@ -5,13 +5,15 @@
 #include <stdio.h>
 #include "sds.h"
 #include "indexation_audio.h"
+#include "sauvegarde_descripteurs.h"
 
 /**
- * DESCRIPTION PLACEHOLDER
+ * Compare un fichier "jingle" avec les fichiers "corpus" de la base de 
+ * descripteurs et permet d'identifier les temps d'apparition
  *
- * @param  PLACEHOLDER
+ * @param  chemin_fichier  Chemin vers le fichier "jingle"
  * @return PLACEHOLDER
  */
-void recherche_audio(/*TODO*/);
+void recherche_audio(sds const chemin_fichier);
 
 #endif
