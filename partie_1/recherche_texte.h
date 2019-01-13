@@ -14,7 +14,7 @@
  * @param sds[] liste_base_texte
  * @param sds[] table_index_texte
  */
-void recherche_texte_motscles(const sds[] motscles, const sds[] liste_base_texte, const sds[] table_index_texte);
+void recherche_texte_motscles(const sds motscles[], const sds liste_base_texte, const sds table_index_texte);
 
 /**
  * DESCRIPTION Donne la liste des fichiers les plus semblables a celui donne
@@ -24,6 +24,6 @@ void recherche_texte_motscles(const sds[] motscles, const sds[] liste_base_texte
  * @param sds[] liste_base_texte
  * @param sds fichierDescripteurs
  */
-void recherche_texte_fichier(sds fichier, const sds[] liste_base_texte, const sds fichierDescripteurs);
+void recherche_texte_fichier(const sds fichier, const sds liste_base_texte, const sds fichierDescripteurs);
 
 #endif
