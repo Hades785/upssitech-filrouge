@@ -125,7 +125,8 @@ void recherche_texte_fichier(const sds fichier, const sds liste_base_texte, cons
 	sscanf(descripteur, "[%*d;%*d;%d]", &nbMotsRetenusF);
 	
 	// liste des mots pour chaque descripteur
-	sds listeMotsF[nbMotsRetenusF];
+	// sds listeMotsF[nbMotsRetenusF];
+	sds * listeMotsF = (sds*) malloc(sizeof(sds)*nbMotsRetenusF);
 	listeMots(descripteur, listeMotsF);
 	
 	sds * listeMotsC;
@@ -143,23 +144,29 @@ void recherche_texte_fichier(const sds fichier, const sds liste_base_texte, cons
 		else
 		{
 			sscanf(capsule.descripteurs[i], "[%*d;%*d;%d]", &nbMotsRetenusC);
+			listeMotsC = (sds*) malloc(sizeof(sds)*nbMotsRetenusC);
 			listeMots(capsule.descripteurs[i], listeMotsC);
 			// parcours des resultats pour les comparer au descripteur courant dans la
 			// capsule
 			for(int j = 0; j < NB_RESULTAT_RECHERCHE; j++)
 			{
 				sscanf(resultats[j], "[%*d;%*d;%d]", &nbMotsRetenusR);
-				listeMots(resultats[j], listeMotsR); // SEGFAULT
+				listeMotsR = (sds*) malloc(sizeof(sds)*nbMotsRetenusR);
+				listeMots(resultats[j], listeMotsR);
 				if (motscmp(listeMotsC, listeMotsF, nbMotsRetenusC, nbMotsRetenusF) > motscmp(listeMotsR, listeMotsF, nbMotsRetenusR, nbMotsRetenusF))
 				{
 					resultats[j] = capsule.descripteurs[i]; // a ameliorer, peut supprimer un resultat plus pertinent qu un autre
 					break;
 				}
 				freeListeMots(nbMotsRetenusR, listeMotsR);
+				free(listeMotsR);
 			}
 			freeListeMots(nbMotsRetenusC, listeMotsC);
+			free(listeMotsC);
 		}
 	}
+	freeListeMots(nbMotsRetenusF, listeMotsF);
+	free(listeMotsF);
 	
 	// Le tableau des resultats contients les descripteurs des fichiers les plus
 	// similaires au fichiers recherche.
