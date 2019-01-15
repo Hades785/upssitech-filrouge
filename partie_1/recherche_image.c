@@ -79,9 +79,9 @@ sds * resultGenerator(unsigned int nbResMax,DescripteurImage ** tabDesc){
 
 float calcPoints(unsigned int couleurOrg,unsigned int couleurComp,float propOrg,float propComp,unsigned char nbBits){
 	unsigned int valDif = valDiff(couleurComp,couleurOrg,nbBits);
-	float factDiff = pow(DIVISEUR_PAR_BIT,valDif-nbBits);
+	float factDiff = pow(DIVISEUR_PAR_BIT,valDif);
 	float resp = (propOrg * propComp * NB_POINTS_SIM) / factDiff;
-	//printf("c1:%X\tc2:%X\tp1:%f\tp2:%f\tnb:%u\tdiff:%u\t\t%f\n",couleurOrg,couleurComp,propOrg,propComp,(unsigned int) nbBits,valDif,resp);
+	//printf("c1:%X\tc2:%X\tp1:%f\tp2:%f\tnb:%u\tdiff:%u\tfactDiff:%f\t\t%f\n",couleurOrg,couleurComp,propOrg,propComp,(unsigned int) nbBits,valDif,factDiff,resp);
 	return resp;
 }
 
@@ -90,7 +90,7 @@ unsigned int simpColor(unsigned int fullColor,unsigned char nbBits){
 	unsigned int r = (fullColor>>(2*8+8-nbBits))&mask;
 	unsigned int v = (fullColor>>(8+8-nbBits))&mask;
 	unsigned int b = (fullColor>>(8-nbBits))&mask;
-	return r<<(2*nbBits)+v<<(nbBits)+b;
+	return (r<<(2*nbBits))+(v<<(nbBits))+(b);
 }
 
 sds * recherche_image_col(const sds couleur,const Capsule caps,unsigned int nbResMax,unsigned char nbBits){
@@ -146,7 +146,7 @@ sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbRes
 		DescripteurImage * descIm = malloc(sizeof(DescripteurImage));
 		assert(descIm != NULL);
 		*descIm = decodeDescripteur(caps.descripteurs[i]);
-		printf("d:%s\n",descIm->cheminAbs);
+		//printf("d:%s\n",descIm->cheminAbs);
 		points = 0;
 		//pour chaque couleur de l'image de la base
 		for(unsigned int c = 0;c < descIm->nbCouleurs;c++){
