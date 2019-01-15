@@ -57,5 +57,7 @@ documents/
 # Descripteurs
 *.desc
 
-# KDevelop project
+# misc
 *.kdev4
+.directory
+.vscode
