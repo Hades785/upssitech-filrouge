@@ -39,11 +39,11 @@ testSaveDesc.out: testSaveDesc.c sauvegarde_descripteurs.h sds.h sauvegarde_desc
 	@gcc -o testSaveDesc.out testSaveDesc.o sauvegarde_descripteurs.o sds.o
 	./testSaveDesc.out
 
-test_indexation_audio.o: test_indexation_audio.c indexation_audio.h constantes.h sds.h
+test_indexation_audio.o: test_indexation_audio.c indexation_audio.h constantes.h sds.h sauvegarde_descripteurs.h
 	@gcc -c test_indexation_audio.c
 
-test_ia.out: test_indexation_audio.o indexation_audio.o sds.o
-	@gcc -o test_ia.out test_indexation_audio.o indexation_audio.o sds.o
+test_ia.out: test_indexation_audio.o indexation_audio.o sds.o sauvegarde_descripteurs.o
+	@gcc -o test_ia.out test_indexation_audio.o indexation_audio.o sds.o sauvegarde_descripteurs.o
 
 test_recherche_audio.o: test_recherche_audio.c recherche_audio.h indexation_audio.h constantes.h sds.h
 	@gcc -c test_recherche_audio.c
