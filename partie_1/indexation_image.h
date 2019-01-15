@@ -1,11 +1,7 @@
 #ifndef __INDEXATION_IMAGE__
 #define __INDEXATION_IMAGE__
 
-#include <stdlib.h>
-#include <stdio.h>
 #include "sds.h"
-#include <math.h>
-#include <assert.h>
 
 typedef struct{
 	unsigned char R,G,B;

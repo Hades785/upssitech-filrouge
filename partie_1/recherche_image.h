@@ -4,15 +4,15 @@
 #include "sds.h"
 #include "sauvegarde_descripteurs.h"
 
-#define NOIR			000000
-#define BLANC			111111
-#define ROUGE			110000
-#define VERT			001100
-#define BLEU			000011
-#define CYAN			001111
-#define MAGENTA			110011
-#define JAUNE			111100
-#define DEFAULT_COLOR	000000
+#define NOIR			0x000000
+#define BLANC			0xffffff
+#define ROUGE			0xff0000
+#define VERT			0x00ff00
+#define BLEU			0x0000ff
+#define CYAN			0x00ffff
+#define MAGENTA			0xff00ff
+#define JAUNE			0xffff00
+#define DEFAULT_COLOR	0x000000
 
 #define NOIR_T		"noir"
 #define BLANC_T		"blanc"
@@ -23,8 +23,8 @@
 #define MAGENTA_T	"magenta"
 #define JAUNE_T		"jaune"
 
-#define NB_POINTS_SIM 3
-#define DIVISEUR_PAR_BIT 3
+#define NB_POINTS_SIM 100000
+#define DIVISEUR_PAR_BIT 9
 //le tri se fait selon un calcul de points:
 //le calcul est base sur la somme [prop col x ob] * [prop col y ba] * NB_POINTS_SIM * (DIVISEUR_PAR_BIT ^ [nombre de bits de difference])
 //pour toute les combinaisons de x et y balayant les couleurs de chacun

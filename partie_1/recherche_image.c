@@ -1,8 +1,10 @@
 #include "recherche_image.h"
 #include "indexation_image.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <math.h>
 
 DescripteurImage decodeDescripteur(const sds descripteur){
 	char chemin[200];
@@ -30,6 +32,7 @@ DescripteurImage decodeDescripteur(const sds descripteur){
 //free tout les composants et la structure elle-meme
 void freeDescIm(DescripteurImage * descIm){
 	if(descIm != NULL){
+		//printf("free");getchar();
 		sdsfree(descIm->cheminAbs);
 		free(descIm->couleurs);
 		free(descIm->nbOcc);
@@ -42,7 +45,7 @@ unsigned int valDiff(unsigned int couleur1,unsigned int couleur2,unsigned char n
 	//on commence par decomposer les trois composantes
 	//on prepare les masques
 	//unsigned int = 32 bits   0xffffffff
-	unsigned int mask = 0xffffffff>>(32-nbBits);
+	unsigned int mask = 0xffffffff>>((sizeof(unsigned int)*8)-nbBits);
 	unsigned int r1 = couleur1>>(nbBits*2);
 	unsigned int r2 = couleur2>>(nbBits*2);
 	unsigned int v1 = (couleur1>>nbBits)&mask;
@@ -53,14 +56,15 @@ unsigned int valDiff(unsigned int couleur1,unsigned int couleur2,unsigned char n
 	if(r1 > r2) sum = r1-r2;
 	else sum = r2-r1;
 	if(v1 > v2) sum += v1-v2;
-	else sum = v2-v1;
-	if(b1 > b2) sum = b1-b2;
-	else sum = b2-b1;
+	else sum += v2-v1;
+	if(b1 > b2) sum += b1-b2;
+	else sum += b2-b1;
 	return sum;
 }
 
 sds * resultGenerator(unsigned int nbResMax,DescripteurImage ** tabDesc){
-	sds * tabRes = malloc(sizeof(sds*)*nbResMax);
+	sds * tabRes = malloc(sizeof(sds*)*(nbResMax+1));
+	//printf("pointeur genere: %p",tabRes);getchar();
 	assert(tabRes != NULL);
 	for(unsigned int i = 0;i < nbResMax;i++){
 		//pour chacun des resultats on extrait une copie du sds (car les originaux vont etre detruits)
@@ -69,26 +73,46 @@ sds * resultGenerator(unsigned int nbResMax,DescripteurImage ** tabDesc){
 		else
 			tabRes[i] = NULL;
 	}
+	tabRes[nbResMax] = NULL;
+	return tabRes;
+}
+
+float calcPoints(unsigned int couleurOrg,unsigned int couleurComp,float propOrg,float propComp,unsigned char nbBits){
+	unsigned int valDif = valDiff(couleurComp,couleurOrg,nbBits);
+	float factDiff = pow(DIVISEUR_PAR_BIT,valDif-nbBits);
+	float resp = (propOrg * propComp * NB_POINTS_SIM) / factDiff;
+	//printf("c1:%X\tc2:%X\tp1:%f\tp2:%f\tnb:%u\tdiff:%u\t\t%f\n",couleurOrg,couleurComp,propOrg,propComp,(unsigned int) nbBits,valDif,resp);
+	return resp;
+}
+
+unsigned int simpColor(unsigned int fullColor,unsigned char nbBits){
+	unsigned int mask = pow(2,nbBits)-1;
+	unsigned int r = (fullColor>>(2*8+8-nbBits))&mask;
+	unsigned int v = (fullColor>>(8+8-nbBits))&mask;
+	unsigned int b = (fullColor>>(8-nbBits))&mask;
+	return r<<(2*nbBits)+v<<(nbBits)+b;
 }
 
 sds * recherche_image_col(const sds couleur,const Capsule caps,unsigned int nbResMax,unsigned char nbBits){
-	if(strcmp(NOIR_T,couleur))
-		return recherche_image(NOIR,caps,nbResMax,nbBits);
-	if(strcmp(BLANC_T,couleur))
-		return recherche_image(BLANC,caps,nbResMax,nbBits);
-	if(strcmp(ROUGE_T,couleur))
-		return recherche_image(ROUGE,caps,nbResMax,nbBits);
-	if(strcmp(VERT_T,couleur))
-		return recherche_image(VERT,caps,nbResMax,nbBits);
-	if(strcmp(BLEU_T,couleur))
-		return recherche_image(BLEU,caps,nbResMax,nbBits);
-	if(strcmp(CYAN_T,couleur))
-		return recherche_image(CYAN,caps,nbResMax,nbBits);
-	if(strcmp(MAGENTA_T,couleur))
-		return recherche_image(MAGENTA,caps,nbResMax,nbBits);
-	if(strcmp(JAUNE_T,couleur))
-		return recherche_image(JAUNE,caps,nbResMax,nbBits);
-	return recherche_image(DEFAULT_COLOR,caps,nbResMax,nbBits);
+	
+	//printf("%s/%s",couleur,ROUGE_T);getchar();
+	if(strcmp(NOIR_T,couleur)==0)
+		return recherche_image(simpColor(NOIR,nbBits),caps,nbResMax,nbBits);
+	if(strcmp(BLANC_T,couleur)==0)
+		return recherche_image(simpColor(BLANC,nbBits),caps,nbResMax,nbBits);
+	if(strcmp(ROUGE_T,couleur)==0)
+		return recherche_image(simpColor(ROUGE,nbBits),caps,nbResMax,nbBits);
+	if(strcmp(VERT_T,couleur)==0)
+		return recherche_image(simpColor(VERT,nbBits),caps,nbResMax,nbBits);
+	if(strcmp(BLEU_T,couleur)==0)
+		return recherche_image(simpColor(BLEU,nbBits),caps,nbResMax,nbBits);
+	if(strcmp(CYAN_T,couleur)==0)
+		return recherche_image(simpColor(CYAN,nbBits),caps,nbResMax,nbBits);
+	if(strcmp(MAGENTA_T,couleur)==0)
+		return recherche_image(simpColor(MAGENTA,nbBits),caps,nbResMax,nbBits);
+	if(strcmp(JAUNE_T,couleur)==0)
+		return recherche_image(simpColor(JAUNE,nbBits),caps,nbResMax,nbBits);
+	return recherche_image(simpColor(DEFAULT_COLOR,nbBits),caps,nbResMax,nbBits);
 }
 
 sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbResMax,unsigned char nbBits){
@@ -97,10 +121,12 @@ sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbRes
 	//on prepare un tableau pour stocker les points du haut du classement
 	//(si un descripteur est en dessous c'est que suffisamment d'autres sont plus proches)
 	
+	//printf("color: %x\n",couleur);
+	
 	float * tabPoints = malloc(sizeof(float)*nbResMax);
 	
 	//et un tableau pour stocker les descripteurs decodes du top du classement (y faut bien savoir qui a gagne)
-	DescripteurImage ** tabDesc = malloc(sizeof(DescripteurImage*)*nbResMax);
+	DescripteurImage ** tabDesc = malloc(sizeof(DescripteurImage*)*(nbResMax+1));//+1 car on y met le NULL de fin de resultat
 	assert(tabPoints != NULL && tabDesc != NULL);
 	
 	for(unsigned int i = 0;i < nbResMax;i++){
@@ -112,21 +138,24 @@ sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbRes
 	//on fait le calcul du total de points pour pouvoir faire le classement en meme temps, et ainsi ne pas avoir a stocker un total par descripteur de la base.
 	
 	//pour chaque element de la base
-	unsigned int points;
+	float points;
 	for(unsigned int i = 0;i < caps.nbDescripteurs;i++){
 		//on en extrait le descripteur
-		DescripteurImage tempdes = decodeDescripteur(caps.descripteurs[i]);
-		DescripteurImage * descIm = &tempdes;
+		
+		//printf("element %u/%u",i,caps.nbDescripteurs-1);getchar();
+		DescripteurImage * descIm = malloc(sizeof(DescripteurImage));
+		assert(descIm != NULL);
+		*descIm = decodeDescripteur(caps.descripteurs[i]);
+		printf("d:%s\n",descIm->cheminAbs);
 		points = 0;
 		//pour chaque couleur de l'image de la base
 		for(unsigned int c = 0;c < descIm->nbCouleurs;c++){
 			//ici on compare directement a une couleur, donc on fait le meme calcul mais en considérant une image unie de la couleur donnee (100% de la couleur)
+			
 			float prop = descIm->nbOcc[c]/(float)descIm->nbPixels;
-			unsigned int valDif = valDiff(couleur,descIm->couleurs[c],nbBits);
-			float factDiff = pow(DIVISEUR_PAR_BIT,valDif);
-			points+= prop*NB_POINTS_SIM*factDiff;
+			points+= calcPoints(couleur,descIm->couleurs[c],1.00,prop,nbBits);
+			//printf("%u:%f\n",c,points);
 		}
-		
 		//on injecte ce resultat dans le classement
 		//pour cela on balaye le classement en descendant et en injectant
 		
@@ -143,18 +172,26 @@ sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbRes
 			}
 			//temp et tempd ne contiennent que des copies de pointeurs temporairement, donc pas de free (aucune memoire n'est allouee)
 		}
+		//printf("elem3");getchar();
 		freeDescIm(descIm);
+		//printf("elem4");getchar();
 		//points est un type primitif, donc pas de free
 	}
-	
 	//on a maintenant notre classement, reste a composer le resultat de recherche
 	sds * result = resultGenerator(nbResMax,tabDesc);
 	//on free tout ce bazar
+	
+	for(int i = 0;i < nbResMax && result[i] != NULL;i++){
+		printf("%f\t: %s\n",tabPoints[i],result[i]);
+	}
+	
 	for(unsigned int i = 0;i < nbResMax;i++){
 		freeDescIm(tabDesc[i]);
 	}
+	
 	free(tabDesc);
 	free(tabPoints);
+	//printf("Pointeur retourne: %p",result);getchar();
 	return result;
 }
 
@@ -196,9 +233,7 @@ sds * recherche_image_file(const sds fichier,const Capsule caps,unsigned int nbR
 			float prop = descIm->nbOcc[c]/(float)descIm->nbPixels;
 			//pour chaque couleur de la cible
 			for(unsigned int u = 0;u < cible.nbCouleurs;u++){
-				unsigned int valDif = valDiff(cible.couleurs[u],descIm->couleurs[c],nbBits);
-				float factDiff = pow(DIVISEUR_PAR_BIT,valDif);
-				points+= propCible[u] * prop * NB_POINTS_SIM * factDiff;
+				points+= calcPoints(cible.couleurs[u],descIm->couleurs[c],propCible[u],prop,nbBits);
 			}
 		}
 		

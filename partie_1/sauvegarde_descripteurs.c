@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "sauvegarde_descripteurs.h"
+#include "constantes.h"
 
 //la premiere ligne du fichier contient le nombre de descripteurs contenus
 //chaque ligne suivante contient un descripteur

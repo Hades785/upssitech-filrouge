@@ -1,5 +1,10 @@
 #include "indexation_image.h"
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <assert.h>
+
 unsigned int simplification(Pixel pixel,unsigned char nbBits){
 	unsigned char simpR,simpG,simpB;
 	unsigned char nbBitsD = (8-nbBits);

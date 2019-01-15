@@ -1,5 +1,6 @@
+#ifndef __SAUVEGARDEDESCRIPTEURS__
+#define __SAUVEGARDEDESCRIPTEURS__
 #include "sds.h"
-#include "constantes.h"
 
 #define TAILLE_BUF 1000//taille des blocs lus entre chaque malloc du string du descripteur (en gros si tu comprends pas touche pas)
 typedef struct{
@@ -83,3 +84,4 @@ unsigned char addElement(Capsule * caps,sds element);
  * @return le nombre de sds dans le tableau de la capsule
  */
 unsigned int nombreDescripteurs(const Capsule caps);
+#endif
