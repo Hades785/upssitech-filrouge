@@ -7,8 +7,11 @@
 #define NB_CHAR_FILENAME 50
 
 
-int get_files(char** files) {
-    char* cmd = "ls ../documents/audio/ | grep \\.txt";    
+int get_files(const sds path, char** files) {
+    sds cmd = sdsempty();
+    cmd = sdscat(cmd, "ls ");
+    cmd = sdscat(cmd, path);
+    cmd = sdscat(cmd, " | grep \\.txt");
     FILE* fp;
 
     if ((fp = popen(cmd, "r")) == NULL) {
@@ -19,6 +22,7 @@ int get_files(char** files) {
     int i = 0;
     while (!feof(fp)) {
         fscanf(fp, "%s", files[i]);
+        sdsupdatelen(files[i]);
         i++;
     }
 
@@ -27,22 +31,24 @@ int get_files(char** files) {
         return -1;
     }
 
+    sdsfree(cmd);
     return 0;
 }
 
 int main() {
+    sds path = sdsnew("../documents/audio/");
+
     // Recuperation des noms des fichiers a indexer
     int file_count = 0;
-    char** files = (char**) malloc(sizeof(char*)*NB_FILES);
+    sds* files = (sds*) malloc(sizeof(sds)*NB_FILES);
     for(int i = 0; i < NB_FILES; i++)
-        files[i] = (char*) malloc(sizeof(char)*NB_CHAR_FILENAME);
-    get_files(files);
+        files[i] = sdsnewlen("", NB_CHAR_FILENAME);
+    get_files(path, files);
     for(int i = 0; i < NB_FILES; i++)
         if(strcmp(files[i], "\0") != 0)
             file_count++;
 
     // Generation de la capsule dse descripteurs
-    sds path = sdsnew("../documents/audio/");
     char flag;
     Capsule capsule = newCapsule(&flag);
     if(flag == SUCCES)
@@ -52,8 +58,8 @@ int main() {
 
             printf("%s\n", tmp);
 
-            sds s = indexation_audio(path); //infinite loop....
-            // addElementCopy(&capsule, s);
+            sds s = indexation_audio(tmp);
+            addElementCopy(&capsule, s);
 
             sdsfree(s);
             sdsfree(tmp);
@@ -73,7 +79,7 @@ int main() {
     // sdsfree(s);
 
     for(int i = 0; i < NB_FILES; i++)
-        free(files[i]);
+        sdsfree(files[i]);
     free(files);
 
     sdsfree(path);
