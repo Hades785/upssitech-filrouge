@@ -63,12 +63,18 @@ test_recherche_image1.out: test_recherche_image1.c recherche_image.h recherche_i
 	@gcc -c test_recherche_image1.c
 	@gcc -o test_recherche_image1.out test_recherche_image1.o recherche_image.o indexation_image.o sds.o sauvegarde_descripteurs.o -lm
 	./test_recherche_image1.out
+	
+.PHONY:test_recherche_image2.out
+test_recherche_image2.out: test_recherche_image2.c recherche_image.h recherche_image.o indexation_image.o sds.h sds.o sauvegarde_descripteurs.h sauvegarde_descripteurs.o
+	@gcc -c test_recherche_image2.c
+	@gcc -o test_recherche_image2.out test_recherche_image2.o recherche_image.o indexation_image.o sds.o sauvegarde_descripteurs.o -lm
+	./test_recherche_image2.out
 
-.PHONY:test_points_recherche_image.out
-test_points_recherche_image.out: test_points_recherche_image.c recherche_image.h recherche_image.o indexation_image.o sds.h sds.o sauvegarde_descripteurs.h sauvegarde_descripteurs.o
-	@gcc -c test_points_recherche_image.c
-	@gcc -o test_points_recherche_image.out test_recherche_image1.o recherche_image.o indexation_image.o sds.o sauvegarde_descripteurs.o -lm
-	./test_points_recherche_image.out
+.PHONY:test_desc_gris.out
+test_desc_gris.out: test_desc_gris.c recherche_image.h recherche_image.o indexation_image.o sds.h sds.o sauvegarde_descripteurs.h sauvegarde_descripteurs.o
+	@gcc -c test_desc_gris.c
+	@gcc -o test_desc_gris.out test_desc_gris.o recherche_image.o indexation_image.o sds.o sauvegarde_descripteurs.o -lm
+	./test_desc_gris.out
 	
 .PHONY: clean
 clean:

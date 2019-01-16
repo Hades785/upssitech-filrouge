@@ -181,7 +181,7 @@ sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbRes
 	sds * result = resultGenerator(nbResMax,tabDesc);
 	//on free tout ce bazar
 	
-	for(int i = 0;i < nbResMax && result[i] != NULL;i++){
+	for(unsigned int i = 0;i < nbResMax && result[i] != NULL;i++){
 		printf("%f\t: %s\n",tabPoints[i],result[i]);
 	}
 	
@@ -198,7 +198,7 @@ sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbRes
 sds * recherche_image_file(const sds fichier,const Capsule caps,unsigned int nbResMax,unsigned char nbBits,unsigned int nbCouleursMax,float seuilMin){
 	
 	float * tabPoints = malloc(sizeof(float)*nbResMax);
-	DescripteurImage ** tabDesc = malloc(sizeof(DescripteurImage*)*nbResMax);
+	DescripteurImage ** tabDesc = malloc(sizeof(DescripteurImage*)*(nbResMax+1));
 	assert(tabPoints != NULL && tabDesc != NULL);
 	
 	for(unsigned int i = 0;i < nbResMax;i++){
@@ -220,11 +220,12 @@ sds * recherche_image_file(const sds fichier,const Capsule caps,unsigned int nbR
 	}
 	
 	//pour chaque element de la base
-	unsigned int points;
+	float points;
 	for(unsigned int i = 0;i < caps.nbDescripteurs;i++){
 		//on en extrait le descripteur
-		DescripteurImage tempdes = decodeDescripteur(caps.descripteurs[i]);
-		DescripteurImage * descIm = &tempdes;
+		DescripteurImage * descIm = malloc(sizeof(DescripteurImage));
+		assert(descIm != NULL);
+		*descIm = decodeDescripteur(caps.descripteurs[i]);
 		points = 0;
 		//pour chaque couleur de l'image de la base
 		for(unsigned int c = 0;c < descIm->nbCouleurs;c++){
@@ -236,8 +237,6 @@ sds * recherche_image_file(const sds fichier,const Capsule caps,unsigned int nbR
 				points+= calcPoints(cible.couleurs[u],descIm->couleurs[c],propCible[u],prop,nbBits);
 			}
 		}
-		
-		free(propCible);
 		
 		//on injecte ce resultat dans le classement
 		//pour cela on balaye le classement en descendant et en injectant
@@ -259,8 +258,15 @@ sds * recherche_image_file(const sds fichier,const Capsule caps,unsigned int nbR
 		//points est un type primitif, donc pas de free
 	}
 	
+	free(propCible);
+	
 	//on a maintenant notre classement, reste a composer le resultat de recherche
 	sds * result = resultGenerator(nbResMax,tabDesc);
+	
+	for(unsigned int i = 0;i < nbResMax && result[i] != NULL;i++){
+		printf("%f\t: %s\n",tabPoints[i],result[i]);
+	}
+	
 	//on free tout ce bazar
 	for(unsigned int i = 0;i < nbResMax;i++){
 		freeDescIm(tabDesc[i]);
