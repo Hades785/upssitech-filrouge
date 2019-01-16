@@ -56,3 +56,5 @@ documents/
 
 # misc
 *.kdev4
+MENU_prop.txt
+*.desc
