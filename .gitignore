@@ -54,7 +54,10 @@ dkms.conf
 # test documents
 documents/
 
-# misc
+# Descripteurs
+*.desc
+
+# KDevelop project
 *.kdev4
 MENU_prop.txt
 *.desc
