@@ -45,6 +45,12 @@ int main(){
 	for(unsigned int i = 0;i < caps.nbDescripteurs;i++){
 		printf("%u: %s\n",i,caps.descripteurs[i]);
 	}
+	printf("remove");getchar();
+	removeDescripteur(&caps,10);
+	printf("affichage2");getchar();
+	for(unsigned int i = 0;i < caps.nbDescripteurs;i++){
+		printf("%u: %s\n",i,caps.descripteurs[i]);
+	}
 	printf("free");getchar();
 	freeCapsule(caps);
 	printf("lecture");getchar();

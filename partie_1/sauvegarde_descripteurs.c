@@ -1,11 +1,11 @@
+#include "sauvegarde_descripteurs.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "sauvegarde_descripteurs.h"
 
 //la premiere ligne du fichier contient le nombre de descripteurs contenus
 //chaque ligne suivante contient un descripteur
-Capsule loadDescripteurs(unsigned char * successFlag,const sds fichierDescripteur){
+Capsule loadDescripteurs(unsigned char * successFlag,const char * fichierDescripteur){
 	FILE * fichier = fopen(fichierDescripteur,"r");
 	char buf[TAILLE_BUF];
 	Capsule caps;
@@ -84,7 +84,7 @@ Capsule loadDescripteurs(unsigned char * successFlag,const sds fichierDescripteu
 	return caps;
 }
 
-void saveDescripteurs(unsigned char * successFlag,const Capsule capsule,const sds fichierDescripteurs){
+void saveDescripteurs(unsigned char * successFlag,const Capsule capsule,const char * fichierDescripteurs){
 	FILE * fichier = fopen(fichierDescripteurs,"w");
 	if(fichier == NULL){
 		* successFlag = ECHEC;
@@ -132,8 +132,8 @@ unsigned char resetCapsule(Capsule * caps){
 	return ECHEC;
 }
 
-unsigned char addElementCopy(Capsule * caps,const sds element){
-	return addElement(caps,sdsdup(element));
+unsigned char addElementCopy(Capsule * caps,const char * element){
+	return addElement(caps,sdsnew(element));
 }
 
 unsigned char addElement(Capsule * caps,sds element){
@@ -153,4 +153,14 @@ unsigned char addElement(Capsule * caps,sds element){
 
 unsigned int nombreDescripteurs(const Capsule caps){
 	return caps.nbDescripteurs;
+}
+
+void removeDescripteur(Capsule * caps,unsigned int index){
+	if(index < caps->nbDescripteurs){
+		sdsfree(caps->descripteurs[index]);
+		for(unsigned int i = index;i < caps->nbDescripteurs-1;i++){
+			caps->descripteurs[i] = caps->descripteurs[i+1];
+		}
+		caps->nbDescripteurs--;
+	}
 }
