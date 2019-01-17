@@ -24,6 +24,12 @@ TabOcc newTabOcc();
 
 void triTabOcc(TabOcc * t);
 
+void freeTabOcc(TabOcc * t);
+
+unsigned char test_alpha(int lettre);
+
+int suppr_accent_et_maj(int lettre);
+
 TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal);
 
 /**
@@ -40,5 +46,7 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal);
 	//[id;nbMotsTotal;nbMotsRetenus][mot1:occ1;mot2:occ2;...]
  
 sds indexation_texte(const sds accesFichier, int valId);
+
+void table_index();
 
 #endif

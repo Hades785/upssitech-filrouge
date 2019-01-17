@@ -99,20 +99,50 @@ void freeTabOcc(TabOcc * t)
 	free(t->nbOcc);
 }
 
-unsigned char test_alpha(char lettre)
+unsigned char test_alpha(int lettre)
 {
-	if((lettre >= 'a' && lettre <= 'z') || (lettre >= 'A' && lettre <= 'Z')) // Si c'est une lettre "classique"
-		return 1;
-	else
+	//printf("%c", lettre);
+	
+	if((lettre >= 'a' && lettre <= 'z') || (lettre >= 'A' && lettre <= 'Z')
+		|| (lettre >= 192 && lettre <= 255)) // Si c'est une lettre
 	{
+		return 1;
+	}
+	else
+	{/*
 		char ch[2];
-		ch[0] = lettre;ch[1] = 0;
+		ch[0] = lettre;
+		ch[1] = 0;
 		
 		if(strstr(accents, ch) != NULL) // Si c'est une lettre accentuée
+		{
+			printf("trouvé !");
+			return 1;
+		}
+		else*/
 			return 0;
-		else
-			return 2;
 	}
+}
+
+int suppr_accent_et_maj(int lettre)
+{
+	if(lettre >= 'a' && lettre <= 'z') return lettre;
+	else if(lettre >= 'A' && lettre <= 'Z') return (lettre+32);
+	else if(lettre >= 192 && lettre <= 198) return ('a');
+	else if(lettre == 199 || lettre == 231) return ('c');
+	else if(lettre >= 200 && lettre <= 203) return ('e');
+	else if(lettre >= 204 && lettre <= 207) return ('i');
+	else if(lettre >= 210 && lettre <= 214) return ('o');
+	else if(lettre >= 217 && lettre <= 220) return ('u');
+	else if(lettre >= 224 && lettre <= 230) return ('a');
+	else if(lettre >= 232 && lettre <= 235) return ('e');
+	else if(lettre >= 236 && lettre <= 239) return ('i');
+	else if(lettre == 241) return ('n');
+	else if(lettre >= 242 && lettre <= 246) return ('o');
+	else if(lettre >= 249 && lettre <= 252) return ('u');
+	else if(lettre == 60) return ('<');
+	else if(lettre == 62) return ('>');
+	else return 32;
 }
 
 TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
@@ -127,14 +157,37 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 		TabOcc tabocc = newTabOcc();
 		
 		char tabMots[TAILLE_MAX_MOT];//tableau de char
+		int lettreInt = 0;
 		
 		do // Tant qu'on est pas arrivé à la fin du fichier
 		{
-			tabMots[0] = fgetc(fichier); // On lit le caractère
+			lettreInt = fgetc(fichier);
+			tabMots[0] = suppr_accent_et_maj(lettreInt);
 			
-			if(test_alpha(tabMots[0]) != 2) // Si c'est une lettre
+			//printf(" %d/%d ", lettreInt, tabMots[0]);
+			
+			if(test_alpha(lettreInt) == 1) // Si c'est une lettre
 			{
-				fscanf(fichier,"%30[äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒ'a-zA-Z]", &tabMots[test_alpha(tabMots[0])]);
+				//fscanf(fichier,"%30[äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒ'a-zA-Z]", &tabMots[1]);
+				
+				
+				int ct = 1;
+				while((ct < 30) && test_alpha(lettreInt) == 1)
+				{
+					lettreInt = fgetc(fichier);
+					tabMots[ct] = suppr_accent_et_maj(lettreInt);
+					
+					if(tabMots[ct] == '<')
+					{
+						fscanf(fichier, "%*[^>]"); // On va jusqu'à la fin de la balise
+						fgetc(fichier);
+						break;
+					}
+					
+					ct++;
+				}
+				tabMots[ct] = 0;
+				
 				
 				if(tabMots[1] == '\'')
 					motActuel = sdsnew(&tabMots[2]);
@@ -142,7 +195,7 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 					motActuel = sdsnew(tabMots);
 				
 				
-				if(sdslen(motActuel)>=TAILLE_MIN_MOT && strstr(exclusions,motActuel) == NULL)
+				if((int)sdslen(motActuel)-1>=TAILLE_MIN_MOT && strstr(exclusions,motActuel) == NULL)
 					ajout_mot(&tabocc, motActuel);
 				else
 					sdsfree(motActuel);
@@ -160,13 +213,13 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 				}
 			}
 		}
-		while (tabMots[0] != EOF); // fin de fichier
+		while (lettreInt != EOF); // fin de fichier
 		fclose(fichier);
 		return tabocc;
     }
 	else
 	{
-		printf("On a pas pu ouvrir le fichier"); getchar();
+		printf("Impossible d'ouvrir le fichier"); getchar();
 		
 		TabOcc tabocc = newTabOcc();
 		return tabocc;
@@ -215,3 +268,34 @@ sds indexation_texte(const sds accesFichier,int valId)
 	freeTabOcc(&desc);
 	return resp;
 }
+
+void table_index()
+{
+	// sds tous_les_desc = ...; obtenir l'ensemble des desc en lisant le bon fichier
+	
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
