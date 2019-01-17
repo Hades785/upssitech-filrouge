@@ -4,8 +4,16 @@
 #include <string.h>
 #include "constantes.h"
 
+sds getPath(){
+	sds s = sdsnew(getenv("HOME"));
+	s = sdscat(s,CONFIG_FILE_PATH);
+	return s;
+}
+
 unsigned char config_file_exists(){
-	FILE * fichier = fopen(CONFIG_FILE_PATH,"r");
+	sds s = getPath();
+	FILE * fichier = fopen(s,"r");
+	sdsfree(s);
 	if(fichier != NULL){
 		fclose(fichier);
 		return 1;
@@ -15,21 +23,32 @@ unsigned char config_file_exists(){
 
 ConfMap newConfMap(unsigned char * success_flag){
 	ConfMap map;
-	map.keys = newCapsule(success_flag);
-	map.values = newCapsule(success_flag);
+	map.keys = malloc(sizeof(Capsule));
+	if(map.keys == NULL){
+		*success_flag = ECHEC;
+		return map;
+	}
+	map.values = malloc(sizeof(Capsule));
+	if(map.values == NULL){
+		*success_flag = ECHEC;
+		free(map.keys);
+		return map;
+	}
+	*map.keys = newCapsule(success_flag);
+	*map.values = newCapsule(success_flag);
 	return map;
 }
 
 ConfMap read_config_file(unsigned char * success_flag){
-	Capsule caps = loadDescripteurs(flag,CONFIG_FILE_PATH);
-	ConfMap map;
-	map.keys = newCapsule(success_flag);
-	map.values = newCapsule(success_flag);
-	if(success_flag == ECHEC)
+	sds s = getPath();
+	Capsule caps = loadDescripteurs(success_flag,s);
+	sdsfree(s);
+	ConfMap map = newConfMap(success_flag);
+	if(*success_flag == ECHEC)
 		return map;
 	for(unsigned int i = 0;i < caps.nbDescripteurs;i++){
 		char * pt = strchr(caps.descripteurs[i],':');
-		*success_flag = addElement(map.keys, sdscpylen(caps.descripteurs[i],pt-caps.descripteurs[i]));
+		*success_flag = addElement(map.keys, sdscpylen(sdsempty(),caps.descripteurs[i],pt-caps.descripteurs[i]));
 		*success_flag = addElement(map.values, sdsnew(pt+1));
 	}
 	freeCapsule(caps);
@@ -42,15 +61,20 @@ unsigned char save_config_file(ConfMap map){
 	for(unsigned int i = 0;i < map.keys->nbDescripteurs;i++){
 		sds s = sdsdup(map.keys->descripteurs[i]);
 		s = sdscat(s,":");
-		flag = caps.addElement(sdscat(s,map.values->descripteurs[i]));
+		flag = addElement(&caps,sdscat(s,map.values->descripteurs[i]));
 	}
-	saveDescripteurs(&flag,caps,CONFIG_FILE_PATH);
+	sds s = getPath();
+	saveDescripteurs(&flag,caps,s);
+	sdsfree(s);
+	if(flag == ECHEC)
+		printf("Echec acces fichier\n");
 	freeCapsule(caps);
+	return flag;
 }
 
 void freeConfMap(ConfMap map){
-	freeCapsule(map.keys);
-	freeCapsule(map.values);
+	freeCapsule(*map.keys);
+	freeCapsule(*map.values);
 }
 
 long keyExists(ConfMap * map,const char * key){
@@ -66,7 +90,7 @@ sds getConfigValue(ConfMap * map,const char * key){
 	long pos = keyExists(map,key);
 	if(pos == -1)
 		return NULL;
-	return sdsdup(map>values->descripteurs[pos]);
+	return sdsdup(map->values->descripteurs[pos]);
 }
 
 long getConfigValueLong(ConfMap * map,const char * key,unsigned char * success_flag){
@@ -76,7 +100,7 @@ long getConfigValueLong(ConfMap * map,const char * key,unsigned char * success_f
 		return 0;
 	}
 	long resp;
-	sscanf(s,"%l",&resp);
+	sscanf(s,"%ld",&resp);
 	sdsfree(s);
 	return resp;
 }
@@ -95,22 +119,22 @@ float getConfigValueFloat(ConfMap * map,const char * key,unsigned char * success
 
 unsigned char addValue(ConfMap * map,const char * key,const char * value){
 	unsigned char flag;
-	addElement(map->keys,sdsnew(key),&flag);
-	addElement(map->values,sdsnew(value),&flag);
+	flag = addElement(map->keys,sdsnew(key));
+	flag = addElement(map->values,sdsnew(value));
 	return flag;
 }
 
 unsigned char addValueLong(ConfMap * map,const char * key,long value){
 	unsigned char flag;
-	addElement(map->keys,sdsnew(key),&flag);
-	addElement(map->values,sdsfromlonglong(value),&flag);
+	flag = addElement(map->keys,sdsnew(key));
+	flag = addElement(map->values,sdsfromlonglong(value));
 	return flag;
 }
 
 unsigned char addValueFloat(ConfMap * map,const char * key,float value){
 	unsigned char flag;
-	addElement(map->keys,sdsnew(key),&flag);
-	addElement(map->values,sdscatprintf(sdsempty(),"%f",value),&flag);
+	flag = addElement(map->keys,sdsnew(key));
+	flag = addElement(map->values,sdscatprintf(sdsempty(),"%f",value));
 	return flag;
 }
 
