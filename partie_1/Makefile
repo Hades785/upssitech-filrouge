@@ -34,11 +34,20 @@ sds.o: sds.c sds.h sdsalloc.h
 sauvegarde_descripteurs.o: sauvegarde_descripteurs.c sauvegarde_descripteurs.h sds.h
 	@gcc -c sauvegarde_descripteurs.c
 	
+config_reader.o: config_reader.c config_reader.h sds.h sauvegarde_descripteurs.h constantes.h
+	@gcc -c config_reader.c
+	
 .PHONY: testSaveDesc.out
 testSaveDesc.out: testSaveDesc.c sauvegarde_descripteurs.h sds.h sauvegarde_descripteurs.o sds.o
 	@gcc -c testSaveDesc.c
 	@gcc -o testSaveDesc.out testSaveDesc.o sauvegarde_descripteurs.o sds.o
 	./testSaveDesc.out
+	
+.PHONY: testConfigFile.out
+testConfigFile.out: testConfigFile.c sauvegarde_descripteurs.h sds.h config_reader.h config_reader.o sauvegarde_descripteurs.o sds.o
+	@gcc -c testConfigFile.c
+	@gcc -o testConfigFile.out testConfigFile.o sauvegarde_descripteurs.o sds.o config_reader.o
+	./testConfigFile.out
 
 .PHONY: tstCreateDescripteurImage.out
 tstCreateDescripteurImage.out: tstCreateDescripteurImage.c indexation_image.h sds.h indexation_image.o sds.o

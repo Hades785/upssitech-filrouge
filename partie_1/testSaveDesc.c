@@ -39,9 +39,17 @@ int main(){
 	addElement(&caps,s);
 	printf("pointeur2:%p\n",caps.descripteurs);
 	
+	//freeCapsule(caps);
+	
 	printf("sauvegarde");getchar();
 	saveDescripteurs(&flag,caps,"fTestDesc1.desc");
 	printf("affichage1");getchar();
+	for(unsigned int i = 0;i < caps.nbDescripteurs;i++){
+		printf("%u: %s\n",i,caps.descripteurs[i]);
+	}
+	printf("remove");getchar();
+	removeDescripteur(&caps,10);
+	printf("affichage2");getchar();
 	for(unsigned int i = 0;i < caps.nbDescripteurs;i++){
 		printf("%u: %s\n",i,caps.descripteurs[i]);
 	}
@@ -55,5 +63,6 @@ int main(){
 	for(unsigned int i = 0;i < caps.nbDescripteurs;i++){
 		printf("%u: %s\n",i,caps.descripteurs[i]);
 	}
+	freeCapsule(caps);
 	return 0;
 }
