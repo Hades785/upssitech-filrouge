@@ -14,7 +14,7 @@ int main(){
 		assert(flag != ECHEC);
 	}else{
 		printf("it doesnt exists\n");
-		ConfMap map = newConfMap(&flag);
+		map = newConfMap(&flag);
 		assert(flag != ECHEC);
 	}
 	if(keyPosition(&map,"bonjour") == -1)

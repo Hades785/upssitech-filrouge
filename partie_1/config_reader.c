@@ -73,6 +73,8 @@ unsigned char save_config_file(ConfMap map){
 void freeConfMap(ConfMap map){
 	freeCapsule(*map.keys);
 	freeCapsule(*map.values);
+	free(map.values);
+	free(map.keys);
 }
 
 long keyPosition(ConfMap * map,const char * key){
