@@ -160,7 +160,7 @@ unsigned int nombreDescripteurs(const Capsule caps){
 void removeDescripteur(Capsule * caps,unsigned int index){
 	if(index < caps->nbDescripteurs){
 		sdsfree(caps->descripteurs[index]);
-		for(unsigned int i = index;i < caps->nbDescripteurs-1;i++){
+		for(unsigned int i = index;i < (caps->nbDescripteurs-1);i++){
 			caps->descripteurs[i] = caps->descripteurs[i+1];
 		}
 		caps->nbDescripteurs--;
