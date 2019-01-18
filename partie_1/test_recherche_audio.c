@@ -1,9 +1,11 @@
 #include "recherche_audio.h"
 
 int main() {
-    sds path = sdsnew("/home/fuzuki/UPSSITECH/code/upssitech-filrouge/documents/audio/jingle_fi.txt");
+    sds path_f = sdsnew("../documents/audio/jingle_fi.txt");
+    sds path_b = sdsnew("../documents/audio/test.desc");
 
-    recherche_audio(path);
+    recherche_audio(path_f, path_b);
 
-    sdsfree(path);
+    sdsfree(path_b);
+    sdsfree(path_f);
 }

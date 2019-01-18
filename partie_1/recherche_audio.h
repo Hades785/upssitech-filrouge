@@ -14,6 +14,6 @@
  * @param  chemin_fichier  Chemin vers le fichier "jingle"
  * @return PLACEHOLDER
  */
-void recherche_audio(sds const chemin_fichier);
+void recherche_audio(sds const chemin_fichier, const sds chemin_base);
 
 #endif

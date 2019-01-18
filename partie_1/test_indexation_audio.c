@@ -35,6 +35,7 @@ int get_files(const sds path, char** files) {
     return 0;
 }
 
+// ALL MEM FREED! NO MEM LEAK!
 int main() {
     sds path = sdsnew("../documents/audio/");
 
@@ -58,25 +59,18 @@ int main() {
 
             printf("%s\n", tmp);
 
-            sds s = indexation_audio(tmp);
+            sds s = sdsdup(files[i]);
+            sds t = indexation_audio(tmp);
+            s = sdscat(s, ";");
+            s = sdscat(s, t);
             addElementCopy(&capsule, s);
 
+            sdsfree(t);
             sdsfree(s);
             sdsfree(tmp);
         }
+    saveDescripteurs(&flag, capsule, "../documents/audio/test.desc");
     freeCapsule(capsule);
-
-    // sds s = indexation_audio(path);
-
-    // // Log file
-    // FILE* log = fopen("/home/fuzuki/UPSSITECH/code/upssitech-filrouge/documents/audio/log", "w");
-
-    // fprintf(log, "%s", s);
-
-    // // Close log file
-    // fclose(log);
-
-    // sdsfree(s);
 
     for(int i = 0; i < NB_FILES; i++)
         sdsfree(files[i]);
