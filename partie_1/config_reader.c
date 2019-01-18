@@ -66,8 +66,6 @@ unsigned char save_config_file(ConfMap map){
 	sds s = getPath();
 	saveDescripteurs(&flag,caps,s);
 	sdsfree(s);
-	if(flag == ECHEC)
-		printf("Echec acces fichier\n");
 	freeCapsule(caps);
 	return flag;
 }
@@ -77,7 +75,7 @@ void freeConfMap(ConfMap map){
 	freeCapsule(*map.values);
 }
 
-long keyExists(ConfMap * map,const char * key){
+long keyPosition(ConfMap * map,const char * key){
 	for(unsigned int i = 0;i < map->keys->nbDescripteurs;i++){
 		if(strcmp(map->keys->descripteurs[i],key) == 0){
 			return (long)i;
@@ -87,7 +85,7 @@ long keyExists(ConfMap * map,const char * key){
 }
 
 sds getConfigValue(ConfMap * map,const char * key){
-	long pos = keyExists(map,key);
+	long pos = keyPosition(map,key);
 	if(pos == -1)
 		return NULL;
 	return sdsdup(map->values->descripteurs[pos]);
@@ -118,28 +116,58 @@ float getConfigValueFloat(ConfMap * map,const char * key,unsigned char * success
 }
 
 unsigned char addValue(ConfMap * map,const char * key,const char * value){
-	unsigned char flag;
-	flag = addElement(map->keys,sdsnew(key));
-	flag = addElement(map->values,sdsnew(value));
+	unsigned char flag = ECHEC;
+	if(keyPosition(map,key) == -1){
+		sds s = sdsnew(key);
+		flag = addElement(map->keys,s);
+		if(flag == ECHEC){
+			sdsfree(s);
+			return ECHEC;
+		}
+		s = sdsnew(value);
+		flag = addElement(map->values,s);
+		if(flag == ECHEC)
+			sdsfree(s);
+	}
 	return flag;
 }
 
 unsigned char addValueLong(ConfMap * map,const char * key,long value){
-	unsigned char flag;
-	flag = addElement(map->keys,sdsnew(key));
-	flag = addElement(map->values,sdsfromlonglong(value));
+	unsigned char flag = ECHEC;
+	if(keyPosition(map,key) == -1){
+		sds s = sdsnew(key);
+		flag = addElement(map->keys,s);
+		if(flag == ECHEC){
+			sdsfree(s);
+			return ECHEC;
+		}
+		s = sdsfromlonglong(value);
+		flag = addElement(map->values,s);
+		if(flag == ECHEC)
+			sdsfree(s);
+	}
 	return flag;
 }
 
 unsigned char addValueFloat(ConfMap * map,const char * key,float value){
-	unsigned char flag;
-	flag = addElement(map->keys,sdsnew(key));
-	flag = addElement(map->values,sdscatprintf(sdsempty(),"%f",value));
+	unsigned char flag = ECHEC;
+	if(keyPosition(map,key) == -1){
+		sds s = sdsnew(key);
+		flag = addElement(map->keys,s);
+		if(flag == ECHEC){
+			sdsfree(s);
+			return ECHEC;
+		}
+		s = sdscatprintf(sdsempty(),"%f",value);
+		flag = addElement(map->values,s);
+		if(flag == ECHEC)
+			sdsfree(s);
+	}
 	return flag;
 }
 
 unsigned char removeValue(ConfMap * map,const char * key){
-	long pos = keyExists(map,key);
+	long pos = keyPosition(map,key);
 	if(pos == -1) return ECHEC;
 	removeDescripteur(map->keys,pos);
 	removeDescripteur(map->values,pos);
@@ -147,7 +175,7 @@ unsigned char removeValue(ConfMap * map,const char * key){
 }
 
 unsigned char changeValue(ConfMap * map,const char * key,const char * newValue){
-	long pos = keyExists(map,key);
+	long pos = keyPosition(map,key);
 	if(pos == -1) return ECHEC;
 	sdsfree(map->values->descripteurs[pos]);
 	map->values->descripteurs[pos] = sdsnew(newValue);

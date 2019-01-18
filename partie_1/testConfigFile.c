@@ -17,11 +17,19 @@ int main(){
 		ConfMap map = newConfMap(&flag);
 		assert(flag != ECHEC);
 	}
-	addValue(&map,"bonjour","aussi");
-	
+	if(keyPosition(&map,"bonjour") == -1)
+		printf("clef n'existe pas\n");
+	flag = addValue(&map,"bonjour","aussi");
+	if(flag == ECHEC){
+		printf("echec add value\n");
+	}
+	printf("lecture");getchar();
 	sds s = getConfigValue(&map,"bonjour");
-	printf("%s\n",s);
-	sdsfree(s);
+	if(s != NULL){
+		printf("%s\n",s);
+		sdsfree(s);
+	}
+	printf("sauvegarde");getchar();
 	flag = save_config_file(map);
 	assert(flag != ECHEC);
 	freeConfMap(map);
