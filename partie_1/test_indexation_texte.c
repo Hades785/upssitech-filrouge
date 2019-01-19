@@ -5,7 +5,9 @@
 
 int main()
 {
-	sds s = indexation_texte("../documents/texte/10-Le_cyclone_Katrina_complique_le.xml",42);
-	printf("\n%s\n",s);
+	//sds s = indexation_texte("../documents/texte/10-Le_cyclone_Katrina_complique_le.xml",42);
+	//printf("\n%s\n",s);
+	
+	gestion_descripteur_texte();
 	return 0;
 }

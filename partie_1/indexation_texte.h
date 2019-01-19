@@ -47,6 +47,6 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal);
  
 sds indexation_texte(const sds accesFichier, int valId);
 
-void table_index();
+void gestion_descripteur_texte();
 
 #endif

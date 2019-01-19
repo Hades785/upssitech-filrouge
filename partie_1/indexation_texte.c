@@ -6,6 +6,7 @@
 #include <string.h>
 #include "constantes.h"
 #include <assert.h>
+#include "sauvegarde_descripteurs.h"
 
 void afficher_tabocc(TabOcc t)
 {
@@ -145,6 +146,49 @@ int suppr_accent_et_maj(int lettre)
 	else return 32;
 }
 
+
+
+void ajout_dans_table_index(Capsule capsule, const sds mot, const unsigned int numFichier)
+{
+	unsigned int ct = 1;
+	unsigned char motPresent = 0;
+	
+	while(ct < capsule.nbDescripteurs && !motPresent)
+	{
+		sds s = capsule.descripteurs[ct];
+		unsigned int ct2 = 1;
+		
+		motPresent = 1;
+		
+		while(s[ct2]!=';' && ct2<=(int)sdslen(mot))
+		{
+			if(s[ct2] != mot[ct2-1]) // Si il y a la moindre lettre de différence
+				motPresent = 0;
+			
+			if(s[ct2+1]==';' && ct2!=(int)sdslen(mot))
+				motPresent = 0;
+			
+			if(s[ct2+1]!=';' && ct2==(int)sdslen(mot))
+				motPresent = 0;
+			
+			ct2++;
+		}
+		
+		unsigned char num = numFichier + 0x30;
+		
+		if(motPresent)
+		{
+			
+		}
+		else
+			addElement(&capsule, mot + ';' + num + ); //TODO
+		
+		ct++;
+	}
+}
+
+
+
 TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 {
 	FILE* fichier;
@@ -159,6 +203,13 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 		char tabMots[TAILLE_MAX_MOT];//tableau de char
 		int lettreInt = 0;
 		
+		
+		
+		unsigned char successFlag;
+		Capsule table_index = loadDescripteurs(&successFlag, "table_index_texte.txt");
+		
+		
+		
 		do // Tant qu'on est pas arrivé à la fin du fichier
 		{
 			lettreInt = fgetc(fichier);
@@ -169,7 +220,6 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 			if(test_alpha(lettreInt) == 1) // Si c'est une lettre
 			{
 				//fscanf(fichier,"%30[äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒ'a-zA-Z]", &tabMots[1]);
-				
 				
 				int ct = 1;
 				while((ct < 30) && test_alpha(lettreInt) == 1)
@@ -269,11 +319,23 @@ sds indexation_texte(const sds accesFichier,int valId)
 	return resp;
 }
 
-void table_index()
+void gestion_descripteur_texte()
 {
-	// sds tous_les_desc = ...; obtenir l'ensemble des desc en lisant le bon fichier
+	unsigned char successFlag;
+	Capsule cap = newCapsule(&successFlag);
+	Capsule cap_liste = newCapsule(&successFlag);
 	
+	addElement(&cap, indexation_texte("../documents/texte/05-Photographie___Philip_Blenkinsop_a.xml", 0));
+	addElement(&cap_liste, "../documents/texte/05-Photographie___Philip_Blenkinsop_a.xml :0;");
 	
+	addElement(&cap, indexation_texte("../documents/texte/05-Rock___l_Illinois_magique_de.xml", 1));
+	addElement(&cap_liste, "../documents/texte/05-Rock___l_Illinois_magique_de.xml :1;");
+	
+	addElement(&cap, indexation_texte("../documents/texte/06-US_Open___Mauresmo_et.xml", 2));
+	addElement(&cap_liste, "../documents/texte/06-US_Open___Mauresmo_et.xml :2;");
+	
+	saveDescripteurs(&successFlag, cap, "base_descripteur_texte.txt");
+	saveDescripteurs(&successFlag, cap_liste, "liste_base_texte.txt");
 }
 
 
