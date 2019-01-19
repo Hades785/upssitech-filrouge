@@ -17,7 +17,7 @@ void afficher_tabocc(TabOcc t)
 	printf("\n");
 }
 
-long position_mot_dans_tabocc(TabOcc t, sds mot)
+long position_mot_dans_tabocc(TabOcc t, const char * mot)
 {
 	for(unsigned int i = 0;i < t.nbEle;i++){
 		if(strcmp(t.mots[i], mot) == 0)
@@ -26,7 +26,7 @@ long position_mot_dans_tabocc(TabOcc t, sds mot)
 	return -1;
 }
 
-void addMotStrict(TabOcc *t, sds mot,unsigned int nbOccur){
+void addMotStrict(TabOcc *t,const char * mot,unsigned int nbOccur){
 	if(t->nbEle == t->size)
 	{
 		sds * newTabS = malloc(sizeof(sds)*(t->size+20));
@@ -40,12 +40,12 @@ void addMotStrict(TabOcc *t, sds mot,unsigned int nbOccur){
 		t->mots = newTabS;
 		t->nbOcc = newTabU;
 	}
-	t->mots[t->nbEle] = mot;
+	t->mots[t->nbEle] = sdsnew(mot);
 	t->nbOcc[t->nbEle] = nbOccur;
 	t->nbEle++;
 }
 
-void ajout_mot(TabOcc *t, sds mot)
+void ajout_mot(TabOcc *t, const char * mot)
 {
 	long pos = position_mot_dans_tabocc(*t,mot);
 	if(pos == -1)
@@ -189,7 +189,7 @@ void ajout_dans_table_index(Capsule capsule, const sds mot, const unsigned int n
 
 
 
-TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
+TabOcc lecture_fichier(const char * accesFichier, unsigned int * nbMotsTotal)
 {
 	FILE* fichier;
 
@@ -292,9 +292,9 @@ sds renvoie_descripteur(TabOcc tabTrie,int id,unsigned int nbMotsTotal)
 {
 	sds s = sdsempty();
 	//unsigned int nbMotsRetenus = totalOccurences(tabTrie);
-
+	//[id;nbMotsTotal;nbMotsRetenus][mot1:occ1;mot2:occ2;...]
 	s = sdscatprintf(s,"[%d;%u;%u][",id,nbMotsTotal,tabTrie.nbEle);
-
+	
 	for(unsigned int i = 0;i < tabTrie.nbEle;i++)
 	{
 		s = sdscatprintf(s,"%s:%u",tabTrie.mots[i],tabTrie.nbOcc[i]);
@@ -308,7 +308,28 @@ sds renvoie_descripteur(TabOcc tabTrie,int id,unsigned int nbMotsTotal)
 	return s;
 }
 
-sds indexation_texte(const sds accesFichier,int valId)
+TabOcc decode_descripteur(const char * descripteur, int * idFichier){
+	//[id;nbMotsTotal;nbMotsRetenus][mot1:occ1;mot2:occ2;...]
+	TabOcc tab = newTabOcc();
+	unsigned int nbMotsRetenus;
+	sscanf(descripteur,"[%d;%*u;%u",idFichier,&nbMotsRetenus);
+	char * debutNb = strchr(descripteur+1,'[');//+1 pour eviter celui de l'en tete
+	assert(debutNb != NULL);
+	char mot[30];
+	unsigned int nbOcc;
+	for(unsigned int i = 0;i < nbMotsRetenus;i++){
+		debutNb++;
+		sscanf(debutNb,"%30[^ :] :%u",mot,&nbOcc);
+		addMotStrict(&tab,mot,nbOcc);
+		if(i < nbMotsRetenus-1){
+			debutNb = strchr(debutNb,';');
+			assert(debutNb != NULL);
+		}
+	}
+	return tab;
+}
+
+sds indexation_texte(const char * accesFichier,int valId)
 {
 	unsigned int nbMotsTotal;
 	TabOcc fichier = lecture_fichier(accesFichier, &nbMotsTotal);
