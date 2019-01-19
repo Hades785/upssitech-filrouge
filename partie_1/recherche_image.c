@@ -126,7 +126,7 @@ sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbRes
 	float * tabPoints = malloc(sizeof(float)*nbResMax);
 	
 	//et un tableau pour stocker les descripteurs decodes du top du classement (y faut bien savoir qui a gagne)
-	DescripteurImage ** tabDesc = malloc(sizeof(DescripteurImage*)*(nbResMax+1));//+1 car on y met le NULL de fin de resultat
+	DescripteurImage ** tabDesc = malloc(sizeof(DescripteurImage*)*nbResMax);
 	assert(tabPoints != NULL && tabDesc != NULL);
 	
 	for(unsigned int i = 0;i < nbResMax;i++){
@@ -181,9 +181,9 @@ sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbRes
 	sds * result = resultGenerator(nbResMax,tabDesc);
 	//on free tout ce bazar
 	
-	for(unsigned int i = 0;i < nbResMax && result[i] != NULL;i++){
+	/*for(unsigned int i = 0;i < nbResMax && result[i] != NULL;i++){
 		printf("%f\t: %s\n",tabPoints[i],result[i]);
-	}
+	}*/
 	
 	for(unsigned int i = 0;i < nbResMax;i++){
 		freeDescIm(tabDesc[i]);
@@ -198,7 +198,7 @@ sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbRes
 sds * recherche_image_file(const char * fichier,const Capsule caps,unsigned int nbResMax,unsigned char nbBits,unsigned int nbCouleursMax,float seuilMin){
 	
 	float * tabPoints = malloc(sizeof(float)*nbResMax);
-	DescripteurImage ** tabDesc = malloc(sizeof(DescripteurImage*)*(nbResMax+1));
+	DescripteurImage ** tabDesc = malloc(sizeof(DescripteurImage*)*nbResMax);
 	assert(tabPoints != NULL && tabDesc != NULL);
 	
 	for(unsigned int i = 0;i < nbResMax;i++){
@@ -209,7 +209,9 @@ sds * recherche_image_file(const char * fichier,const Capsule caps,unsigned int 
 	//on cree le descripteur de l'image donnee
 	DescripteurImage * cible = malloc(sizeof(DescripteurImage));
 	assert(cible != NULL);
-	*cible = decodeDescripteur(indexation_image(fichier,nbCouleursMax,seuilMin,0,nbBits));
+	sds s = indexation_image(fichier,nbCouleursMax,seuilMin,0,nbBits);
+	*cible = decodeDescripteur(s);
+	sdsfree(s);
 	
 	//on fait le calcul du total de points pour pouvoir faire le classement en meme temps, et ainsi ne pas avoir a stocker un total par descripteur de la base.
 	
@@ -265,9 +267,9 @@ sds * recherche_image_file(const char * fichier,const Capsule caps,unsigned int 
 	//on a maintenant notre classement, reste a composer le resultat de recherche
 	sds * result = resultGenerator(nbResMax,tabDesc);
 	
-	for(unsigned int i = 0;i < nbResMax && result[i] != NULL;i++){
+	/*for(unsigned int i = 0;i < nbResMax && result[i] != NULL;i++){
 		printf("%f\t: %s\n",tabPoints[i],result[i]);
-	}
+	}*/
 	
 	//on free tout ce bazar
 	for(unsigned int i = 0;i < nbResMax;i++){
