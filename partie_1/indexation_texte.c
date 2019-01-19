@@ -213,14 +213,7 @@ Capsule genere_table(Capsule caps)
 		
 		for(unsigned int ct = 0 ; ct < tabocc.nbEle ; ct++)
 		{
-			long result = keyPosition(&map_tempo, tabocc.mot[ct]);
-			
-			if(result == -1){
-				addValue(&map_tempo, tabocc.mot[ct], id+':'+tabocc.nbOcc[ct]);
-			}
-			else{
-				
-			}
+			postValue(&map_tempo, tabocc.mot[ct], sdsfromlonglong(id)+':'+sdsfromlonglong(tabocc.nbOcc[ct]));
 		}
 		
 		freeTabOcc(&tabocc);
