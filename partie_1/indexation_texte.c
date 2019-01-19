@@ -95,6 +95,9 @@ void triTabOcc(TabOcc * t){
 
 void freeTabOcc(TabOcc * t)
 {
+	for(unsigned int i = 0;i < nbEle;i++){
+		sdsfree(t->mots[i]);
+	}
 	free(t->mots);
 	free(t->nbOcc);
 }
