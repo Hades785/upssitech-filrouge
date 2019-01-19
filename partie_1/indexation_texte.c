@@ -7,6 +7,7 @@
 #include "constantes.h"
 #include <assert.h>
 #include "sauvegarde_descripteurs.h"
+#include "config_reader.h"
 
 void afficher_tabocc(TabOcc t)
 {
@@ -147,7 +148,7 @@ int suppr_accent_et_maj(int lettre)
 }
 
 
-
+/*
 void ajout_dans_table_index(Capsule capsule, const sds mot, const unsigned int numFichier)
 {
 	unsigned int ct = 1;
@@ -186,7 +187,47 @@ void ajout_dans_table_index(Capsule capsule, const sds mot, const unsigned int n
 		ct++;
 	}
 }
+*/
 
+
+Capsule genere_table(Capsule caps)
+{
+	/*
+	[declaration confmap]
+	[remplissage confmap]
+	[declaration capsule]
+	[transfert map -> caspule]
+	[renvoie capsule]
+	*/
+	
+	unsigned char successFlag;
+	Capsule cap_retour = newCapsule(&successFlag);
+	assert(successFlag != ECHEC);
+	
+	ConfMap map_tempo = newConfMap(&successFlag);
+	
+	for(unsigned int i = 0 ; i < caps.nbDescripteurs ; i++)
+	{
+		int id;
+		TabOcc tabocc = decode_descripteur(caps.descripteurs[i], &id);
+		
+		for(unsigned int ct = 0 ; ct < tabocc.nbEle ; ct++)
+		{
+			long result = keyPosition(&map_tempo, tabocc.mot[ct]);
+			
+			if(result == -1){
+				addValue(&map_tempo, tabocc.mot[ct], id+':'+tabocc.nbOcc[ct]);
+			}
+			else{
+				
+			}
+		}
+		
+		freeTabOcc(&tabocc);
+	}
+	
+	return cap_retour;
+}
 
 
 TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
@@ -202,13 +243,6 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 		
 		char tabMots[TAILLE_MAX_MOT];//tableau de char
 		int lettreInt = 0;
-		
-		
-		
-		unsigned char successFlag;
-		Capsule table_index = loadDescripteurs(&successFlag, "table_index_texte.txt");
-		
-		
 		
 		do // Tant qu'on est pas arrivé à la fin du fichier
 		{
@@ -319,6 +353,7 @@ sds indexation_texte(const sds accesFichier,int valId)
 	return resp;
 }
 
+/*
 void gestion_descripteur_texte()
 {
 	unsigned char successFlag;
@@ -337,7 +372,7 @@ void gestion_descripteur_texte()
 	saveDescripteurs(&successFlag, cap, "base_descripteur_texte.txt");
 	saveDescripteurs(&successFlag, cap_liste, "liste_base_texte.txt");
 }
-
+*/
 
 
 
