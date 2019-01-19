@@ -15,6 +15,7 @@ int main(){
 		sds chem = sdscatprintf(sdsempty(),"../documents/images/rgb/%02u.txt",i);
 		//printf("f:%s\n",chem);
 		addElement(&caps,indexation_image(chem,50,0.1,i,a));
+		sdsfree(chem);
 	}
 	
 	
@@ -41,7 +42,7 @@ int main(){
 		printf("%u:%s\n",i,res[i]);
 		i++;
 	}*/
-	
+	sdsfree(*res);
 	//printf("lastFree");getchar();
 	freeCapsule(caps);
 	return 0;

@@ -6,7 +6,7 @@
 #include <string.h>
 #include <math.h>
 
-DescripteurImage decodeDescripteur(const sds descripteur){
+DescripteurImage decodeDescripteur(const char * descripteur){
 	char chemin[200];
 	DescripteurImage descIm;
 	sscanf(descripteur,"[%d,%[^,],%u,%u",&(descIm.id),chemin,&(descIm.nbCouleurs),&(descIm.nbPixels));
@@ -93,7 +93,7 @@ unsigned int simpColor(unsigned int fullColor,unsigned char nbBits){
 	return (r<<(2*nbBits))+(v<<(nbBits))+(b);
 }
 
-sds * recherche_image_col(const sds couleur,const Capsule caps,unsigned int nbResMax,unsigned char nbBits){
+sds * recherche_image_col(const char * couleur,const Capsule caps,unsigned int nbResMax,unsigned char nbBits){
 	
 	//printf("%s/%s",couleur,ROUGE_T);getchar();
 	if(strcmp(NOIR_T,couleur)==0)
@@ -195,7 +195,7 @@ sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbRes
 	return result;
 }
 
-sds * recherche_image_file(const sds fichier,const Capsule caps,unsigned int nbResMax,unsigned char nbBits,unsigned int nbCouleursMax,float seuilMin){
+sds * recherche_image_file(const char * fichier,const Capsule caps,unsigned int nbResMax,unsigned char nbBits,unsigned int nbCouleursMax,float seuilMin){
 	
 	float * tabPoints = malloc(sizeof(float)*nbResMax);
 	DescripteurImage ** tabDesc = malloc(sizeof(DescripteurImage*)*(nbResMax+1));
@@ -207,16 +207,18 @@ sds * recherche_image_file(const sds fichier,const Capsule caps,unsigned int nbR
 	}
 	
 	//on cree le descripteur de l'image donnee
-	DescripteurImage cible = decodeDescripteur(indexation_image(fichier,nbCouleursMax,seuilMin,0,nbBits));
+	DescripteurImage * cible = malloc(sizeof(DescripteurImage));
+	assert(cible != NULL);
+	*cible = decodeDescripteur(indexation_image(fichier,nbCouleursMax,seuilMin,0,nbBits));
 	
 	//on fait le calcul du total de points pour pouvoir faire le classement en meme temps, et ainsi ne pas avoir a stocker un total par descripteur de la base.
 	
 	//on prepare les valeurs qui serviront au calcul
 	//la proportion dans l'image de chaque couleur
-	float * propCible = malloc(sizeof(float)*cible.nbCouleurs);
+	float * propCible = malloc(sizeof(float)*cible->nbCouleurs);
 	assert(propCible != NULL);
-	for(unsigned int i = 0;i < cible.nbCouleurs;i++){
-		propCible[i] = cible.nbOcc[i]/(float)cible.nbPixels;
+	for(unsigned int i = 0;i < cible->nbCouleurs;i++){
+		propCible[i] = cible->nbOcc[i]/(float)cible->nbPixels;
 	}
 	
 	//pour chaque element de la base
@@ -233,8 +235,8 @@ sds * recherche_image_file(const sds fichier,const Capsule caps,unsigned int nbR
 			//on commence par preparer les valeurs de l'image a tester
 			float prop = descIm->nbOcc[c]/(float)descIm->nbPixels;
 			//pour chaque couleur de la cible
-			for(unsigned int u = 0;u < cible.nbCouleurs;u++){
-				points+= calcPoints(cible.couleurs[u],descIm->couleurs[c],propCible[u],prop,nbBits);
+			for(unsigned int u = 0;u < cible->nbCouleurs;u++){
+				points+= calcPoints(cible->couleurs[u],descIm->couleurs[c],propCible[u],prop,nbBits);
 			}
 		}
 		
@@ -271,6 +273,7 @@ sds * recherche_image_file(const sds fichier,const Capsule caps,unsigned int nbR
 	for(unsigned int i = 0;i < nbResMax;i++){
 		freeDescIm(tabDesc[i]);
 	}
+	freeDescIm(cible);
 	free(tabDesc);
 	free(tabPoints);
 	return result;

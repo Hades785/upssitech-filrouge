@@ -37,7 +37,7 @@ unsigned int *histogramme(const Image im,unsigned char nbBits){
 	return histo;
 }
 
-sds createDescripteur(const unsigned int * histo,unsigned char nbBits,const sds cheminAbsolu,int id,unsigned int nbCouleursMax,float seuilMin){
+sds createDescripteur(const unsigned int * histo,unsigned char nbBits,const char * cheminAbsolu,int id,unsigned int nbCouleursMax,float seuilMin){
 	sds s = sdscatprintf(sdsempty(),"[%u,%s,",id,cheminAbsolu);
 	unsigned int p = pow(2,3*nbBits);
 	unsigned int total = 0,seuil;
@@ -104,13 +104,15 @@ sds createDescripteur(const unsigned int * histo,unsigned char nbBits,const sds 
 	}
 	
 	s = sdscatprintf(s,"%u=%u]",tabCouleur[(nbVal-1)],tabOccur[(nbVal-1)]);
+	free(tabCouleur);
+	free(tabOccur);
 	return s;
 }
 
 
 
 
-void decodeImage(Image * im,sds fichierImage)
+void decodeImage(Image * im,const char * fichierImage)
 {
 	FILE * fichier=NULL;
 	unsigned int nbr_matrice;
@@ -166,9 +168,12 @@ void decodeImage(Image * im,sds fichierImage)
 }
 
 
-sds indexation_image(const sds cheminFichier,unsigned int nbCouleursMax,float seuilMin,int id ,unsigned char nbBits)
+sds indexation_image(const char * cheminFichier,unsigned int nbCouleursMax,float seuilMin,int id ,unsigned char nbBits)
 { 	Image im;
 	decodeImage(&im,cheminFichier);
 	int *histo=histogramme(im,nbBits);
-	return createDescripteur(histo,nbBits,cheminFichier,id,nbCouleursMax,seuilMin);
+	free(im.image);
+	sds s = createDescripteur(histo,nbBits,cheminFichier,id,nbCouleursMax,seuilMin);
+	free(histo);
+	return s;
 }

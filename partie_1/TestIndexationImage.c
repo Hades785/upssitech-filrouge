@@ -11,11 +11,20 @@ int main ()
 	int id;
 	char chemin[200];
 	unsigned char nbBits;
-	printf("veuillez introduire le chemin de votre image\n");
+	/*printf("veuillez introduire le chemin de votre image\n");
 	scanf("%s",chemin);
 	printf("veuillez introduire le nbCouleursMax, le seuilMin,le id et le nbBits respectivement\n");
 	scanf(" %u %f %d %hhu",&nbCouleursMax,&seuilMin,&id,&nbBits);
-	printf("%s",indexation_image(chemin,nbCouleursMax,seuilMin,id,nbBits));
+	sds s = indexation_image(chemin,nbCouleursMax,seuilMin,id,nbBits);*/
+	
+	sds s = indexation_image("../documents/images/rgb/01.txt",15,0.1,0,4);
+	printf("%s",s);
+	sdsfree(s);
+	
+	/*decodeImage(&im,"../documents/images/rgb/01.txt");
+	histo = histogramme(im,4);
+	free(im.image);
+	free(histo);*/
 
 	/*unsigned n; 
 	decodeImage(&im,"/mnt/e/upssitech-filrouge/documents/images/rgb/01.txt"); //on donne le chemin absolu de n'importe quel fichier pour faire le test

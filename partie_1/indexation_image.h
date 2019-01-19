@@ -30,15 +30,15 @@ unsigned int *histogramme(const Image im,unsigned char nbBits);
 //image : l'image a traiter
 //nbBits : la simplification a appliquer sur l'image
 
-void decodeImage(Image * im, const sds fichierImage);
+void decodeImage(Image * im, const char * fichierImage);
 //Cette fonction remplis une image de pixels a partir du contenu textuel des images proposees
 
-sds createDescripteur(const unsigned int * histo,unsigned char nbBits,const sds cheminAbsolu,int id,unsigned int nbCouleursMax,float seuilMin);
+sds createDescripteur(const unsigned int * histo,unsigned char nbBits,const char * cheminAbsolu,int id,unsigned int nbCouleursMax,float seuilMin);
 //cette fonction renvoie un descripteur contenant les informations donnees
 //ce string respecte le format donne en haut de ce fichier .h
 //nbCouleursMax et seuilMin sont passes par indexation_image
 
-sds indexation_image(const sds cheminFichier,unsigned int nbCouleursMax,float seuilMin,int id ,unsigned char nbBits);
+sds indexation_image(const char * cheminFichier,unsigned int nbCouleursMax,float seuilMin,int id ,unsigned char nbBits);
 //cette fonction cree un descripteur a partir du fichier dont le chemin est passe en parametre
 //nbCouleurMax definit le nombre de couleurs maximum enregistree,
 //seuilMin [1 - 99] definit le pourcentage de couverture de l'image minimum requis pour etre enregistree

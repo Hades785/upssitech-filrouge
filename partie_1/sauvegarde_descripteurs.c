@@ -56,20 +56,25 @@ Capsule loadDescripteurs(unsigned char * successFlag,const char * fichierDescrip
 		//printf("new sds: %s\n",s);
 		int j;
 		do{
-			pt = fgets(buf,TAILLE_BUF,fichier);
-			//printf("getted from file: %s\n",pt);
-			unsigned int temp = strlen(buf);
-			for(j = 0;j < temp;j++){
-				//on recherche la brace fermante '}'
-				/*if(buf[j] != '\n')
-					printf("car : %c\n",buf[j]);
-				else
-					printf("car : \\n\n");*/
-				if(buf[j] == '}'){
-					buf[j] = '\0';
-					break;
+			unsigned char trouve = 0;
+			do{
+				pt = fgets(buf,TAILLE_BUF,fichier);
+				unsigned int temp = strlen(buf);
+				for(j = 0;j < temp;j++){
+					//on recherche la brace fermante '}'
+					/*if(buf[j] != '\n')
+						printf("car : %c\n",buf[j]);
+					else
+						printf("car : \\n\n");*/
+					if(buf[j] == '}'){
+						buf[j] = '\0';
+						trouve = 1;
+						break;
+					}
 				}
-			}
+				if(trouve == 0)
+					s = sdscat(s,buf);
+			}while(trouve == 0 && pt != NULL);
 			s = sdscat(s,buf);
 			//printf("String final: %s\n",s);
 			nbDescReel++;

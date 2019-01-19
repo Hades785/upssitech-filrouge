@@ -46,7 +46,7 @@ typedef struct{
 	unsigned int * nbOcc;
 }DescripteurImage;
 
-DescripteurImage decodeDescripteur(const sds descripteur);
+DescripteurImage decodeDescripteur(const char * descripteur);
 
 void freeDescIm(DescripteurImage * descIm);
 
@@ -64,10 +64,10 @@ sds * resultGenerator(unsigned int nbResMax,DescripteurImage ** tabDesc);
  * @return un tableau de resultats se terminant par un pointeur vers null (de taille nbResMax)
  * ne pas oublier de free ce tableau ainsi que tout ses sds
  */
-sds * recherche_image_col(const sds couleur,const Capsule caps,unsigned int nbResMax,unsigned char nbBits);
+sds * recherche_image_col(const char * couleur,const Capsule caps,unsigned int nbResMax,unsigned char nbBits);
 
 sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbResMax,unsigned char nbBits);
 
-sds * recherche_image_file(const sds fichier,const Capsule caps,unsigned int nbResMax,unsigned char nbBits,unsigned int nbCouleursMax,float seuilMin);
+sds * recherche_image_file(const char * fichier,const Capsule caps,unsigned int nbResMax,unsigned char nbBits,unsigned int nbCouleursMax,float seuilMin);
 
 #endif

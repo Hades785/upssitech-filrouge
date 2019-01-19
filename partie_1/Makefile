@@ -43,6 +43,12 @@ testSaveDesc.out: testSaveDesc.c sauvegarde_descripteurs.h sds.h sauvegarde_desc
 	@gcc -o testSaveDesc.out testSaveDesc.o sauvegarde_descripteurs.o sds.o
 	./testSaveDesc.out
 	
+.PHONY: testSaveDescStupideFaconLoic.out
+testSaveDescFaconLoic.out: testSaveDescStupideFaconLoic.c sauvegarde_descripteurs.h sds.h sauvegarde_descripteurs.o sds.o
+	@gcc -c testSaveDescStupideFaconLoic.c
+	@gcc -o testSaveDescStupideFaconLoic.out testSaveDescStupideFaconLoic.o sauvegarde_descripteurs.o sds.o
+	./testSaveDescStupideFaconLoic.out
+	
 .PHONY: testConfigFile.out
 testConfigFile.out: testConfigFile.c sauvegarde_descripteurs.h sds.h config_reader.h config_reader.o sauvegarde_descripteurs.o sds.o
 	@gcc -c testConfigFile.c
@@ -61,11 +67,11 @@ tstDecodeDescImage.out: tstDecodeDescImage.c recherche_image.h recherche_image.o
 	@gcc -o tstDecodeDescImage.out tstDecodeDescImage.o sds.o recherche_image.o indexation_image.o -lm
 	./tstDecodeDescImage.out
 
-.PHONY: test_image.out
-test_image.out: indexation_image.o sds.o TestIndexationImage.c indexation_image.h
+.PHONY: TestIndexationImage.out
+TestIndexationImage.out: indexation_image.o sds.o TestIndexationImage.c indexation_image.h sds.h
 	@gcc -c TestIndexationImage.c
-	@gcc -o test_image.out TestIndexationImage.o indexation_image.o sds.o -lm
-	./test_image.out
+	@gcc -o TestIndexationImage.out TestIndexationImage.o indexation_image.o sds.o -lm
+	./TestIndexationImage.out
 
 .PHONY:test_recherche_image1.out
 test_recherche_image1.out: test_recherche_image1.c recherche_image.h recherche_image.o indexation_image.o sds.h sds.o sauvegarde_descripteurs.h sauvegarde_descripteurs.o

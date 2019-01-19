@@ -8,6 +8,7 @@ int main(){
 	sds s = sdsnew("[42,bonjourAussi,3,200],[12=13,45=20,25=6]");
 	printf("Origine:    %s\n",s);
 	DescripteurImage desc = decodeDescripteur(s);
+	sdsfree(s);
 	printf("Id:         %d\n",desc.id);
 	printf("Chemin:     %s\n",desc.cheminAbs);
 	printf("nbCouleurs: %u\n",desc.nbCouleurs);
