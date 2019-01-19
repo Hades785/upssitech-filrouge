@@ -7,7 +7,7 @@ main.o: main.c indexation.h recherche.h
 indexation.o: indexation.c indexation.h indexation_texte.h indexation_image.h indexation_audio.h
 	@gcc -c indexation.c
 
-indexation_texte.o: indexation_texte.c indexation_texte.h sds.h constantes.h
+indexation_texte.o: indexation_texte.c indexation_texte.h sds.h constantes.h sauvegarde_descripteurs.h config_reader.h
 	@gcc -c indexation_texte.c
 
 indexation_image.o: indexation_image.c indexation_image.h sds.h
@@ -56,7 +56,7 @@ testConfigFile.out: testConfigFile.c sauvegarde_descripteurs.h sds.h config_read
 	./testConfigFile.out
 
 .PHONY: test_indexation_texte.out
-test_indexation_texte.out : test_indexation_texte.c sds.h sds.o indexation_texte.h indexation_texte.o
+test_indexation_texte.out : test_indexation_texte.c sds.h sds.o indexation_texte.h indexation_texte.o sauvegarde_descripteurs.h sauvegarde_descripteurs.o config_reader.h config_reader.o
 	@gcc -c test_indexation_texte.c
 	@gcc -o test_indexation_texte.out test_indexation_texte.o sds.o indexation_texte.o -lm
 	./test_indexation_texte.out

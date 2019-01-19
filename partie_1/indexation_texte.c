@@ -95,7 +95,7 @@ void triTabOcc(TabOcc * t){
 
 void freeTabOcc(TabOcc * t)
 {
-	for(unsigned int i = 0;i < nbEle;i++){
+	for(unsigned int i = 0;i < t->nbEle;i++){
 		sdsfree(t->mots[i]);
 	}
 	free(t->mots);
@@ -214,18 +214,14 @@ Capsule genere_table(Capsule caps)
 		
 		for(unsigned int ct = 0 ; ct < tabocc.nbEle ; ct++)
 		{
-			sds key = sdscat(tabocc.mot[ct],";");
 			sds s = sdscat(sdsfromlonglong(id),":");
-			sds s2 = sdsfromlonglong(tabOcc.nbOcc[ct]);
+			sds s2 = sdscat(sdsfromlonglong(tabocc.nbOcc[ct]),";");
 			s = sdscat(s,s2);
-			s = sdscat(s,";");
-			postValue(&map_tempo, key, s);
-			sdsfree(key); sdsfree(s); sdsfree(s2);
+			postValue(&map_tempo, tabocc.mots[ct], s);
+			sdsfree(s); sdsfree(s2);
 		}
-		
 		freeTabOcc(&tabocc);
 	}
-	
 	return cap_retour;
 }
 

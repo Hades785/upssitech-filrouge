@@ -196,7 +196,7 @@ unsigned char postValue(ConfMap * map,const char * key,const char * value){
 	if(pos == -1)
 		return addValue(map,key,value);
 	else{
-		map->values[pos] = sdscat(map->values[pos],value);
+		map->values->descripteurs[pos] = sdscat(map->values->descripteurs[pos],value);
 		return SUCCES;
 	}
 }
