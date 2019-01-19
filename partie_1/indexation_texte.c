@@ -211,7 +211,13 @@ Capsule genere_table(Capsule caps)
 		
 		for(unsigned int ct = 0 ; ct < tabocc.nbEle ; ct++)
 		{
-			postValue(&map_tempo, tabocc.mot[ct], sdsfromlonglong(id)+':'+sdsfromlonglong(tabocc.nbOcc[ct]));
+			sds key = sdscat(tabocc.mot[ct],";");
+			sds s = sdscat(sdsfromlonglong(id),":");
+			sds s2 = sdsfromlonglong(tabOcc.nbOcc[ct]);
+			s = sdscat(s,s2);
+			s = sdscat(s,";");
+			postValue(&map_tempo, key, s);
+			sdsfree(key); sdsfree(s); sdsfree(s2);
 		}
 		
 		freeTabOcc(&tabocc);
