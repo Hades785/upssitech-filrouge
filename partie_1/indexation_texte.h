@@ -32,6 +32,8 @@ int suppr_accent_et_maj(int lettre);
 
 TabOcc lecture_fichier(const char * accesFichier, unsigned int * nbMotsTotal);
 
+TabOcc decode_descripteur(const char * descripteur, int * idFichier);
+
 /**
  * DESCRIPTION PLACEHOLDER
  *

@@ -51,10 +51,8 @@ void ajout_mot(TabOcc *t, const char * mot)
 	long pos = position_mot_dans_tabocc(*t,mot);
 	if(pos == -1)
 		addMotStrict(t,mot,1);
-	else{
+	else
 		t->nbOcc[pos]++;
-		sdsfree(mot);
-	}
 }
 
 TabOcc newTabOcc()
@@ -213,10 +211,15 @@ Capsule genere_table(Capsule caps)
 		
 		for(unsigned int ct = 0 ; ct < tabocc.nbEle ; ct++)
 		{
-			long result = keyPosition(&map_tempo, tabocc.mot[ct]);
+			long result = keyPosition(&map_tempo, tabocc.mots[ct]);
 			
 			if(result == -1){
-				addValue(&map_tempo, tabocc.mot[ct], id+':'+tabocc.nbOcc[ct]);
+				sds s = sdscat(sdsfromlonglong(id),":");
+				sds s2 = sdsfromlonglong(tabocc.nbOcc[ct]);
+				s = sdscat(s,s2);
+				sdsfree(s2);
+				addValue(&map_tempo, tabocc.mots[ct],s);
+				sdsfree(s);
 			}
 			else{
 				
@@ -281,8 +284,7 @@ TabOcc lecture_fichier(const char * accesFichier, unsigned int * nbMotsTotal)
 				
 				if((int)sdslen(motActuel)-1>=TAILLE_MIN_MOT && strstr(exclusions,motActuel) == NULL)
 					ajout_mot(&tabocc, motActuel);
-				else
-					sdsfree(motActuel);
+				sdsfree(motActuel);
 				
 				nbMotsTotal++;
 			}
@@ -394,26 +396,3 @@ void gestion_descripteur_texte()
 	saveDescripteurs(&successFlag, cap_liste, "liste_base_texte.txt");
 }
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

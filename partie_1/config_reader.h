@@ -38,4 +38,5 @@ unsigned char changeValue(ConfMap * map,const char * key,const char * newValue);
 
 unsigned char changeValueLong(ConfMap * map,const char * key,long newValue);
 
+unsigned char postValue(ConfMap * map,const char * key,const char * value);
 #endif
