@@ -190,3 +190,13 @@ unsigned char changeValueLong(ConfMap * map,const char * key,long newValue){
 	sdsfree(s);
 	return flag;
 }
+
+unsigned char postValue(ConfMap * map,const char * key,const char * value){
+	long pos = keyPosition(map,key);
+	if(pos == -1)
+		return addValue(map,key,value);
+	else{
+		map->values->descripteurs[pos] = sdscat(map->values->descripteurs[pos],value);
+		return SUCCES;
+	}
+}
