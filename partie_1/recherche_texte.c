@@ -1,13 +1,6 @@
 #include "recherche_texte.h"
 #include "constantes.h"
-#include "sauvegarde_descripteurs.h"
 #include <string.h>
-
-// lit la table d index et retourne les identifiants des fichiers contenant le plus le mot
-int* lire_index(const sds table_index_texte[], const sds motscles[])
-{
-	//TODO
-}
 
 // donne le nom d un fichier par rapport a son identidiant dans le fichier donne
 sds getNom(int id, sds liste_base_texte)
@@ -91,10 +84,59 @@ int motscmp(const sds * liste1, const sds * liste2, int taille1, int taille2)
 	return compteur;
 }
 
-void recherche_texte_motscles(const sds motscles[], const sds liste_base_texte, const sds table_index_texte)
+// lit la table d index et retourne les identifiants des fichiers contenant le plus les mots
+int* lire_index(Capsule table_index, sds motscles, int id[])
+{
+	// format : mot1;fichier1:nbocc;fichier2...
+	char * ptr_mc; // pointeur de parcours des mots cles
+	char * ptr_index; // pointeur de lecture de la table d index
+	sds mot, comp;
+	int identifiant, occurence;
+	
+	mot = sdsempty();
+	comp = sdsempty();
+	
+	// parcours des mots cles
+	ptr_mc = motscles;
+	while(strlen(ptr_mc) != 0)
+	{
+		sscanf(ptr_mc, "%s", mot);
+		
+		for(int i = 0; i < nombreDescripteurs(table_index); i++)
+		{
+			sscanf(table_index.descripteurs[i], "%[^;]", comp);
+			printf("%s\n", comp);
+			if(strcmp(mot, comp) == 0)
+			{
+				ptr_index = strchr(table_index.descripteurs[i], ';');
+				break;
+			}
+		}
+		while(strlen(ptr_index) != 0)
+		{
+			sscanf(ptr_index, "%d:%d", &identifiant, &occurence);
+			// TODO
+			
+			ptr_index = strchr(ptr_index, ';');
+			ptr_index++;
+		 }
+		
+		ptr_mc = strchr(ptr_mc, ' ');
+		ptr_mc++;
+	}
+	
+	sdsfree(mot);
+	sdsfree(comp);
+	
+	return id;
+}
+
+void recherche_texte_motscles(const sds motscles, const sds liste_base_texte, const sds table_index_texte)
 {
 	sds resultats[NB_RESULTAT_RECHERCHE]; // resultats sous forme de chemin d acces
 	int id[NB_RESULTAT_RECHERCHE];
+	unsigned char flag;
+	Capsule capsule = loadDescripteurs(&flag, liste_base_texte);
 	//id = lire_index(table_index_texte, motscles);
 	
 	for(int i = 0; i < NB_RESULTAT_RECHERCHE; i++)
@@ -102,6 +144,8 @@ void recherche_texte_motscles(const sds motscles[], const sds liste_base_texte, 
 		resultats[i] = getNom(id[i], liste_base_texte);
 		printf("%s\n", resultats[i]);
 	}
+	
+	freeCapsule(capsule);
 }
 
 // Pour le moment, cette fonction recherche un fichier identique a celui passe en parametre
