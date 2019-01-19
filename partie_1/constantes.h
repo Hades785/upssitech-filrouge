@@ -9,6 +9,8 @@ const char exclusions[] = "les des par une son que dans est ces ses pour sont fa
 
 const char accents[] = "äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒ";
 
+#define CONFIG_FILE_PATH "/filrouge.config" //config file from home directory
+
 #define SUCCES 0
 #define ECHEC 1
 
