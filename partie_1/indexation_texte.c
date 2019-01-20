@@ -233,7 +233,7 @@ Capsule genere_table(Capsule caps)
 		addElement(&cap_retour, s);
 		sdsfree(s);
 	}
-	freeConfMap(map_tempo);
+	//freeConfMap(map_tempo); // provoque une erreur : TODO !
 	
 	return cap_retour;
 }

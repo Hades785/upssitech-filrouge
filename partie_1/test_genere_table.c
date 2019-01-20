@@ -15,9 +15,9 @@ int main()
 	addElement(&cap, indexation_texte("../documents/texte/06-US_Open___Mauresmo_et.xml", 2));
 	
 	Capsule cap2 = genere_table(cap);
-	//saveDescripteurs(&successFlag, cap2, "table_index_texte.txt");
+	saveDescripteurs(&successFlag, cap2, "table_index_texte.txt");
 	
-	//freeCapsule(cap); freeCapsule(cap2);
+	//freeCapsule(cap); freeCapsule(cap2); // provoque une erreur : TODO !
 	
 	return 0;
 }
