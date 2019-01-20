@@ -1,8 +1,8 @@
 #ifndef __INDEXATION_TEXTE__
 #define __INDEXATION_TEXTE__
 
-
 #include "sds.h"
+#include "sauvegarde_descripteurs.h"
 
 typedef struct
 {
@@ -14,9 +14,9 @@ typedef struct
 
 void afficher_tabocc(TabOcc t);
 
-long position_mot_dans_tabocc(TabOcc t, sds mot);
+long position_mot_dans_tabocc(TabOcc t, const char * mot);
 
-void ajout_mot(TabOcc *t, sds mot);
+void ajout_mot(TabOcc *t, const char * mot);
 
 unsigned int totalOccurences(TabOcc t);
 
@@ -24,7 +24,17 @@ TabOcc newTabOcc();
 
 void triTabOcc(TabOcc * t);
 
-TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal);
+void freeTabOcc(TabOcc * t);
+
+unsigned char test_alpha(int lettre);
+
+int suppr_accent_et_maj(int lettre);
+
+Capsule genere_table(Capsule caps);
+
+TabOcc lecture_fichier(const char * accesFichier, unsigned int * nbMotsTotal);
+
+TabOcc decode_descripteur(const char * descripteur, int * idFichier);
 
 /**
  * DESCRIPTION PLACEHOLDER
@@ -39,6 +49,8 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal);
 	// (Les 3 premières valeurs sont : id ; nombreDeMotsAuTotal ; nombreDeMotsRetenus)
 	//[id;nbMotsTotal;nbMotsRetenus][mot1:occ1;mot2:occ2;...]
  
-sds indexation_texte(const sds accesFichier, int valId);
+sds indexation_texte(const char * accesFichier, int valId);
+
+void gestion_descripteur_texte();
 
 #endif

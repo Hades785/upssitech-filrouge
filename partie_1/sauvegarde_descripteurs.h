@@ -1,5 +1,6 @@
+#ifndef __SEUVEGARDEDESCRIPTEURS__
+#define __SEUVEGARDEDESCRIPTEURS__
 #include "sds.h"
-#include "constantes.h"
 
 #define TAILLE_BUF 1000//taille des blocs lus entre chaque malloc du string du descripteur (en gros si tu comprends pas touche pas)
 typedef struct{
@@ -20,7 +21,7 @@ A noter que l'ajout de descripteurs se fait uniquement par addElement et addElem
  *
  * @return Capsule : une capsule contenant le nombre de descripteurs stockes et un tableau de pointeurs vers les sds les contenant
  */
-Capsule loadDescripteurs(unsigned char * successFlag,const sds fichierDescripteur);
+Capsule loadDescripteurs(unsigned char * successFlag,const char * fichierDescripteur);
 
 /**
  * lis le fichier donne, en extrait les descripteurs stockes avec "saveDescripteurs"
@@ -28,7 +29,7 @@ Capsule loadDescripteurs(unsigned char * successFlag,const sds fichierDescripteu
  * @param *successFlag : est modifie a SUCCES ou ECHEC
  * @param fichierDescripteur le chemin vers le fichier a lire
  */
-void saveDescripteurs(unsigned char * successFlag,const Capsule capsule,const sds fichierDescripteurs);
+void saveDescripteurs(unsigned char * successFlag,const Capsule capsule,const char * fichierDescripteurs);
 
 /**
  * libere l'espace occupe par les sds
@@ -64,7 +65,7 @@ unsigned char resetCapsule(Capsule * caps);
  * 
  * @return SUCCES ou ECHEC
  */
-unsigned char addElementCopy(Capsule * caps,const sds element);
+unsigned char addElementCopy(Capsule * caps,const char * element);
 
 /**
  * ajoute un element a la capsule.
@@ -83,3 +84,11 @@ unsigned char addElement(Capsule * caps,sds element);
  * @return le nombre de sds dans le tableau de la capsule
  */
 unsigned int nombreDescripteurs(const Capsule caps);
+
+/**
+ * retire un descripteur de la liste, et remonte d'un cran tout les suivants
+ * @param caps la capsule dans laquelle retirer l'element
+ * @param index l'index du descripteur a retirer de la liste. le sds cible sera free.
+ */
+void removeDescripteur(Capsule * caps,unsigned int index);
+#endif

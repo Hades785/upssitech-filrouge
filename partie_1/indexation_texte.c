@@ -1,11 +1,16 @@
 #include "indexation_texte.h"
-#include <ctype.h>
-#include <math.h>
+//#include <ctype.h>
+//#include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "constantes.h"
 #include <assert.h>
+#include "config_reader.h"
+
+const char exclusions[] = "les des par une son que dans est ces ses pour sont faire pas Ces Sat Sep GMT ainsi sera Pour où afin même Cette vers vient qui aux cette Les";
+
+const char accents[] = "äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒ";
 
 void afficher_tabocc(TabOcc t)
 {
@@ -16,7 +21,7 @@ void afficher_tabocc(TabOcc t)
 	printf("\n");
 }
 
-long position_mot_dans_tabocc(TabOcc t, sds mot)
+long position_mot_dans_tabocc(TabOcc t, const char * mot)
 {
 	for(unsigned int i = 0;i < t.nbEle;i++){
 		if(strcmp(t.mots[i], mot) == 0)
@@ -25,7 +30,7 @@ long position_mot_dans_tabocc(TabOcc t, sds mot)
 	return -1;
 }
 
-void addMotStrict(TabOcc *t, sds mot,unsigned int nbOccur){
+void addMotStrict(TabOcc *t,const char * mot,unsigned int nbOccur){
 	if(t->nbEle == t->size)
 	{
 		sds * newTabS = malloc(sizeof(sds)*(t->size+20));
@@ -39,20 +44,18 @@ void addMotStrict(TabOcc *t, sds mot,unsigned int nbOccur){
 		t->mots = newTabS;
 		t->nbOcc = newTabU;
 	}
-	t->mots[t->nbEle] = mot;
+	t->mots[t->nbEle] = sdsnew(mot);
 	t->nbOcc[t->nbEle] = nbOccur;
 	t->nbEle++;
 }
 
-void ajout_mot(TabOcc *t, sds mot)
+void ajout_mot(TabOcc *t, const char * mot)
 {
 	long pos = position_mot_dans_tabocc(*t,mot);
 	if(pos == -1)
 		addMotStrict(t,mot,1);
-	else{
+	else
 		t->nbOcc[pos]++;
-		sdsfree(mot);
-	}
 }
 
 TabOcc newTabOcc()
@@ -95,27 +98,148 @@ void triTabOcc(TabOcc * t){
 
 void freeTabOcc(TabOcc * t)
 {
+	for(unsigned int i = 0;i < t->nbEle;i++){
+		sdsfree(t->mots[i]);
+	}
 	free(t->mots);
 	free(t->nbOcc);
 }
 
-unsigned char test_alpha(char lettre)
+unsigned char test_alpha(int lettre)
 {
-	if((lettre >= 'a' && lettre <= 'z') || (lettre >= 'A' && lettre <= 'Z')) // Si c'est une lettre "classique"
-		return 1;
-	else
+	//printf("%c", lettre);
+	
+	if((lettre >= 'a' && lettre <= 'z') || (lettre >= 'A' && lettre <= 'Z')
+		|| (lettre >= 192 && lettre <= 255)) // Si c'est une lettre
 	{
+		return 1;
+	}
+	else
+	{/*
 		char ch[2];
-		ch[0] = lettre;ch[1] = 0;
+		ch[0] = lettre;
+		ch[1] = 0;
 		
 		if(strstr(accents, ch) != NULL) // Si c'est une lettre accentuée
+		{
+			printf("trouvé !");
+			return 1;
+		}
+		else*/
 			return 0;
-		else
-			return 2;
 	}
 }
 
-TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
+int suppr_accent_et_maj(int lettre)
+{
+	if(lettre >= 'a' && lettre <= 'z') return lettre;
+	else if(lettre >= 'A' && lettre <= 'Z') return (lettre+32);
+	else if(lettre >= 192 && lettre <= 198) return ('a');
+	else if(lettre == 199 || lettre == 231) return ('c');
+	else if(lettre >= 200 && lettre <= 203) return ('e');
+	else if(lettre >= 204 && lettre <= 207) return ('i');
+	else if(lettre >= 210 && lettre <= 214) return ('o');
+	else if(lettre >= 217 && lettre <= 220) return ('u');
+	else if(lettre >= 224 && lettre <= 230) return ('a');
+	else if(lettre >= 232 && lettre <= 235) return ('e');
+	else if(lettre >= 236 && lettre <= 239) return ('i');
+	else if(lettre == 241) return ('n');
+	else if(lettre >= 242 && lettre <= 246) return ('o');
+	else if(lettre >= 249 && lettre <= 252) return ('u');
+	else if(lettre == 60) return ('<');
+	else if(lettre == 62) return ('>');
+	else return 32;
+}
+
+
+/*
+void ajout_dans_table_index(Capsule capsule, const sds mot, const unsigned int numFichier)
+{
+	unsigned int ct = 1;
+	unsigned char motPresent = 0;
+	
+	while(ct < capsule.nbDescripteurs && !motPresent)
+	{
+		sds s = capsule.descripteurs[ct];
+		unsigned int ct2 = 1;
+		
+		motPresent = 1;
+		
+		while(s[ct2]!=';' && ct2<=(int)sdslen(mot))
+		{
+			if(s[ct2] != mot[ct2-1]) // Si il y a la moindre lettre de différence
+				motPresent = 0;
+			
+			if(s[ct2+1]==';' && ct2!=(int)sdslen(mot))
+				motPresent = 0;
+			
+			if(s[ct2+1]!=';' && ct2==(int)sdslen(mot))
+				motPresent = 0;
+			
+			ct2++;
+		}
+		
+		unsigned char num = numFichier + 0x30;
+		
+		if(motPresent)
+		{
+			
+		}
+		else
+			addElement(&capsule, mot + ';' + num + ); //TODO
+		
+		ct++;
+	}
+}
+*/
+
+
+Capsule genere_table(Capsule caps)
+{
+	/*
+	[declaration capsule]
+	[declaration confmap]
+	[remplissage confmap]
+	[transfert map -> caspule]
+	[renvoie capsule]
+	*/
+	
+	unsigned char successFlag;
+	Capsule cap_retour = newCapsule(&successFlag);
+	assert(successFlag != ECHEC);
+	ConfMap map_tempo = newConfMap(&successFlag);
+	assert(successFlag != ECHEC);
+	
+	for(unsigned int i = 0 ; i < caps.nbDescripteurs ; i++)
+	{
+		int id;
+		TabOcc tabocc = decode_descripteur(caps.descripteurs[i], &id);
+		
+		for(unsigned int ct = 0 ; ct < tabocc.nbEle ; ct++)
+		{
+			sds s = sdscat(sdsfromlonglong(id),":");
+			sds s2 = sdscat(sdsfromlonglong(tabocc.nbOcc[ct]),";");
+			s = sdscat(s,s2);
+			postValue(&map_tempo, tabocc.mots[ct], s);
+			sdsfree(s); sdsfree(s2);
+		}
+		freeTabOcc(&tabocc);
+	}
+	
+	for(unsigned int i = 0 ; i < map_tempo.keys->nbDescripteurs ; i++)
+	{
+		sds s = sdscat(map_tempo.keys->descripteurs[i], ";");
+		s = sdscat(s, map_tempo.values->descripteurs[i]);
+		addElement(&cap_retour, s);
+		sdsfree(s);
+	}
+	freeConfMap(map_tempo);
+	
+	return cap_retour;
+}
+
+
+TabOcc lecture_fichier(const char * accesFichier, unsigned int * nbMotsTotal)
 {
 	FILE* fichier;
 
@@ -127,14 +251,36 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 		TabOcc tabocc = newTabOcc();
 		
 		char tabMots[TAILLE_MAX_MOT];//tableau de char
+		int lettreInt = 0;
 		
 		do // Tant qu'on est pas arrivé à la fin du fichier
 		{
-			tabMots[0] = fgetc(fichier); // On lit le caractère
+			lettreInt = fgetc(fichier);
+			tabMots[0] = suppr_accent_et_maj(lettreInt);
 			
-			if(test_alpha(tabMots[0]) != 2) // Si c'est une lettre
+			//printf(" %d/%d ", lettreInt, tabMots[0]);
+			
+			if(test_alpha(lettreInt) == 1) // Si c'est une lettre
 			{
-				fscanf(fichier,"%30[äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒ'a-zA-Z]", &tabMots[test_alpha(tabMots[0])]);
+				//fscanf(fichier,"%30[äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒ'a-zA-Z]", &tabMots[1]);
+				
+				int ct = 1;
+				while((ct < 30) && test_alpha(lettreInt) == 1)
+				{
+					lettreInt = fgetc(fichier);
+					tabMots[ct] = suppr_accent_et_maj(lettreInt);
+					
+					if(tabMots[ct] == '<')
+					{
+						fscanf(fichier, "%*[^>]"); // On va jusqu'à la fin de la balise
+						fgetc(fichier);
+						break;
+					}
+					
+					ct++;
+				}
+				tabMots[ct] = 0;
+				
 				
 				if(tabMots[1] == '\'')
 					motActuel = sdsnew(&tabMots[2]);
@@ -142,12 +288,11 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 					motActuel = sdsnew(tabMots);
 				
 				
-				if(sdslen(motActuel)>=TAILLE_MIN_MOT && strstr(exclusions,motActuel) == NULL)
+				if((int)sdslen(motActuel)-1>=TAILLE_MIN_MOT && strstr(exclusions,motActuel) == NULL)
 					ajout_mot(&tabocc, motActuel);
-				else
-					sdsfree(motActuel);
+				sdsfree(motActuel);
 				
-				nbMotsTotal++;
+				(*nbMotsTotal)++;
 			}
 			else
 			{
@@ -160,13 +305,13 @@ TabOcc lecture_fichier(const sds accesFichier, unsigned int * nbMotsTotal)
 				}
 			}
 		}
-		while (tabMots[0] != EOF); // fin de fichier
+		while (lettreInt != EOF); // fin de fichier
 		fclose(fichier);
 		return tabocc;
     }
 	else
 	{
-		printf("On a pas pu ouvrir le fichier"); getchar();
+		printf("Impossible d'ouvrir le fichier"); getchar();
 		
 		TabOcc tabocc = newTabOcc();
 		return tabocc;
@@ -189,9 +334,9 @@ sds renvoie_descripteur(TabOcc tabTrie,int id,unsigned int nbMotsTotal)
 {
 	sds s = sdsempty();
 	//unsigned int nbMotsRetenus = totalOccurences(tabTrie);
-
+	//[id;nbMotsTotal;nbMotsRetenus][mot1:occ1;mot2:occ2;...]
 	s = sdscatprintf(s,"[%d;%u;%u][",id,nbMotsTotal,tabTrie.nbEle);
-
+	
 	for(unsigned int i = 0;i < tabTrie.nbEle;i++)
 	{
 		s = sdscatprintf(s,"%s:%u",tabTrie.mots[i],tabTrie.nbOcc[i]);
@@ -205,9 +350,30 @@ sds renvoie_descripteur(TabOcc tabTrie,int id,unsigned int nbMotsTotal)
 	return s;
 }
 
-sds indexation_texte(const sds accesFichier,int valId)
+TabOcc decode_descripteur(const char * descripteur, int * idFichier){
+	//[id;nbMotsTotal;nbMotsRetenus][mot1:occ1;mot2:occ2;...]
+	TabOcc tab = newTabOcc();
+	unsigned int nbMotsRetenus;
+	sscanf(descripteur,"[%d;%*u;%u",idFichier,&nbMotsRetenus);
+	char * debutNb = strchr(descripteur+1,'[');//+1 pour eviter celui de l'en tete
+	assert(debutNb != NULL);
+	char mot[30];
+	unsigned int nbOcc;
+	for(unsigned int i = 0;i < nbMotsRetenus;i++){
+		debutNb++;
+		sscanf(debutNb,"%30[^ :] :%u",mot,&nbOcc);
+		addMotStrict(&tab,mot,nbOcc);
+		if(i < nbMotsRetenus-1){
+			debutNb = strchr(debutNb,';');
+			assert(debutNb != NULL);
+		}
+	}
+	return tab;
+}
+
+sds indexation_texte(const char * accesFichier,int valId)
 {
-	unsigned int nbMotsTotal;
+	unsigned int nbMotsTotal = 0;
 	TabOcc fichier = lecture_fichier(accesFichier, &nbMotsTotal);
 	TabOcc desc = tri_occurence(fichier);
 	freeTabOcc(&fichier);
@@ -215,3 +381,24 @@ sds indexation_texte(const sds accesFichier,int valId)
 	freeTabOcc(&desc);
 	return resp;
 }
+
+/*
+void gestion_descripteur_texte()
+{
+	unsigned char successFlag;
+	Capsule cap = newCapsule(&successFlag);
+	Capsule cap_liste = newCapsule(&successFlag);
+	
+	addElement(&cap, indexation_texte("../documents/texte/05-Photographie___Philip_Blenkinsop_a.xml", 0));
+	addElement(&cap_liste, "../documents/texte/05-Photographie___Philip_Blenkinsop_a.xml :0;");
+	
+	addElement(&cap, indexation_texte("../documents/texte/05-Rock___l_Illinois_magique_de.xml", 1));
+	addElement(&cap_liste, "../documents/texte/05-Rock___l_Illinois_magique_de.xml :1;");
+	
+	addElement(&cap, indexation_texte("../documents/texte/06-US_Open___Mauresmo_et.xml", 2));
+	addElement(&cap_liste, "../documents/texte/06-US_Open___Mauresmo_et.xml :2;");
+	
+	saveDescripteurs(&successFlag, cap, "base_descripteur_texte.txt");
+	saveDescripteurs(&successFlag, cap_liste, "liste_base_texte.txt");
+}
+*/
