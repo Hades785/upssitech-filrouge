@@ -2,13 +2,24 @@
 #include "constantes.h"
 #include <string.h>
 
-// donne le nom d un fichier par rapport a son identidiant dans le fichier donne
+typedef struct Cel_Occ
+{
+	struct Cel_Occ * precedent;
+	int identifiant;
+	int occurences;
+	struct Cel_Occ * suivant;
+} TabOccurences;
+
+// donne le nom d un fichier par rapport a son identifiant dans le fichier donne
 sds getNom(int id, sds liste_base_texte)
 {
 	unsigned char flag;
 	Capsule capsule;
 	int test_id;
 	sds nom;
+	
+	if(id == -1)
+		return sdsempty();
 	
 	capsule = loadDescripteurs(&flag, liste_base_texte);
 	nom = sdsempty();
@@ -30,11 +41,12 @@ sds getNom(int id, sds liste_base_texte)
 }
 
 // renvoie la liste des mots retenus dans un fichier depuis un descripteur
-void listeMots(sds descripteur, sds * listeMots)
+sds listeMots(sds descripteur)
 {
 	int nbMotsRetenus;
 	char * ptr;
 	sds mot;
+	sds listeMots = sdsempty();
 	
 	sscanf(descripteur, "[%*d;%*d;%d]", &nbMotsRetenus);
 	
@@ -45,7 +57,8 @@ void listeMots(sds descripteur, sds * listeMots)
 	for(int i = 0; i < nbMotsRetenus; i++)
 	{
 		sscanf(ptr, "%[^:%*d]", mot);
-		listeMots[i] = sdsnew(mot);
+		listeMots = sdscat(listeMots, mot);
+		listeMots = sdscat(listeMots, " ");
 		if (i < nbMotsRetenus-1)
 		{
 			ptr = strchr(ptr, ';');
@@ -53,6 +66,8 @@ void listeMots(sds descripteur, sds * listeMots)
 		}
 	}
 	sdsfree(mot);
+	
+	return listeMots;
 }
 
 void freeListeMots(int nbMots, sds * listeMots)
@@ -85,16 +100,24 @@ int motscmp(const sds * liste1, const sds * liste2, int taille1, int taille2)
 }
 
 // lit la table d index et retourne les identifiants des fichiers contenant le plus les mots
-int* lire_index(Capsule table_index, sds motscles, int id[])
+void lire_index(Capsule table_index, sds motscles, int id[])
 {
 	// format : mot1;fichier1:nbocc;fichier2...
 	char * ptr_mc; // pointeur de parcours des mots cles
 	char * ptr_index; // pointeur de lecture de la table d index
 	sds mot, comp;
-	int identifiant, occurence;
+	int identifiant, occurence, compteur;
+	int occurences[NB_RESULTAT_RECHERCHE];
+	TabOccurences * listeOccurences;
+	TabOccurences * courant;
 	
 	mot = sdsempty();
 	comp = sdsempty();
+	listeOccurences = (TabOccurences*) malloc(sizeof(TabOccurences));
+	listeOccurences->precedent = NULL;
+	listeOccurences->identifiant = -1;
+	listeOccurences->occurences = -1;
+	listeOccurences->suivant = NULL;
 	
 	// parcours des mots cles
 	ptr_mc = motscles;
@@ -102,33 +125,99 @@ int* lire_index(Capsule table_index, sds motscles, int id[])
 	{
 		sscanf(ptr_mc, "%s", mot);
 		
+		// on recupere le mot de la table d index
 		for(int i = 0; i < nombreDescripteurs(table_index); i++)
 		{
 			sscanf(table_index.descripteurs[i], "%[^;]", comp);
-			printf("%s\n", comp);
 			if(strcmp(mot, comp) == 0)
 			{
 				ptr_index = strchr(table_index.descripteurs[i], ';');
+				ptr_index++;
 				break;
 			}
 		}
+		
+		// pour chaque mot cle, on recupere son nombre d occurence dans chaque fichier
+		// on additionne les occurences a chaque fois
+		courant = listeOccurences;
 		while(strlen(ptr_index) != 0)
 		{
 			sscanf(ptr_index, "%d:%d", &identifiant, &occurence);
-			// TODO
-			
+			if(courant->identifiant == -1)
+			{
+				courant->identifiant = identifiant;
+				courant->occurences = occurence;
+			}
+			else
+			{
+				while(1)
+				{
+					if(courant->identifiant == identifiant)
+					{
+						courant->occurences += occurence;
+						if(courant->suivant == NULL)
+						{
+							courant->suivant->precedent = courant;
+							courant = courant->suivant;
+						}
+					}
+					if(courant->suivant == NULL)
+					{
+						courant->suivant = (TabOccurences*) malloc(sizeof(TabOccurences));
+						courant->suivant->precedent = courant;
+						courant = courant->suivant;
+						courant->identifiant = identifiant;
+						courant->occurences = occurence;
+						break;
+					}
+					courant->suivant->precedent = courant;
+					courant = courant->suivant;
+				}
+			}
 			ptr_index = strchr(ptr_index, ';');
 			ptr_index++;
-		 }
+		}
 		
 		ptr_mc = strchr(ptr_mc, ' ');
 		ptr_mc++;
 	}
 	
+	// on recupere les identifiants avec un meilleur score
+	compteur = 0;
+	courant = listeOccurences;
+	//printf("%p : %d : %d : %p\n", courant->precedent, courant->identifiant, courant->occurences, courant->suivant);
+	while(courant != NULL)
+	{
+		if(compteur < NB_RESULTAT_RECHERCHE)
+		{
+			id[compteur] = courant->identifiant;
+			occurences[compteur] = courant->occurences;
+			compteur++;
+		}
+		else
+		{
+			for(int i = 0; i < NB_RESULTAT_RECHERCHE; i++)
+			{
+				if(courant->occurences > occurences[i])
+				{
+					id[compteur] = courant->identifiant;
+					occurences[compteur] = courant->occurences;
+					break;
+				}
+			}
+		}
+		
+		free(courant->precedent);
+		if(courant->suivant == NULL)
+		{
+			free(courant);
+			break;
+		}
+		courant = courant->suivant;
+	}
+	
 	sdsfree(mot);
 	sdsfree(comp);
-	
-	return id;
 }
 
 void recherche_texte_motscles(const sds motscles, const sds liste_base_texte, const sds table_index_texte)
@@ -136,93 +225,29 @@ void recherche_texte_motscles(const sds motscles, const sds liste_base_texte, co
 	sds resultats[NB_RESULTAT_RECHERCHE]; // resultats sous forme de chemin d acces
 	int id[NB_RESULTAT_RECHERCHE];
 	unsigned char flag;
-	Capsule capsule = loadDescripteurs(&flag, liste_base_texte);
-	//id = lire_index(table_index_texte, motscles);
+	Capsule capsule = loadDescripteurs(&flag, table_index_texte);
+	
+	for(int i = 0; i < NB_RESULTAT_RECHERCHE; i++)
+	{
+		id[i] = -1;
+	}
+	
+	lire_index(capsule, motscles, id);
 	
 	for(int i = 0; i < NB_RESULTAT_RECHERCHE; i++)
 	{
 		resultats[i] = getNom(id[i], liste_base_texte);
-		printf("%s\n", resultats[i]);
+		if(strlen(resultats[i]) != 0)
+			printf("%s\n", resultats[i]);
 	}
 	
 	freeCapsule(capsule);
 }
 
-// Pour le moment, cette fonction recherche un fichier identique a celui passe en parametre
-void recherche_texte_fichier(const sds fichier, const sds liste_base_texte, const sds fichierDescripteurs)
+void recherche_texte_fichier(const sds fichier, const sds liste_base_texte, const sds table_index_texte)
 {
-	// format d un descripteur
-	// [id;nombreDeMotsAuTotal;nombreDeMotsRetenus][mot:occurence;mot2:occurence2]
+	sds descripteur = indexation_texte(fichier, 0);
+	sds motscles = listeMots(descripteur);
 	
-	sds descripteur; // le descripteur du fichier a rechercher
-	sds resultats[NB_RESULTAT_RECHERCHE];
-	unsigned char flag;
-	Capsule capsule;
-	int id;
-	// variables utilisees pour comparer les descripteurs
-	int  nbMotsRetenusF, nbMotsRetenusC, nbMotsRetenusR;
-	
-	//descripteur = indexation_texte(fichier);
-	descripteur = sdsnew("[18;6;2][nununu :34;tin :23]");
-	capsule = loadDescripteurs(&flag, fichierDescripteurs);
-	//printf("%d\n", flag);
-	sscanf(descripteur, "[%*d;%*d;%d]", &nbMotsRetenusF);
-	
-	// liste des mots pour chaque descripteur
-	// sds listeMotsF[nbMotsRetenusF];
-	sds * listeMotsF = (sds*) malloc(sizeof(sds)*nbMotsRetenusF);
-	listeMots(descripteur, listeMotsF);
-	
-	sds * listeMotsC;
-	sds * listeMotsR;
-	for(int i = 0; i < nombreDescripteurs(capsule); i++)
-	{
-		// Les premiers descripteurs trouves seront toujours enregistrees
-		// dans le tableau de resultats
-		if(i < NB_RESULTAT_RECHERCHE)
-		{
-			resultats[i] = capsule.descripteurs[i];
-		}
-		// On compare la similitude du descripteur courant au fichier recherche
-		// et la similitude des resultats avec le fichier recherche
-		else
-		{
-			sscanf(capsule.descripteurs[i], "[%*d;%*d;%d]", &nbMotsRetenusC);
-			listeMotsC = (sds*) malloc(sizeof(sds)*nbMotsRetenusC);
-			listeMots(capsule.descripteurs[i], listeMotsC);
-			// parcours des resultats pour les comparer au descripteur courant dans la
-			// capsule
-			for(int j = 0; j < NB_RESULTAT_RECHERCHE; j++)
-			{
-				sscanf(resultats[j], "[%*d;%*d;%d]", &nbMotsRetenusR);
-				listeMotsR = (sds*) malloc(sizeof(sds)*nbMotsRetenusR);
-				listeMots(resultats[j], listeMotsR);
-				if (motscmp(listeMotsC, listeMotsF, nbMotsRetenusC, nbMotsRetenusF) > motscmp(listeMotsR, listeMotsF, nbMotsRetenusR, nbMotsRetenusF))
-				{
-					resultats[j] = capsule.descripteurs[i]; // a ameliorer, peut supprimer un resultat plus pertinent qu un autre
-					break;
-				}
-				freeListeMots(nbMotsRetenusR, listeMotsR);
-				free(listeMotsR);
-			}
-			freeListeMots(nbMotsRetenusC, listeMotsC);
-			free(listeMotsC);
-		}
-	}
-	freeListeMots(nbMotsRetenusF, listeMotsF);
-	free(listeMotsF);
-	
-	// Le tableau des resultats contients les descripteurs des fichiers les plus
-	// similaires au fichiers recherche.
-	// Cette boucle sert a passer des descripteurs au nom des fichiers
-	for(int i = 0; i < NB_RESULTAT_RECHERCHE; i++)
-	{
-		sscanf(resultats[i], "[%d", &id);
-		resultats[i] = getNom(id, liste_base_texte);
-		printf("%s\n", resultats[i]);
-		sdsfree(resultats[i]);
-	}
-	
-	freeCapsule(capsule);
-	sdsfree(descripteur);
+	recherche_texte_motscles(motscles, liste_base_texte, table_index_texte);
 }

@@ -25,11 +25,9 @@ void recherche_texte_motscles(const sds motscles, const sds liste_base_texte, co
  *
  * @param  sds fichier
  * @param sds[] liste_base_texte
- * @param sds fichierDescripteurs
+ * @param sds table_index_texte
  */
-void recherche_texte_fichier(const sds fichier, const sds liste_base_texte, const sds fichierDescripteurs);
+void recherche_texte_fichier(const sds fichier, const sds liste_base_texte, const sds table_index_texte);
 
-// TEST
-int* lire_index(Capsule table_index, sds motscles, int id[]);
 
 #endif
