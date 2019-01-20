@@ -19,4 +19,6 @@ int main(){
 	addElement(&caps,indexation_texte("12-Agassi_plie_face_au_meilleur.xml",11));
 	saveDescripteurs(&flag,caps,"corpustexte.desc");
 	assert(flag!=ECHEC);
+	
+	
 }

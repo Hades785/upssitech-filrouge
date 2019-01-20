@@ -292,7 +292,7 @@ TabOcc lecture_fichier(const char * accesFichier, unsigned int * nbMotsTotal)
 					ajout_mot(&tabocc, motActuel);
 				sdsfree(motActuel);
 				
-				nbMotsTotal++;
+				(*nbMotsTotal)++;
 			}
 			else
 			{
@@ -373,7 +373,7 @@ TabOcc decode_descripteur(const char * descripteur, int * idFichier){
 
 sds indexation_texte(const char * accesFichier,int valId)
 {
-	unsigned int nbMotsTotal;
+	unsigned int nbMotsTotal = 0;
 	TabOcc fichier = lecture_fichier(accesFichier, &nbMotsTotal);
 	TabOcc desc = tri_occurence(fichier);
 	freeTabOcc(&fichier);
