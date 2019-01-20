@@ -5,10 +5,6 @@
 #define TAILLE_MIN_MOT 3
 #define TAILLE_MAX_MOT 30
 
-const char exclusions[] = "les des par une son que dans est ces ses pour sont faire pas Ces Sat Sep GMT ainsi sera Pour où afin même Cette vers vient qui aux cette Les";
-
-const char accents[] = "äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒ";
-
 #define CONFIG_FILE_PATH "/filrouge.config" //config file from home directory
 
 #define SUCCES 0

@@ -1,7 +1,6 @@
 #ifndef __INDEXATION_TEXTE__
 #define __INDEXATION_TEXTE__
 
-
 #include "sds.h"
 
 typedef struct

@@ -31,7 +31,7 @@ recherche_audio.o: recherche_audio.c recherche_audio.h indexation_audio.h
 sds.o: sds.c sds.h sdsalloc.h
 	@gcc -c sds.c
 
-sauvegarde_descripteurs.o: sauvegarde_descripteurs.c sauvegarde_descripteurs.h sds.h
+sauvegarde_descripteurs.o: sauvegarde_descripteurs.c sauvegarde_descripteurs.h sds.h constantes.h
 	@gcc -c sauvegarde_descripteurs.c
 	
 config_reader.o: config_reader.c config_reader.h sds.h sauvegarde_descripteurs.h constantes.h

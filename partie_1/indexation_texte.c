@@ -1,13 +1,16 @@
 #include "indexation_texte.h"
-#include <ctype.h>
-#include <math.h>
+//#include <ctype.h>
+//#include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "constantes.h"
 #include <assert.h>
-#include "sauvegarde_descripteurs.h"
 #include "config_reader.h"
+
+const char exclusions[] = "les des par une son que dans est ces ses pour sont faire pas Ces Sat Sep GMT ainsi sera Pour où afin même Cette vers vient qui aux cette Les";
+
+const char accents[] = "äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒ";
 
 void afficher_tabocc(TabOcc t)
 {
