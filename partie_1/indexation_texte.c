@@ -228,12 +228,13 @@ Capsule genere_table(Capsule caps)
 	
 	for(unsigned int i = 0 ; i < map_tempo.keys->nbDescripteurs ; i++)
 	{
-		sds s = sdscat(map_tempo.keys->descripteurs[i], ";");
+		sds s = sdscat(sdsdup(map_tempo.keys->descripteurs[i]), ";");
 		s = sdscat(s, map_tempo.values->descripteurs[i]);
-		addElement(&cap_retour, s);
+		addElementCopy(&cap_retour, s);
 		sdsfree(s);
 	}
-	//freeConfMap(map_tempo); // provoque une erreur : TODO !
+	
+	freeConfMap(map_tempo);
 	
 	return cap_retour;
 }
