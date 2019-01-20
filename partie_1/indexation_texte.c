@@ -223,13 +223,14 @@ Capsule genere_table(Capsule caps)
 		freeTabOcc(&tabocc);
 	}
 	
-	for(unsigned int i = 0 ; i < map_tempo.keys.nbDescripteurs ; i++)
+	for(unsigned int i = 0 ; i < map_tempo.keys->nbDescripteurs ; i++)
 	{
-		sds s = sdscat(map_tempo.keys.descripteurs[i], ";");
-		s = sdscat(s, map_tempo.values.descripteurs[i]);
+		sds s = sdscat(map_tempo.keys->descripteurs[i], ";");
+		s = sdscat(s, map_tempo.values->descripteurs[i]);
 		addElement(&cap_retour, s);
 		sdsfree(s);
 	}
+	freeConfMap(map_tempo);
 	
 	return cap_retour;
 }

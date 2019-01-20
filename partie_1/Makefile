@@ -58,7 +58,7 @@ testConfigFile.out: testConfigFile.c sauvegarde_descripteurs.h sds.h config_read
 .PHONY: test_indexation_texte.out
 test_indexation_texte.out : test_indexation_texte.c sds.h sds.o indexation_texte.h indexation_texte.o sauvegarde_descripteurs.h sauvegarde_descripteurs.o config_reader.h config_reader.o
 	@gcc -c test_indexation_texte.c
-	@gcc -o test_indexation_texte.out test_indexation_texte.o sds.o indexation_texte.o -lm
+	@gcc -o test_indexation_texte.out test_indexation_texte.o sds.o indexation_texte.o config_reader.o sauvegarde_descripteurs.o -lm
 	./test_indexation_texte.out
 	
 .PHONY: test_indexation_texte_lecture_fichier.out
