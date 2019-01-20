@@ -5,9 +5,9 @@
 #include "constantes.h"
 
 sds getPath(){
-	sds s = sdsnew(getenv("HOME"));
-	s = sdscat(s,CONFIG_FILE_PATH);
-	return s;
+	sds s = sdscat(sdsnew(getenv("HOME"),"/");
+	s = sdscat(sdscat(s,STORAGE_FOLDER_NAME),"/");
+	return sdscat(s,CONFIG_FILE_NAME);
 }
 
 unsigned char config_file_exists(){

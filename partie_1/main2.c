@@ -1,6 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <dirent.h>
+#include <assert.h>
+#include "constantes.h"
+#include "config_reader.h"
 
 ConfMap defaultConfMap(){
 	unsigned char flag;
@@ -25,6 +28,9 @@ int main(){
 	printf("Chargement");
 	ConfMap map;
 	unsigned char flag;
+	sds dirPath = sdscat(sdscat(sdsnew(getenv("HOME")),"/"),STORAGE_FOLDER_NAME);
+	dirPath = sdscat(s,"/");
+	DIR * progDir = opendir(dirPath);
 	if(config_file_exists()){
 		map = read_config_file(&flag);
 		printf(".");
@@ -35,9 +41,17 @@ int main(){
 		assert(flag != ECHEC);
 	}
 	printf(".");
-	long pos(keyPosition(&map,"chemin_bdd");
+	sds chemin_bdd;
+	char buf[300];
+	long pos = (keyPosition(&map,"chemin_bdd");
 	if(pos == -1){
-		printf(".\nChemin de la base de fichiers non connu.\nVeuillez entrer le chemin : ");
-		
+		printf(".\nChemin de la base de fichiers non connu.\nVeuillez entrer le chemin (300 caractères max): ");
+		scanf("%300s",buf);
+		flag = addValue(&map,"chemin_bdd",buf);
+		assert(flag != ECHEC);
+		chemin_bdd = sdsnew(buf);
+	}else{
+		chemin_bdd = sdsdup(map.values.descripteurs[pos]);
 	}
+	
 }
