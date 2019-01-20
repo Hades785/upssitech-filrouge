@@ -1,4 +1,5 @@
 #include <inttypes.h>
+#include <math.h>
 #include "recherche_audio.h"
 #include "constantes.h"
 
@@ -9,12 +10,13 @@ typedef struct _sample {
 
 
 int distance(const sds ligne_desc_corpus[NB_AMP_INTERVAL], const sds ligne_desc_jingle[NB_AMP_INTERVAL]) {
+    unsigned int dist = 0;
     for(int i = 0; i < NB_AMP_INTERVAL; i++) {
-        // CONVERSION CHAR -> int TODO
         char* endptr;
-        printf("%ld\n", (strtoimax(ligne_desc_corpus[i], &endptr, 10) - strtoimax(ligne_desc_jingle[i], &endptr, 10)));
+        dist += abs(strtoimax(ligne_desc_corpus[i], &endptr, 10) - strtoimax(ligne_desc_jingle[i], &endptr, 10));
     }
-    return 0;
+    printf("%d\n", dist);
+    return dist;
 }
 
 void recherche_audio(const sds chemin_fichier, const sds chemin_base) {
@@ -61,19 +63,14 @@ void recherche_audio(const sds chemin_fichier, const sds chemin_base) {
         }
     }
 
-    // COMPARAISON: TODO
+    // Comparaison [*TODO* store results of sample distance and interpret results to give time]
     for(int i = 0; i < nombreDescripteurs(capsule); i++)
-        for(int j = 0; j < samples_d[i][j].count_values && j < samples_j[j].count_values; j++)
-            for(int k = 0; k < samples_d[i][j].count_values && k < samples_j[k].count_values; k++)
-                distance(samples_d[i][j].values, samples_j[k].values);
-
-    // for(int i = 0; i < count_desc_lines; i++) {
-    //     for(int j = 0; j < samples[i].count_values; j++) {
-    //         printf("%s/", samples[i].values[j]);
-    //     }
-    //     printf("\n");
-    // }
-
+        // For every *5* sample evalute distance with "jingle" samples [*CONFIG* 5 +/- precision and speed]
+        for(int j = 0; j < count_base_descs_lines[i]-1 && j <= count_base_descs_lines[i]-count_desc_lines; j+=5)
+            for(int k = 0; k < count_desc_lines-1; k++)
+                // Calcul de distance entre les echantillons [*TODO*]
+                distance(samples_d[i][j+k].values, samples_j[k].values);
+    
 
     // Liberation memoire allouee
     for(int i = 0; i < nombreDescripteurs(capsule); i++) {

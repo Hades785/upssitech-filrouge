@@ -49,7 +49,7 @@ test_recherche_audio.o: test_recherche_audio.c recherche_audio.h indexation_audi
 	@gcc -c test_recherche_audio.c
 
 test_ra.out: test_recherche_audio.o recherche_audio.o indexation_audio.o sds.o sauvegarde_descripteurs.o
-	@gcc -o test_ra.out test_recherche_audio.o recherche_audio.o indexation_audio.o sds.o sauvegarde_descripteurs.o
+	@gcc -o test_ra.out test_recherche_audio.o recherche_audio.o indexation_audio.o sds.o sauvegarde_descripteurs.o -lm
 
 .PHONY: clean
 clean:
