@@ -2,6 +2,7 @@
 #define __INDEXATION_TEXTE__
 
 #include "sds.h"
+#include "sauvegarde_descripteurs.h"
 
 typedef struct
 {
@@ -28,6 +29,8 @@ void freeTabOcc(TabOcc * t);
 unsigned char test_alpha(int lettre);
 
 int suppr_accent_et_maj(int lettre);
+
+Capsule genere_table(Capsule caps);
 
 TabOcc lecture_fichier(const char * accesFichier, unsigned int * nbMotsTotal);
 

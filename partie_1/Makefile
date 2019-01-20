@@ -61,6 +61,12 @@ test_indexation_texte.out : test_indexation_texte.c sds.h sds.o indexation_texte
 	@gcc -o test_indexation_texte.out test_indexation_texte.o sds.o indexation_texte.o config_reader.o sauvegarde_descripteurs.o -lm
 	./test_indexation_texte.out
 	
+.PHONY: test_genere_table.out
+test_genere_table.out : test_genere_table.c sds.h sds.o indexation_texte.h indexation_texte.o sauvegarde_descripteurs.h sauvegarde_descripteurs.o config_reader.h config_reader.o
+	@gcc -c test_genere_table.c
+	@gcc -o test_genere_table.out test_genere_table.o sds.o indexation_texte.o config_reader.o sauvegarde_descripteurs.o -lm
+	./test_genere_table.out
+	
 .PHONY: test_indexation_texte_lecture_fichier.out
 test_indexation_texte_lecture_fichier.out : test_indexation_texte_lecture_fichier.c sds.h sds.o indexation_texte.h indexation_texte.o
 	@gcc -c test_indexation_texte_lecture_fichier.c
