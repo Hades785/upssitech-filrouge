@@ -194,9 +194,9 @@ void ajout_dans_table_index(Capsule capsule, const sds mot, const unsigned int n
 Capsule genere_table(Capsule caps)
 {
 	/*
+	[declaration capsule]
 	[declaration confmap]
 	[remplissage confmap]
-	[declaration capsule]
 	[transfert map -> caspule]
 	[renvoie capsule]
 	*/
@@ -204,8 +204,8 @@ Capsule genere_table(Capsule caps)
 	unsigned char successFlag;
 	Capsule cap_retour = newCapsule(&successFlag);
 	assert(successFlag != ECHEC);
-	
 	ConfMap map_tempo = newConfMap(&successFlag);
+	assert(successFlag != ECHEC);
 	
 	for(unsigned int i = 0 ; i < caps.nbDescripteurs ; i++)
 	{
@@ -222,6 +222,15 @@ Capsule genere_table(Capsule caps)
 		}
 		freeTabOcc(&tabocc);
 	}
+	
+	for(unsigned int i = 0 ; i < map_tempo.keys.nbDescripteurs ; i++)
+	{
+		sds s = sdscat(map_tempo.keys.descripteurs[i], ";");
+		s = sdscat(s, map_tempo.values.descripteurs[i]);
+		addElement(&cap_retour, s);
+		sdsfree(s);
+	}
+	
 	return cap_retour;
 }
 
