@@ -152,48 +152,6 @@ int suppr_accent_et_maj(int lettre)
 }
 
 
-/*
-void ajout_dans_table_index(Capsule capsule, const sds mot, const unsigned int numFichier)
-{
-	unsigned int ct = 1;
-	unsigned char motPresent = 0;
-	
-	while(ct < capsule.nbDescripteurs && !motPresent)
-	{
-		sds s = capsule.descripteurs[ct];
-		unsigned int ct2 = 1;
-		
-		motPresent = 1;
-		
-		while(s[ct2]!=';' && ct2<=(int)sdslen(mot))
-		{
-			if(s[ct2] != mot[ct2-1]) // Si il y a la moindre lettre de différence
-				motPresent = 0;
-			
-			if(s[ct2+1]==';' && ct2!=(int)sdslen(mot))
-				motPresent = 0;
-			
-			if(s[ct2+1]!=';' && ct2==(int)sdslen(mot))
-				motPresent = 0;
-			
-			ct2++;
-		}
-		
-		unsigned char num = numFichier + 0x30;
-		
-		if(motPresent)
-		{
-			
-		}
-		else
-			addElement(&capsule, mot + ';' + num + ); //TODO
-		
-		ct++;
-	}
-}
-*/
-
-
 Capsule genere_table(Capsule caps)
 {
 	/*
@@ -382,24 +340,3 @@ sds indexation_texte(const char * accesFichier,int valId)
 	freeTabOcc(&desc);
 	return resp;
 }
-
-/*
-void gestion_descripteur_texte()
-{
-	unsigned char successFlag;
-	Capsule cap = newCapsule(&successFlag);
-	Capsule cap_liste = newCapsule(&successFlag);
-	
-	addElement(&cap, indexation_texte("../documents/texte/05-Photographie___Philip_Blenkinsop_a.xml", 0));
-	addElement(&cap_liste, "../documents/texte/05-Photographie___Philip_Blenkinsop_a.xml :0;");
-	
-	addElement(&cap, indexation_texte("../documents/texte/05-Rock___l_Illinois_magique_de.xml", 1));
-	addElement(&cap_liste, "../documents/texte/05-Rock___l_Illinois_magique_de.xml :1;");
-	
-	addElement(&cap, indexation_texte("../documents/texte/06-US_Open___Mauresmo_et.xml", 2));
-	addElement(&cap_liste, "../documents/texte/06-US_Open___Mauresmo_et.xml :2;");
-	
-	saveDescripteurs(&successFlag, cap, "base_descripteur_texte.txt");
-	saveDescripteurs(&successFlag, cap_liste, "liste_base_texte.txt");
-}
-*/
