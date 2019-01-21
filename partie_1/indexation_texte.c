@@ -324,7 +324,7 @@ TabOcc tri_occurence(TabOcc tab)
 	triTabOcc(&tab);
 	TabOcc resp = newTabOcc();
 	
-	for(unsigned int i = 0;i < NB_RESULTAT_RECHERCHE;i++){
+	for(unsigned int i = 0;i < NB_RESULTAT_RECHERCHE && i < tab.nbEle;i++){
 		addMotStrict(&resp,tab.mots[i],tab.nbOcc[i]);
 	}
 	
