@@ -5,7 +5,7 @@
 #include "constantes.h"
 
 sds getPath(){
-	sds s = sdscat(sdsnew(getenv("HOME"),"/");
+	sds s = sdscat(sdsnew(getenv("HOME")),"/");
 	s = sdscat(sdscat(s,STORAGE_FOLDER_NAME),"/");
 	return sdscat(s,CONFIG_FILE_NAME);
 }

@@ -1,7 +1,7 @@
-app.out: main.o indexation.o indexation_texte.o indexation_image.o indexation_audio.o recherche.o recherche_texte.o recherche_image.o recherche_audio.o
-	@gcc -o app.out main.o indexation.o indexation_texte.o indexation_image.o indexation_audio.o recherche.o recherche_texte.o recherche_image.o recherche_audio.o
+app.out: main.o indexation.o indexation_texte.o indexation_image.o indexation_audio.o recherche.o recherche_texte.o recherche_image.o recherche_audio.o sds.o sauvegarde_descripteurs.o config_reader.o
+	@gcc -o app.out main.o indexation.o indexation_texte.o indexation_image.o indexation_audio.o recherche.o recherche_texte.o recherche_image.o recherche_audio.o sds.o sauvegarde_descripteurs.o config_reader.o -lm
 	
-main.o: main.c indexation.h recherche.h
+main.o: main.c indexation.h recherche.h sds.h constantes.h config_reader.h sauvegarde_descripteurs.h
 	@gcc -c main.c
 
 indexation.o: indexation.c indexation.h indexation_texte.h indexation_image.h indexation_audio.h

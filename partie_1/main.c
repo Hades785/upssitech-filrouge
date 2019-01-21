@@ -1,134 +1,158 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <dirent.h>
-#include "indexation.h"
-#include "recherche.h"
-#include "sds.h"
+#include <errno.h>
+#include <assert.h>
+#include "constantes.h"
+#include "config_reader.h"
 
-/**
- * Indexation du repertoire
-  */
-void indexation_main()
-{
-	char[] chemin_parent;
-	sds chemin;
-	chemin_parent = new char[300];
+#include <sys/types.h>
+#include <sys/stat.h>
+
+enum Etape{
+	ETAPE_DEMANDE_CHEMIN,
+	ETAPE_DEMARRAGE,
+	MENU_PRINCIPAL,
+	MENU_RECHERCHE,
+	MENU_CONFIGURATION,
+	ETAPE_INDEXATION
+};
+
+ConfMap defaultConfMap(){
+	unsigned char flag;
+	ConfMap map = newConfMap(&flag);
+	assert(flag != ECHEC);
+	/*flag = addValue(&map,"chemin_bdd","");
+	assert(flag != ECHEC);*/
+	flag = addValueLong(&map,"nb_res_image",15);
+	assert(flag != ECHEC);
+	flag = addValueLong(&map,"nb_bits_image",4);
+	assert(flag != ECHEC);
+}
+
+int main(){
+	enum Etape etape = ETAPE_DEMARRAGE;
+	unsigned char flag;
+	unsigned char running = 1;
+	puts("Moteur de recherche de fichiers équipe 3");
+	fputs("Chargement",stdout);
+	sds dirPath = sdscat(sdscat(sdsnew(getenv("HOME")),"/"),STORAGE_FOLDER_NAME);
+	dirPath = sdscat(dirPath,"/");
 	
-	// Indexation
-	// Une condition sera ajoutee pour qu elle ne soit pas re effectuee
-	// a chaque demarrage du logiciel.
-	do
-	{
-	printf("Saisissez le chemin absolu du repertoire contenant les fichiers a indexer limite a 300 caracteres):\n")
-	scanf("%s", chemin_parent);
-	chemin = sdsnew(chemin_parent);
-	DIR* dir = opendir(chemin_parent); // verification de l existence
-	} while(!dir)
-		
-	indexer(MODE_INDEX_TEXTE, sdscat(chemin, "/texte"));
-	indexer(MODE_INDEX_IMAGE, sdscat(chemin, "/image"));
-	indexer(MODE_INDEX_AUDIO, sdscat(chemin, "/audio"));
-}
-
-/**
-* Menu - Recherche
- */
- void recherche_main()
- {
-	int choix;
-	while(choix)
-	{
-		printf("3 - Recherche de texte\n");
-		printf("2 - Recherche d image\n");
-		printf("1 - Recherche de son\n");
-		printf("0 - Precedent\n");
-		
-		scanf("%d", &choix);
-		printf("\n\n------------------------\n\n");
-		
-		switch(choix)
-		{
-			case 0:
-				return;
-			case 1:
-				recherche_main_a();
-				break;
-			case 2:
-				recherche_main_i();
-				break;
-			case 3:
-				recherche_main_t();
-				break;
-			default:
-				continue;
+	//on test si le repertoire existe et on le cree si besoin
+	DIR * progDir = opendir(dirPath);
+	if(progDir == NULL){
+		if(errno == ENOENT){
+			if(mkdir(dirPath,0x777) == -1){
+				perror("Erreur fatale ");
+				sdsfree(dirPath);
+				return -1;
+			}
+		}else{
+			perror("Erreur fatale ");
+			sdsfree(dirPath);
+			return -1;
 		}
 	}
- }
- 
- void recherche_main_t()
- {
-	 int choix;
-	 while(choix)
-	 {
-		printf("2 - Recherche par fichier\n"); 
-		printf("1 - Recherche par mot-cles\n");
-		printf("0 - Precedent\n");
-		
-		switch(choix)
-		{
-			case 0:
-				return;
-			case 1:
-				// rechercher(MODE_RECH_TEXTE_MOT);
-				break;
-			case 2:
-				// rechercher(MODE_RECH_TEXTE_FICHIER);
-				break;
-			default:
-				continue;
-	 }
- }
- 
- void recherche_main_i()
- {
-	 
- }
- 
- void recherche_main_a()
- {
-	 char[] fichier_jingle; // extrait de son recherche
-	 // TODO
- }
-
-/**
- * Affichage du menu principal.
- */
-void display_main_menu() {
-	int choix;
-	while(choix)
-	{
-		printf("2 - Recherche\n");
-		printf("1 - Reindexer\n");
-		printf("0 - Quitter\n");
-		
-		scanf("%d", &choix);
-		printf("\n\n------------------------\n\n");
-		
-		switch(choix)
-		{
-			case 1:
-				recherche_main();
-				break;
-			case 2:
-				indexation();
-				break;
-			default:
-				continue;
+	fputs(".",stdout);
+	
+	ConfMap map;
+	
+	//on regarde si le fichier de configuration existe
+	if(config_file_exists() == 0){
+		if(errno == ENOENT){
+			map = defaultConfMap();
+			flag = save_config_file(map);
+			if(flag != SUCCES){
+				perror("Erreur fatale ");
+				sdsfree(dirPath);
+				freeConfMap(map);
+				return -1;
+			}
+		}else{
+			perror("Erreur fatale ");
+			sdsfree(dirPath);
+			return -1;
+		}
+	}else{
+		map = read_config_file(&flag);
+		if(flag != SUCCES){
+			perror("Erreur fatale ");
+			sdsfree(dirPath);
+			freeConfMap(map);
 		}
 	}
-}
-
-int main(int argc, const char* argv[]) {
-	indexation();
-    display_main_menu();
-    return EXIT_SUCCESS;
+	fputs(".",stdout);
+	
+	DIR * dirBdd;
+	
+	unsigned char presence_key_chemin = 0;
+	long pos = keyPosition(&map,"chemin_bdd");
+	if(pos == -1){
+		etape = ETAPE_DEMANDE_CHEMIN;
+	}else{
+		dirBdd = opendir(map.values->descripteurs[pos]);
+		if(dirBdd == NULL){
+			if(errno == ENOENT){
+				etape = ETAPE_DEMANDE_CHEMIN;
+			}else{
+				perror("Erreur fatale ");
+				sdsfree(dirPath);
+				freeConfMap(map);
+				return -1;
+			}
+		}else{
+			presence_key_chemin = 1;
+		}
+	}
+	puts(".");
+	char buf[300];
+	
+	
+	do{
+		switch(etape){
+			case ETAPE_DEMANDE_CHEMIN:
+				puts("Entrer le chemin vers la base de données :");
+				puts("(soit en relatif si l'execution se fait toujours depuis le même répertoire, soit en absolu.)");
+				puts("(Rappel : sur WSL, les disques sont en /mnt/)");
+				scanf("%300s",buf);
+				dirBdd = opendir(buf);
+				if(dirBdd == NULL){
+					if(errno != ENOENT){
+						perror("Erreur fatale ");
+						running = 0;
+					}
+				}else if(presence_key_chemin){
+					changeValue(&map,"chemin_bdd",buf);
+				}else{
+					addValue(&map,"chemin_bdd",buf);
+					presence_key_chemin = 1;
+					etape = MENU_PRINCIPAL;
+				}
+				break;
+			case ETAPE_DEMARRAGE:
+				etape = MENU_PRINCIPAL;//TODO
+				break;
+			case MENU_PRINCIPAL:
+				puts("MENU PRINCIPAL");
+				puts("1-Recherche");
+				puts("2-Configuration");
+				puts("3-Réindexation");
+				puts("\n0-Quitter");
+				scanf("%1s",buf);
+				switch(buf[0]){
+					case '1': etape = MENU_RECHERCHE; break;
+					case '2': etape = MENU_CONFIGURATION; break;
+					case '3': etape = ETAPE_INDEXATION; break;
+					case '0': running = 0; break;
+				}
+				break;
+			default:
+				running = 0;
+				puts("Fatal error : unknown state.");
+				break;
+		}
+	}while(running);
+	sdsfree(dirPath);
+	freeConfMap(map);
 }
