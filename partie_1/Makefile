@@ -36,6 +36,12 @@ sauvegarde_descripteurs.o: sauvegarde_descripteurs.c sauvegarde_descripteurs.h s
 	
 config_reader.o: config_reader.c config_reader.h sds.h sauvegarde_descripteurs.h constantes.h
 	@gcc -c config_reader.c
+
+tst_recherche_texte.o: tst_recherche_texte.c sds.h indexation_texte.h recherche_texte.h sauvegarde_descripteurs.h
+	@gcc -c tst_recherche_texte.c
+
+tst_recherche_texte.out : tst_recherche_texte.o sds.o indexation_texte.o recherche_texte.o sauvegarde_descripteurs.o config_reader.o
+	@gcc -o tst_recherche_texte.out tst_recherche_texte.o sds.o indexation_texte.o recherche_texte.o sauvegarde_descripteurs.o config_reader.o
 	
 .PHONY: testSaveDesc.out
 testSaveDesc.out: testSaveDesc.c sauvegarde_descripteurs.h sds.h sauvegarde_descripteurs.o sds.o
