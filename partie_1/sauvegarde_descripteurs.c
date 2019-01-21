@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "constantes.h"
 
 //la premiere ligne du fichier contient le nombre de descripteurs contenus
 //chaque ligne suivante contient un descripteur
@@ -55,20 +56,25 @@ Capsule loadDescripteurs(unsigned char * successFlag,const char * fichierDescrip
 		//printf("new sds: %s\n",s);
 		int j;
 		do{
-			pt = fgets(buf,TAILLE_BUF,fichier);
-			//printf("getted from file: %s\n",pt);
-			unsigned int temp = strlen(buf);
-			for(j = 0;j < temp;j++){
-				//on recherche la brace fermante '}'
-				/*if(buf[j] != '\n')
-					printf("car : %c\n",buf[j]);
-				else
-					printf("car : \\n\n");*/
-				if(buf[j] == '}'){
-					buf[j] = '\0';
-					break;
+			unsigned char trouve = 0;
+			do{
+				pt = fgets(buf,TAILLE_BUF,fichier);
+				unsigned int temp = strlen(buf);
+				for(j = 0;j < temp;j++){
+					//on recherche la brace fermante '}'
+					/*if(buf[j] != '\n')
+						printf("car : %c\n",buf[j]);
+					else
+						printf("car : \\n\n");*/
+					if(buf[j] == '}'){
+						buf[j] = '\0';
+						trouve = 1;
+						break;
+					}
 				}
-			}
+				if(trouve == 0)
+					s = sdscat(s,buf);
+			}while(trouve == 0 && pt != NULL);
 			s = sdscat(s,buf);
 			//printf("String final: %s\n",s);
 			nbDescReel++;
@@ -85,7 +91,7 @@ Capsule loadDescripteurs(unsigned char * successFlag,const char * fichierDescrip
 }
 
 void saveDescripteurs(unsigned char * successFlag,const Capsule capsule,const char * fichierDescripteurs){
-	printf("Ecriture fichier %s\n",fichierDescripteurs);
+	//printf("Ecriture fichier %s\n",fichierDescripteurs);
 	FILE * fichier = fopen(fichierDescripteurs,"w");
 	if(fichier == NULL){
 		* successFlag = ECHEC;
