@@ -4,7 +4,7 @@
 
 void recherche_texte_mot(ConfMap * map);
 
-void recherche_texte_fichier(ConfMap * map);
+void recherche_texte_pfichier(ConfMap * map);
 
 void recherche_image_nom(ConfMap * map);
 

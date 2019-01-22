@@ -17,6 +17,12 @@
 #define DEF_NB_INTER_AMP 30
 #define DEF_STEP_NUMBER 10
 
+#define NOM_FICH_DESC_TEXT "base_textes.desc"
+#define NOM_FICH_MAP_NOM_TEXT "map_id_nom.desc"
+#define NOM_FICH_MAP_MOTS "map_mots.desc"
+#define NOM_FICH_DESC_IMG "base_images.desc"
+#define NOM_FICH_DESC_AUD "base_audio.desc"
+
 #define SUCCES 0
 #define ECHEC 1
 

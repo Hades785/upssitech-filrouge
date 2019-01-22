@@ -304,7 +304,7 @@ int main(){
 				}
 				break;
 			case MENU_INDEXATION:
-				puts("\nMENU_INDEXATION");
+				puts("\nMENU INDEXATION");
 				puts("1-Tout indexer");
 				puts("2-Indexation texte");
 				puts("3-Indexation image");
@@ -368,7 +368,7 @@ int main(){
 				switch(buf[0]){
 					case '0': etape = MENU_PRINCIPAL; break;
 					case '1': if(rech_tx_en) recherche_texte_mot(&map); break;
-					case '2': if(rech_tx_en) recherche_texte_fichier(&map); break;
+					case '2': if(rech_tx_en) recherche_texte_pfichier(&map); break;
 					case '3': if(rech_im_en) recherche_image_code(&map); break;
 					case '4': if(rech_im_en) recherche_image_nom(&map); break;
 					case '5': if(rech_im_en) recherche_image_fichier(&map); break;
