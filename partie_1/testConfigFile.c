@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <string.h>
 #include "config_reader.h"
+#include "constantes.h"
 
 int main(){
 	//printf("%s\n",strcat(getenv("HOME"),CONFIG_FILE_PATH));

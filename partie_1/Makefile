@@ -7,7 +7,7 @@ main.o: main.c indexation.h recherche.h sds.h constantes.h config_reader.h sauve
 indexation.o: indexation.c indexation.h indexation_texte.h indexation_image.h indexation_audio.h
 	@gcc -c indexation.c
 
-indexation_texte.o: indexation_texte.c indexation_texte.h
+indexation_texte.o: indexation_texte.c indexation_texte.h sds.h constantes.h sauvegarde_descripteurs.h config_reader.h
 	@gcc -c indexation_texte.c
 
 indexation_image.o: indexation_image.c indexation_image.h sds.h
@@ -31,11 +31,17 @@ recherche_audio.o: recherche_audio.c recherche_audio.h indexation_audio.h
 sds.o: sds.c sds.h sdsalloc.h
 	@gcc -c sds.c
 
-sauvegarde_descripteurs.o: sauvegarde_descripteurs.c sauvegarde_descripteurs.h sds.h
+sauvegarde_descripteurs.o: sauvegarde_descripteurs.c sauvegarde_descripteurs.h sds.h constantes.h
 	@gcc -c sauvegarde_descripteurs.c
 	
 config_reader.o: config_reader.c config_reader.h sds.h sauvegarde_descripteurs.h constantes.h
 	@gcc -c config_reader.c
+
+tst_recherche_texte.o: tst_recherche_texte.c sds.h indexation_texte.h recherche_texte.h sauvegarde_descripteurs.h
+	@gcc -c tst_recherche_texte.c
+
+tst_recherche_texte.out : tst_recherche_texte.o sds.o indexation_texte.o recherche_texte.o sauvegarde_descripteurs.o config_reader.o
+	@gcc -o tst_recherche_texte.out tst_recherche_texte.o sds.o indexation_texte.o recherche_texte.o sauvegarde_descripteurs.o config_reader.o
 	
 .PHONY: testSaveDesc.out
 testSaveDesc.out: testSaveDesc.c sauvegarde_descripteurs.h sds.h sauvegarde_descripteurs.o sds.o
@@ -54,6 +60,30 @@ testConfigFile.out: testConfigFile.c sauvegarde_descripteurs.h sds.h config_read
 	@gcc -c testConfigFile.c
 	@gcc -o testConfigFile.out testConfigFile.o sauvegarde_descripteurs.o sds.o config_reader.o
 	./testConfigFile.out
+
+.PHONY: test_indexation_texte.out
+test_indexation_texte.out : test_indexation_texte.c sds.h sds.o indexation_texte.h indexation_texte.o sauvegarde_descripteurs.h sauvegarde_descripteurs.o config_reader.h config_reader.o
+	@gcc -c test_indexation_texte.c
+	@gcc -o test_indexation_texte.out test_indexation_texte.o sds.o indexation_texte.o config_reader.o sauvegarde_descripteurs.o -lm
+	./test_indexation_texte.out
+	
+.PHONY: test_genere_table.out
+test_genere_table.out : test_genere_table.c sds.h sds.o indexation_texte.h indexation_texte.o sauvegarde_descripteurs.h sauvegarde_descripteurs.o config_reader.h config_reader.o
+	@gcc -c test_genere_table.c
+	@gcc -o test_genere_table.out test_genere_table.o sds.o indexation_texte.o config_reader.o sauvegarde_descripteurs.o -lm
+	./test_genere_table.out
+	
+.PHONY: test_indexation_texte_lecture_fichier.out
+test_indexation_texte_lecture_fichier.out : test_indexation_texte_lecture_fichier.c sds.h sds.o indexation_texte.h indexation_texte.o
+	@gcc -c test_indexation_texte_lecture_fichier.c
+	@gcc -o test_indexation_texte_lecture_fichier.out test_indexation_texte_lecture_fichier.o sds.o indexation_texte.o -lm
+	./test_indexation_texte_lecture_fichier.out
+	
+.PHONY: tst_tabocc.out
+tst_tabocc.out:indexation_texte.h indexation_texte.o sds.h sds.o
+	@gcc -c tst_tabocc.c
+	@gcc -o tst_tabocc.out tst_tabocc.o sds.o indexation_texte.o
+	./tst_tabocc.out
 
 .PHONY: tstCreateDescripteurImage.out
 tstCreateDescripteurImage.out: tstCreateDescripteurImage.c indexation_image.h sds.h indexation_image.o sds.o

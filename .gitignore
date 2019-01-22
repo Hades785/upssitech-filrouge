@@ -59,5 +59,6 @@ documents/
 
 # KDevelop project
 *.kdev4
+*.desc
 MENU_prop.txt
 *.desc
