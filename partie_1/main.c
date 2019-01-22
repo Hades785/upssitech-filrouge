@@ -313,15 +313,31 @@ int main(){
 				scanf("%1s",buf);
 				switch(buf[0]){
 					case '0': etape = MENU_PRINCIPAL; break;
-					case '1': //TODO Indexation texte
-						//TODO Indexation image
-						//TODO Indexation audio
+					case '1':
+						indexer_texte(chemin_bdd,&map);
+						indexer_image(chemin_bdd,&map);
+						indexer_audio(chemin_bdd,&map);
+						indexation_texte_set(&map);
+						rech_tx_en = 1;
+						indexation_image_set(&map);
+						rech_im_en = 1;
+						indexation_audio_set(&map);
+						rech_au_en = 1;
 						break;
-					case '2': //TODO Indexation texte
+					case '2':
+						indexer_texte(chemin_bdd,&map);
+						indexation_texte_set(&map);
+						rech_tx_en = 1;
 						break;
-					case '3': //TODO Indexation image
+					case '3':
+						indexer_image(chemin_bdd,&map);
+						indexation_image_set(&map);
+						rech_im_en = 1;
 						break;
-					case '4': //TODO Indexation audio
+					case '4':
+						indexer_audio(chemin_bdd,&map);
+						indexation_audio_set(&map);
+						rech_au_en = 1;
 						break;
 				}
 			case MENU_RECHERCHE:
@@ -351,11 +367,12 @@ int main(){
 				scanf("%1s",buf);
 				switch(buf[0]){
 					case '0': etape = MENU_PRINCIPAL; break;
-					case '1':
-						if(rech_tx_en){
-							
-						}
-						break;
+					case '1': if(rech_tx_en) recherche_texte_mot(&map); break;
+					case '2': if(rech_tx_en) recherche_texte_fichier(&map); break;
+					case '3': if(rech_im_en) recherche_image_code(&map); break;
+					case '4': if(rech_im_en) recherche_image_nom(&map); break;
+					case '5': if(rech_im_en) recherche_image_fichier(&map); break;
+					case '6': if(rech_au_en) recherche_audio(&map); break;
 				}
 				break;
 			case MENU_CONFIGURATION:
@@ -398,10 +415,8 @@ int main(){
 				switch(buf[0]){
 					case '1':{
 						unsigned int val;
-						do{
-							puts("Entrer le nombre maximum de mots par fichier (0->Annuler):");
-							scanf("%u",&val);
-						}while(val > 8);
+						puts("Entrer le nombre maximum de mots par fichier (0->Annuler):");
+						scanf("%u",&val);
 						if(val == 0)
 							puts("Annulation");
 						else{
@@ -415,10 +430,8 @@ int main(){
 					}
 					case '2':{
 						unsigned int val;
-						do{
-							puts("Entrer la taille minimale des mots (0->Annuler):");
-							scanf("%u",&val);
-						}while(val > 200);
+						puts("Entrer la taille minimale des mots (0->Annuler):");
+						scanf("%u",&val);
 						if(val == 0)
 							puts("Annulation");
 						else{
@@ -432,11 +445,9 @@ int main(){
 					}
 					case '3':{
 						unsigned int val;
-						do{
-							puts("Entrer le nombre de résultats affichés lors de la recherche (1 - 20) (0->Annuler):");
-							puts("(Un nombre de résultats important a plus tendance a faire ressortir des résultats non révélateurs)");
-							scanf("%u",&val);
-						}while(val > 20);
+						puts("Entrer le nombre de résultats affichés lors de la recherche (1 - 20) (0->Annuler):");
+						puts("(Un nombre de résultats important a plus tendance a faire ressortir des résultats non révélateurs)");
+						scanf("%u",&val);
 						if(val == 0)
 							puts("Annulation");
 						else{
@@ -537,28 +548,24 @@ int main(){
 				}
 				break;
 			case MENU_CONFIG_AUDIO:
-				puts("\nMENU DE CONFIGURATION IMAGE");
+				puts("\nMENU DE CONFIGURATION AUDIO");
 				puts("Paramètres :");
-				printf("1-Nombre de bits de quantification par couleur : %ld\n",getConfigValueLong(&map,"nb_bits_image",&flag));
-				printf("2-Nombre de couleurs maximum mémorisées par image : %ld\n",getConfigValueLong(&map,"nb_couleurs_max_image",&flag));
-				printf("3-Seuil minimal de considération d'une couleur (en %% de couverture de l'image) : %f\n",getConfigValueFloat(&map,"seuil_couleur_image",&flag));
-				printf("4-Nombre de résultats de recherche : %ld\n",getConfigValueLong(&map,"nb_res_image",&flag));
+				printf("1-Nombre d'échantillons par fenêtre : %ld\n",getConfigValueLong(&map,"nb_echant_pfen",&flag));
+				printf("2-Nombre d'intervalles en amplitude : %ld\n",getConfigValueLong(&map,"nb_inter_amp",&flag));
+				printf("3-Nombre de fenêtres de décalage entre mesure : %ld\n",getConfigValueLong(&map,"step_number",&flag));
 				puts("\n0-Retour");
 				scanf("%1s",buf);
 				switch(buf[0]){
 					case '1':{
 						unsigned int val;
-						do{
-							puts("Entrer le nombre de bits de quantification (1-8) (0->Annuler):");
-							puts("/!\\ Plus le nombre de bits est élevé, plus la recherche est précise, mais le temps de calcul augmente");
-							scanf("%u",&val);
-						}while(val > 8);
+						puts("Entrer le nombre d'échantillons par fenêtre (0->Annuler):");
+						scanf("%u",&val);
 						if(val == 0)
 							puts("Annulation");
 						else{
-							flag = changeValueLong(&map,"nb_bits_image",val);
-							rech_im_en = 0;
-							indexation_image_unset(&map);
+							flag = changeValueLong(&map,"nb_echant_pfen",val);
+							rech_au_en = 0;
+							indexation_audio_unset(&map);
 							if(flag != SUCCES)
 								puts("Echec modification");
 						}
@@ -566,53 +573,30 @@ int main(){
 					}
 					case '2':{
 						unsigned int val;
-						do{
-							puts("Entrer le nombre de couleurs max considérées(1 - 200) (0->Annuler):");
-							puts("/!\\ Plus le nombre de couleurs est élevé, plus la recherche est précise, mais le temps de calcul augmente");
-							scanf("%u",&val);
-						}while(val > 200);
+						puts("Entrer le nombre d'intervalles en amplitude (0->Annuler):");
+						scanf("%u",&val);
 						if(val == 0)
 							puts("Annulation");
 						else{
-							flag = changeValueLong(&map,"nb_couleurs_max_image",val);
-							rech_im_en = 0;
-							indexation_image_unset(&map);
+							flag = changeValueLong(&map,"nb_inter_amp",val);
+							rech_au_en = 0;
+							indexation_audio_unset(&map);
 							if(flag != SUCCES)
 								puts("Echec modification");
 						}
 						break;
 					}
 					case '3':{
-						float val;
-						do{
-							puts("Entrer le seuil minimal de considération d'une couleur (0.0-100) (-1 ->Annuler):");
-							puts("(Valeur en pourcentage de couverture de l'image)");
-							scanf("%f",&val);
-						}while((val > 100 || val < 0) && val != -1);
-						if(val == -1)
-							puts("Annulation");
-						else{
-							flag = changeValueFloat(&map,"seuil_couleur_image",val);
-							rech_im_en = 0;
-							indexation_image_unset(&map);
-							if(flag != SUCCES)
-								puts("Echec modification");
-						}
-						break;
-					}
-					case '4':{
 						unsigned int val;
-						do{
-							puts("Entrer le nombre de résultats affichés lors de la recherche (1 - 20) (0->Annuler):");
-							puts("(Un nombre de résultats important a plus tendance a faire ressortir des résultats non révélateurs)");
-							scanf("%u",&val);
-						}while(val > 20);
+						puts("Entrer le nombre de fenêtres de décalage entre mesure (0->Annuler):");
+						puts("(Un nombre élevé accélère la recherche mais diminue la précision des résultats)");
+						scanf("%u",&val);
 						if(val == 0)
 							puts("Annulation");
 						else{
-							flag = changeValueLong(&map,"nb_res_image",val);
-							rech_im_en = 0;
-							indexation_image_unset(&map);
+							flag = changeValueLong(&map,"step_number",val);
+							rech_au_en = 0;
+							indexation_audio_unset(&map);
 							if(flag != SUCCES)
 								puts("Echec modification");
 						}
