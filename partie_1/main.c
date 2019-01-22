@@ -15,8 +15,9 @@ enum Etape{
 	MENU_PRINCIPAL,
 	MENU_RECHERCHE,
 	MENU_CONFIGURATION,
-	MENU_CONFIG_RECHERCHE,
-	MENU_CONFIG_INDEXATION,
+	MENU_CONFIG_IMAGE,
+	MENU_CONFIG_AUDIO,
+	MENU_CONFIG_TEXTE,
 	ETAPE_INDEXATION
 };
 
@@ -30,7 +31,32 @@ ConfMap defaultConfMap(){
 	assert(flag != ECHEC);
 	flag = addValueLong(&map,"nb_bits_image",4);
 	assert(flag != ECHEC);
+	flag = addValueLong(&map,"nb_couleurs_max_image",50);
+	assert(flag != ECHEC);
+	flag = addValueFloat(&map,"seuil_couleur_image",0.1);
+	assert(flag != ECHEC);
 	return map;
+}
+
+unsigned char verifMinConf(ConfMap * map){
+	unsigned char resp = 0;
+	if(keyPosition(map,"nb_res_image") == -1){
+		resp = 1;
+		addValueLong(map,"nb_res_image",15);
+	}
+	if(keyPosition(map,"nb_bits_image") == -1){
+		resp = 1;
+		addValueLong(map,"nb_bits_image",4);
+	}
+	if(keyPosition(map,"nb_couleurs_max_image") == -1){
+		resp = 1;
+		addValueLong(map,"nb_couleurs_max_image",50);
+	}
+	if(keyPosition(map,"seuil_couleur_image") == -1){
+		resp = 1;
+		addValueFloat(map,"seuil_couleur_image",0.1);
+	}
+	return resp;
 }
 
 int main(){
@@ -80,6 +106,7 @@ int main(){
 		}
 	}else{
 		map = read_config_file(&flag);
+		if(verifMinConf(&map))mapModif = 1;
 		if(flag != SUCCES){
 			perror("Erreur fatale 3 ");
 			sdsfree(dirPath);
@@ -89,13 +116,16 @@ int main(){
 	fputs(".",stdout);
 	
 	DIR * dirBdd;
+	sds chemin_bdd;
 	
 	unsigned char presence_key_chemin = 0;
 	long pos = keyPosition(&map,"chemin_bdd");
 	if(pos == -1){
 		etape = MENU_DEMANDE_CHEMIN;
+		chemin_bdd = sdsempty();
 	}else{
-		dirBdd = opendir(map.values->descripteurs[pos]);
+		chemin_bdd = sdsdup(map.values->descripteurs[pos]);
+		dirBdd = opendir(chemin_bdd);
 		if(dirBdd == NULL){
 			if(errno == ENOENT){
 				etape = MENU_DEMANDE_CHEMIN;
@@ -134,10 +164,14 @@ int main(){
 							printf("Répertoire non trouvé : %s\n",buf);
 						}
 					}else if(presence_key_chemin){
+						sdsfree(chemin_bdd);
+						chemin_bdd = sdsnew(buf);
 						changeValue(&map,"chemin_bdd",buf);
 						mapModif = 1;
 						etape = MENU_PRINCIPAL;
 					}else{
+						sdsfree(chemin_bdd);
+						chemin_bdd = sdsnew(buf);
 						addValue(&map,"chemin_bdd",buf);
 						mapModif = 1;
 						presence_key_chemin = 1;
@@ -165,16 +199,108 @@ int main(){
 				break;
 			case MENU_CONFIGURATION:
 				puts("\nMENU DE CONFIGURATION");
+				printf("Chemin BDD : %s\n",chemin_bdd);
 				puts("1-Modifier le chemin vers la BDD");
-				puts("2-Modifier les parametres de recherche");
-				puts("3-Modifier les parametres d'indexation");
-				puts("\n0-Retour MENU PRINCIPAL");
+				puts("2-Modifier les parametres image");
+				puts("3-Modifier les parametres audio");
+				puts("4-Modifier les parametres texte");
+				puts("\n0-Retour");
 				scanf("%1s",buf);
 				switch(buf[0]){
 					case '1': etape = MENU_DEMANDE_CHEMIN; break;
-					case '2': etape = MENU_CONFIG_RECHERCHE; break;
-					case '3': etape = MENU_CONFIG_INDEXATION; break;
+					case '2': etape = MENU_CONFIG_IMAGE; break;
+					case '3': etape = MENU_CONFIG_AUDIO; break;
+					case '4': etape = MENU_CONFIG_TEXTE; break;
 					case '0': etape = MENU_PRINCIPAL; break;
+				}
+				break;
+			case MENU_CONFIG_IMAGE:
+				puts("\nMENU DE CONFIGURATION IMAGE");
+				puts("Paramètres :");
+				printf("1-Nombre de bits de quantification par couleur : %ld\n",getConfigValueLong(&map,"nb_bits_image",&flag));
+				printf("2-Nombre de couleurs maximum mémorisées par image : %ld\n",getConfigValueLong(&map,"nb_couleurs_max_image",&flag));
+				printf("3-Seuil minimal de considération d'une couleur (en %% de couverture de l'image) : %f\n",getConfigValueFloat(&map,"seuil_couleur_image",&flag));
+				printf("4-Nombre de résultats de recherche : %ld\n",getConfigValueLong(&map,"nb_res_image",&flag));
+				puts("\n0-Retour");
+				scanf("%1s",buf);
+				switch(buf[0]){
+					case '1':{
+						unsigned int val;
+						do{
+							puts("Entrer le nombre de bits de quantification (1-8) (0->Annuler):");
+							puts("/!\\ Plus le nombre de bits est élevé, plus la recherche est précise, mais le temps de calcul augmente");
+							scanf("%u",&val);
+						}while(val > 8);
+						if(val == 0)
+							puts("Annulation");
+						else{
+							flag = changeValueLong(&map,"nb_bits_image",val);
+							if(flag != SUCCES){
+								puts("Echec modification");
+							}else{
+								mapModif = 1;
+							}
+						}
+						break;
+					}
+					case '2':{
+						unsigned int val;
+						do{
+							puts("Entrer le nombre de couleurs max considérées(1 - 200) (0->Annuler):");
+							puts("/!\\ Plus le nombre de couleurs est élevé, plus la recherche est précise, mais le temps de calcul augmente");
+							scanf("%u",&val);
+						}while(val > 200);
+						if(val == 0)
+							puts("Annulation");
+						else{
+							flag = changeValueLong(&map,"nb_couleurs_max_image",val);
+							if(flag != SUCCES){
+								puts("Echec modification");
+							}else{
+								mapModif = 1;
+							}
+						}
+						break;
+					}
+					case '3':{
+						float val;
+						do{
+							puts("Entrer le seuil minimal de considération d'une couleur (0.0-100) (-1 ->Annuler):");
+							puts("(Valeur en pourcentage de couverture de l'image)");
+							scanf("%f",&val);
+						}while((val > 100 || val < 0) && val != -1);
+						if(val == -1)
+							puts("Annulation");
+						else{
+							flag = changeValueFloat(&map,"seuil_couleur_image",val);
+							if(flag != SUCCES){
+								puts("Echec modification");
+							}else{
+								mapModif = 1;
+							}
+						}
+						break;
+					}
+					case '4':{
+						unsigned int val;
+						do{
+							puts("Entrer le nombre de résultats affichés lors de la recherche (1 - 20) (0->Annuler):");
+							puts("(Un nombre de résultats important a plus tendance a faire ressortir des résultats non révélateurs)");
+							scanf("%u",&val);
+						}while(val > 20);
+						if(val == 0)
+							puts("Annulation");
+						else{
+							flag = changeValueLong(&map,"nb_res_image",val);
+							if(flag != SUCCES){
+								puts("Echec modification");
+							}else{
+								mapModif = 1;
+							}
+						}
+						break;
+					}
+					case '0': etape = MENU_CONFIGURATION; break;
 				}
 				break;
 			default:
@@ -192,5 +318,6 @@ int main(){
 	puts("A bientôt !");
 	closedir(progDir);closedir(dirBdd);
 	sdsfree(dirPath);
+	sdsfree(chemin_bdd);
 	freeConfMap(map);
 }

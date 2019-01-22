@@ -191,6 +191,13 @@ unsigned char changeValueLong(ConfMap * map,const char * key,long newValue){
 	return flag;
 }
 
+unsigned char changeValueFloat(ConfMap * map,const char * key,float newValue){
+	sds s = sdscatprintf(sdsempty(),"%f",newValue);
+	unsigned char flag = changeValue(map,key,s);
+	sdsfree(s);
+	return flag;
+}
+
 unsigned char postValue(ConfMap * map,const char * key,const char * value){
 	long pos = keyPosition(map,key);
 	if(pos == -1)
