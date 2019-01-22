@@ -11,32 +11,27 @@ typedef struct Cel_Occ
 } TabOccurences;
 
 // donne le nom d un fichier par rapport a son identifiant dans le fichier donne
-sds getNom(int id, sds liste_base_texte)
+sds getNom(int id, Capsule liste_base_texte)
 {
-	unsigned char flag;
-	Capsule capsule;
 	int test_id;
 	sds nom;
 	
 	if(id == -1)
 		return sdsempty();
-	
-	capsule = loadDescripteurs(&flag, liste_base_texte);
 	nom = sdsempty();
 	
-	for(int i = 0; i < nombreDescripteurs(capsule); i++)
+	for(int i = 0; i < nombreDescripteurs(liste_base_texte); i++)
 	{
 		// dans l optique ou dans le fichier liste_base_texte, la relation identifiant nom
 		// est ecrite tel que "{identifiant:nom}" sans aucun autre caractere
 		// (puisque le fichier n est a la base pas un fichiers de descripteurs, chaque
 		// donnee traitant un fichier different seront separees par des accolade pour pouvoir
 		// se servir du type capsule)
-		sscanf(capsule.descripteurs[i], "%d:%s", &test_id, nom);
+		sscanf(liste_base_texte.descripteurs[i], "%d:%s", &test_id, nom);
 		if(id == test_id)
 			break;
 	}
 	
-	freeCapsule(capsule);
 	return nom;
 }
 
@@ -56,58 +51,25 @@ sds listeMots(sds descripteur)
 	
 	for(int i = 0; i < nbMotsRetenus; i++)
 	{
-		sscanf(ptr, "%[^:%*d]", mot);
+		sscanf(ptr, "%[^:]", mot);
 		listeMots = sdscat(listeMots, mot);
-		listeMots = sdscat(listeMots, " ");
-		if (i < nbMotsRetenus-1)
-		{
-			ptr = strchr(ptr, ';');
-			ptr++;
-		}
+		ptr = strchr(ptr, ';');
+		ptr++;
 	}
 	sdsfree(mot);
 	
 	return listeMots;
 }
 
-void freeListeMots(int nbMots, sds * listeMots)
-{
-	for(int i = 0; i < nbMots; i++)
-	{
-		sdsfree(listeMots[i]);
-	}
-}
-
-// prend deux liste de mots et leur taille et les compare
-// plus le nombre renvoyé est grand, plus les fichiers sont similaires.
-int motscmp(const sds * liste1, const sds * liste2, int taille1, int taille2)
-{
-	int compteur = 0; // on compte le nombre de mots identiques
-	
-	for(int i = 0; i < taille1; i++)
-	{
-		for(int j = 0; j < taille2; j++)
-		{
-			if(strcmp(liste1[i], liste2[j]) == 0)
-			{
-				compteur++;
-				break;
-			}
-		}
-	}
-	
-	return compteur;
-}
-
 // lit la table d index et retourne les identifiants des fichiers contenant le plus les mots
-void lire_index(Capsule table_index, sds motscles, int id[])
+void lire_index(Capsule table_index, sds motscles, int id[], int nb_res)
 {
 	// format : mot1;fichier1:nbocc;fichier2...
 	char * ptr_mc; // pointeur de parcours des mots cles
 	char * ptr_index; // pointeur de lecture de la table d index
 	sds mot, comp;
 	int identifiant, occurence, compteur;
-	int occurences[NB_RESULTAT_RECHERCHE];
+	int occurences[nb_res];
 	TabOccurences * listeOccurences;
 	TabOccurences * courant;
 	
@@ -121,6 +83,7 @@ void lire_index(Capsule table_index, sds motscles, int id[])
 	
 	// parcours des mots cles
 	ptr_mc = motscles;
+	ptr_index = "";
 	while(strlen(ptr_mc) != 0)
 	{
 		sscanf(ptr_mc, "%s", mot);
@@ -157,9 +120,11 @@ void lire_index(Capsule table_index, sds motscles, int id[])
 						courant->occurences += occurence;
 						if(courant->suivant == NULL)
 						{
+							courant->suivant = (TabOccurences*) malloc(sizeof(TabOccurences));
 							courant->suivant->precedent = courant;
-							courant = courant->suivant;
+							courant->suivant->identifiant = -2;
 						}
+						break;
 					}
 					if(courant->suivant == NULL)
 					{
@@ -170,7 +135,6 @@ void lire_index(Capsule table_index, sds motscles, int id[])
 						courant->occurences = occurence;
 						break;
 					}
-					courant->suivant->precedent = courant;
 					courant = courant->suivant;
 				}
 			}
@@ -188,7 +152,7 @@ void lire_index(Capsule table_index, sds motscles, int id[])
 	//printf("%p : %d : %d : %p\n", courant->precedent, courant->identifiant, courant->occurences, courant->suivant);
 	while(courant != NULL)
 	{
-		if(compteur < NB_RESULTAT_RECHERCHE)
+		if(compteur < nb_res)
 		{
 			id[compteur] = courant->identifiant;
 			occurences[compteur] = courant->occurences;
@@ -196,7 +160,7 @@ void lire_index(Capsule table_index, sds motscles, int id[])
 		}
 		else
 		{
-			for(int i = 0; i < NB_RESULTAT_RECHERCHE; i++)
+			for(int i = 0; i < nb_res; i++)
 			{
 				if(courant->occurences > occurences[i])
 				{
@@ -220,34 +184,31 @@ void lire_index(Capsule table_index, sds motscles, int id[])
 	sdsfree(comp);
 }
 
-void recherche_texte_motscles(const sds motscles, const sds liste_base_texte, const sds table_index_texte)
+void recherche_texte_motscles(const sds motscles, Capsule liste_base_texte, Capsule table_index_texte, int nb_res)
 {
-	sds resultats[NB_RESULTAT_RECHERCHE]; // resultats sous forme de chemin d acces
-	int id[NB_RESULTAT_RECHERCHE];
-	unsigned char flag;
-	Capsule capsule = loadDescripteurs(&flag, table_index_texte);
+	sds resultats[nb_res]; // resultats sous forme de chemin d acces
+	int id[nb_res];
 	
-	for(int i = 0; i < NB_RESULTAT_RECHERCHE; i++)
+	for(int i = 0; i < nb_res; i++)
 	{
 		id[i] = -1;
 	}
 	
-	lire_index(capsule, motscles, id);
+	lire_index(table_index_texte, motscles, id, nb_res);
 	
-	for(int i = 0; i < NB_RESULTAT_RECHERCHE; i++)
+	for(int i = 0; i < nb_res; i++)
 	{
 		resultats[i] = getNom(id[i], liste_base_texte);
 		if(strlen(resultats[i]) != 0)
 			printf("%s\n", resultats[i]);
 	}
-	
-	freeCapsule(capsule);
 }
 
-void recherche_texte_fichier(const sds fichier, const sds liste_base_texte, const sds table_index_texte)
+void recherche_texte_fichier(const sds descripteur, Capsule liste_base_texte, Capsule table_index_texte, int nb_res)
 {
-	sds descripteur = indexation_texte(fichier, 0);
 	sds motscles = listeMots(descripteur);
 	
-	recherche_texte_motscles(motscles, liste_base_texte, table_index_texte);
+	recherche_texte_motscles(motscles, liste_base_texte, table_index_texte, nb_res);
+	
+	sdsfree(motscles);
 }

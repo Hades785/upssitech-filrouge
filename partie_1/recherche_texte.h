@@ -14,20 +14,22 @@
  * Le dernier mot cle doit egalement etre suivit d un espace
  *
  * @param sds motscles
- * @param sds[] liste_base_texte
- * @param sds[] table_index_texte
+ * @param Capsule liste_base_texte
+ * @param Capsule table_index_texte
+ * @param int nb_res
  */
-void recherche_texte_motscles(const sds motscles, const sds liste_base_texte, const sds table_index_texte);
+void recherche_texte_motscles(const sds motscles, Capsule liste_base_texte, Capsule table_index_texte, int nb_res);
 
 /**
  * DESCRIPTION Donne la liste des fichiers les plus semblables a celui donne
  * en parametre
  *
- * @param  sds fichier
- * @param sds[] liste_base_texte
- * @param sds table_index_texte
+ * @param  sds descripteur
+ * @param Capsule liste_base_texte
+ * @param Capsule table_index_texte
+ * @param int nb_res
  */
-void recherche_texte_fichier(const sds fichier, const sds liste_base_texte, const sds table_index_texte);
+void recherche_texte_fichier(const sds descripteur, Capsule liste_base_texte, Capsule table_index_texte, int nb_res);
 
 
 #endif
