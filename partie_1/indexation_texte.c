@@ -10,7 +10,7 @@
 
 const char exclusions[] = "les des par une son que dans est ces ses pour sont faire pas Ces Sat Sep GMT ainsi sera Pour où afin même Cette vers vient qui aux cette Les";
 
-const char accents[] = "äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒ";
+//const char accents[] = "äÄëËïÏöÖüÜÿâÂêÊîÎôÔûÛàÀèÈìÌòÒùÙéçÇæÆœŒ";
 
 void afficher_tabocc(TabOcc t)
 {
@@ -198,7 +198,7 @@ Capsule genere_table(Capsule caps)
 }
 
 
-TabOcc lecture_fichier(const char * accesFichier, unsigned int * nbMotsTotal)
+TabOcc lecture_fichier(const char * accesFichier, unsigned int * nbMotsTotal,unsigned int tailleMinMot)
 {
 	FILE* fichier;
 
@@ -209,7 +209,7 @@ TabOcc lecture_fichier(const char * accesFichier, unsigned int * nbMotsTotal)
 		sds motActuel;
 		TabOcc tabocc = newTabOcc();
 		
-		char tabMots[TAILLE_MAX_MOT];//tableau de char
+		char tabMots[30];//tableau de char
 		int lettreInt = 0;
 		
 		do // Tant qu'on est pas arrivé à la fin du fichier
@@ -247,7 +247,7 @@ TabOcc lecture_fichier(const char * accesFichier, unsigned int * nbMotsTotal)
 					motActuel = sdsnew(tabMots);
 				
 				
-				if((int)sdslen(motActuel)-1>=TAILLE_MIN_MOT && strstr(exclusions,motActuel) == NULL)
+				if((int)sdslen(motActuel)-1>=tailleMinMot && strstr(exclusions,motActuel) == NULL)
 					ajout_mot(&tabocc, motActuel);
 				sdsfree(motActuel);
 				
@@ -277,12 +277,12 @@ TabOcc lecture_fichier(const char * accesFichier, unsigned int * nbMotsTotal)
 	}
 }
 
-TabOcc tri_occurence(TabOcc tab)
+TabOcc tri_occurence(TabOcc tab,unsigned int nbMotsMax)
 {
 	triTabOcc(&tab);
 	TabOcc resp = newTabOcc();
 	
-	for(unsigned int i = 0;i < NB_RESULTAT_RECHERCHE && i < tab.nbEle;i++){
+	for(unsigned int i = 0;i < nbMotsMax && i < tab.nbEle;i++){
 		addMotStrict(&resp,tab.mots[i],tab.nbOcc[i]);
 	}
 	
@@ -330,11 +330,11 @@ TabOcc decode_descripteur(const char * descripteur, int * idFichier){
 	return tab;
 }
 
-sds indexation_texte(const char * accesFichier,int valId)
+sds indexation_texte(const char * accesFichier,int valId,unsigned int nbMotsMax,unsigned int tailleMinMot)
 {
 	unsigned int nbMotsTotal = 0;
-	TabOcc fichier = lecture_fichier(accesFichier, &nbMotsTotal);
-	TabOcc desc = tri_occurence(fichier);
+	TabOcc fichier = lecture_fichier(accesFichier, &nbMotsTotal, tailleMinMot);
+	TabOcc desc = tri_occurence(fichier,nbMotsMax);
 	freeTabOcc(&fichier);
 	sds resp = renvoie_descripteur(desc,valId,nbMotsTotal);
 	freeTabOcc(&desc);

@@ -32,7 +32,7 @@ int suppr_accent_et_maj(int lettre);
 
 Capsule genere_table(Capsule caps);
 
-TabOcc lecture_fichier(const char * accesFichier, unsigned int * nbMotsTotal);
+TabOcc lecture_fichier(const char * accesFichier, unsigned int * nbMotsTotal,unsigned int tailleMinMot);
 
 TabOcc decode_descripteur(const char * descripteur, int * idFichier);
 
@@ -49,7 +49,7 @@ TabOcc decode_descripteur(const char * descripteur, int * idFichier);
 	// (Les 3 premières valeurs sont : id ; nombreDeMotsAuTotal ; nombreDeMotsRetenus)
 	//[id;nbMotsTotal;nbMotsRetenus][mot1:occ1;mot2:occ2;...]
  
-sds indexation_texte(const char * accesFichier, int valId);
+sds indexation_texte(const char * accesFichier, int valId,unsigned int nbMotsMax,unsigned int tailleMinMot);
 
 void gestion_descripteur_texte();
 
