@@ -1,6 +1,7 @@
 #include <string.h>
 #include "indexation_audio.h"
 #include "sauvegarde_descripteurs.h"
+#include "constantes.h"
 
 // DEBUG!!!!!!
 #define NB_FILES 10
@@ -60,7 +61,7 @@ int main() {
             printf("%s\n", tmp);
 
             sds s = sdsdup(files[i]);
-            sds t = indexation_audio(tmp);
+            sds t = indexation_audio(tmp, 1000, 16);
             s = sdscat(s, ";");
             s = sdscat(s, t);
             addElementCopy(&capsule, s);

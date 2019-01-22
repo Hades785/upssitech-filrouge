@@ -13,7 +13,7 @@ indexation_texte.o: indexation_texte.c indexation_texte.h constantes.h
 indexation_image.o: indexation_image.c indexation_image.h sds.h
 	@gcc -c indexation_image.c  -lm
 
-indexation_audio.o: indexation_audio.c indexation_audio.h constantes.h
+indexation_audio.o: indexation_audio.c indexation_audio.h
 	@gcc -c indexation_audio.c
 
 recherche.o: recherche.c recherche.h recherche_texte.h recherche_image.h recherche_audio.h constantes.h
