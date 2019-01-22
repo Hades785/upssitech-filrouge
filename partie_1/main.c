@@ -5,36 +5,41 @@
 #include <assert.h>
 #include "constantes.h"
 #include "config_reader.h"
+#include "indexation.h"
+#include "recherche.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
 
 enum Etape{
 	MENU_DEMANDE_CHEMIN,
-	ETAPE_DEMARRAGE,
 	MENU_PRINCIPAL,
 	MENU_RECHERCHE,
 	MENU_CONFIGURATION,
 	MENU_CONFIG_IMAGE,
 	MENU_CONFIG_AUDIO,
 	MENU_CONFIG_TEXTE,
-	ETAPE_INDEXATION
+	MENU_INDEXATION,
+	MENU_REINITIALISATION
 };
 
-ConfMap defaultConfMap(){
+ConfMap defaultConfMap(){//valeurs par defaut
 	unsigned char flag;
 	ConfMap map = newConfMap(&flag);
 	assert(flag != ECHEC);
-	/*flag = addValue(&map,"chemin_bdd","");
-	assert(flag != ECHEC);*/
-	flag = addValueLong(&map,"nb_res_image",15);
-	assert(flag != ECHEC);
-	flag = addValueLong(&map,"nb_bits_image",4);
-	assert(flag != ECHEC);
-	flag = addValueLong(&map,"nb_couleurs_max_image",50);
-	assert(flag != ECHEC);
-	flag = addValueFloat(&map,"seuil_couleur_image",0.1);
-	assert(flag != ECHEC);
+	assert(addValueLong(&map,"nb_res_image",DEF_NB_RES_IMAGE) != ECHEC);
+	assert(addValueLong(&map,"nb_bits_image",DEF_NB_BITS_IMAGE) != ECHEC);
+	assert(addValueLong(&map,"nb_couleurs_max_image",DEF_NB_COULEURS_MAX_IMAGE) != ECHEC);
+	assert(addValueFloat(&map,"seuil_couleur_image",DEF_SEUIL_COULEUR_IMAGE) != ECHEC);
+	
+	assert(addValueLong(&map,"nb_mots_max_texte",DEF_NB_MOTS_MAX_TEXTE) != ECHEC);
+	assert(addValueLong(&map,"taille_min_mot",DEF_TAILLE_MIN_MOT) != ECHEC);
+	assert(addValueLong(&map,"nb_res_texte",DEF_NB_RES_TEXTE) != ECHEC);
+	
+	assert(addValueLong(&map,"nb_echant_pfen",DEF_NB_ENCHANT_PFEN) != ECHEC);
+	assert(addValueLong(&map,"nb_inter_amp",DEF_NB_INTER_AMP) != ECHEC);
+	assert(addValueLong(&map,"step_number",DEF_STEP_NUMBER) != ECHEC);
+	
 	return map;
 }
 
@@ -42,27 +47,117 @@ unsigned char verifMinConf(ConfMap * map){
 	unsigned char resp = 0;
 	if(keyPosition(map,"nb_res_image") == -1){
 		resp = 1;
-		addValueLong(map,"nb_res_image",15);
+		addValueLong(map,"nb_res_image",DEF_NB_RES_IMAGE);
 	}
 	if(keyPosition(map,"nb_bits_image") == -1){
 		resp = 1;
-		addValueLong(map,"nb_bits_image",4);
+		addValueLong(map,"nb_bits_image",DEF_NB_BITS_IMAGE);
 	}
 	if(keyPosition(map,"nb_couleurs_max_image") == -1){
 		resp = 1;
-		addValueLong(map,"nb_couleurs_max_image",50);
+		addValueLong(map,"nb_couleurs_max_image",DEF_NB_COULEURS_MAX_IMAGE);
 	}
 	if(keyPosition(map,"seuil_couleur_image") == -1){
 		resp = 1;
-		addValueFloat(map,"seuil_couleur_image",0.1);
+		addValueFloat(map,"seuil_couleur_image",DEF_SEUIL_COULEUR_IMAGE);
+	}
+	if(keyPosition(map,"nb_mots_max_texte") == -1){
+		resp = 1;
+		addValueLong(map,"nb_mots_max_texte",DEF_NB_MOTS_MAX_TEXTE);
+	}
+	if(keyPosition(map,"taille_min_mot") == -1){
+		resp = 1;
+		addValueLong(map,"taille_min_mot",DEF_TAILLE_MIN_MOT);
+	}
+	if(keyPosition(map,"nb_res_texte") == -1){
+		resp = 1;
+		addValueLong(map,"nb_res_texte",DEF_NB_RES_TEXTE);
+	}
+	if(keyPosition(map,"nb_echant_pfen") == -1){
+		resp = 1;
+		addValueLong(map,"nb_echant_pfen",DEF_NB_ENCHANT_PFEN);
+	}
+	if(keyPosition(map,"nb_inter_amp") == -1){
+		resp = 1;
+		addValueLong(map,"nb_inter_amp",DEF_NB_INTER_AMP);
+	}
+	if(keyPosition(map,"step_number") == -1){
+		resp = 1;
+		addValueLong(map,"step_number",DEF_STEP_NUMBER);
 	}
 	return resp;
 }
 
+unsigned char recherche_texte_en(ConfMap * map){
+	unsigned char flag = 0;
+	if(getConfigValueLong(map,"index_texte_valide",&flag) != 1)
+		return 0;
+	return 1;
+}
+
+unsigned char recherche_image_en(ConfMap * map){
+	unsigned char flag = 0;
+	if(getConfigValueLong(map,"index_image_valide",&flag) != 1)
+		return 0;
+	return 1;
+}
+
+unsigned char recherche_audio_en(ConfMap * map){
+	unsigned char flag = 0;
+	if(getConfigValueLong(map,"index_audio_valide",&flag) != 1)
+		return 0;
+	return 1;
+}
+
+void indexation_texte_set(ConfMap * map){
+	if(keyPosition(map,"index_texte_valide") != -1)
+		changeValueLong(map,"index_texte_valide",1);
+}
+
+void indexation_image_set(ConfMap * map){
+	if(keyPosition(map,"index_image_valide") != -1)
+		changeValueLong(map,"index_image_valide",1);
+}
+
+void indexation_audio_set(ConfMap * map){
+	if(keyPosition(map,"index_audio_valide") != -1)
+		changeValueLong(map,"index_audio_valide",1);
+}
+
+void indexation_texte_unset(ConfMap * map){
+	if(keyPosition(map,"index_texte_valide") != -1)
+		changeValueLong(map,"index_texte_valide",0);
+}
+
+void indexation_image_unset(ConfMap * map){
+	if(keyPosition(map,"index_image_valide") != -1)
+		changeValueLong(map,"index_image_valide",0);
+}
+
+void indexation_audio_unset(ConfMap * map){
+	if(keyPosition(map,"index_audio_valide") != -1)
+		changeValueLong(map,"index_audio_valide",0);
+}
+
+void indexation_auto(const char * descPath,unsigned char tx,unsigned char im,unsigned char au,ConfMap * map){
+	if(tx == 0){
+		indexer_texte(descPath,map);
+		indexation_texte_set(map);
+	}
+	if(im == 0){
+		indexer_image(descPath,map);
+		indexation_image_set(map);
+	}
+	if(au == 0){
+		indexer_audio(descPath,map);
+		indexation_audio_set(map);
+	}
+}
+
 int main(){
-	enum Etape etape = ETAPE_DEMARRAGE;
+	enum Etape etape = MENU_PRINCIPAL;
 	unsigned char flag;
-	unsigned char running = 1;
+	unsigned char running = 1,reinit = 0;
 	puts("Moteur de recherche de fichiers équipe 3");
 	fputs("Chargement",stdout);
 	sds dirPath = sdscat(sdscat(sdsnew(getenv("HOME")),"/"),STORAGE_FOLDER_NAME);
@@ -86,7 +181,6 @@ int main(){
 	fputs(".",stdout);
 	
 	ConfMap map;
-	unsigned char mapModif = 0;
 	
 	//on regarde si le fichier de configuration existe
 	if(config_file_exists() == 0){
@@ -106,7 +200,7 @@ int main(){
 		}
 	}else{
 		map = read_config_file(&flag);
-		if(verifMinConf(&map))mapModif = 1;
+		verifMinConf(&map);
 		if(flag != SUCCES){
 			perror("Erreur fatale 3 ");
 			sdsfree(dirPath);
@@ -142,6 +236,11 @@ int main(){
 	puts(".");
 	char buf[300];
 	
+	//on teste si les indexations sont valides
+	unsigned char rech_tx_en,rech_im_en,rech_au_en;
+	rech_tx_en = recherche_texte_en(&map);
+	rech_im_en = recherche_image_en(&map);
+	rech_au_en = recherche_audio_en(&map);
 	
 	do{
 		switch(etape){
@@ -167,51 +266,189 @@ int main(){
 						sdsfree(chemin_bdd);
 						chemin_bdd = sdsnew(buf);
 						changeValue(&map,"chemin_bdd",buf);
-						mapModif = 1;
 						etape = MENU_PRINCIPAL;
 					}else{
 						sdsfree(chemin_bdd);
 						chemin_bdd = sdsnew(buf);
 						addValue(&map,"chemin_bdd",buf);
-						mapModif = 1;
+						indexation_texte_unset(&map);
+						indexation_image_unset(&map);
+						indexation_audio_unset(&map);
+						rech_tx_en = 0;
+						rech_im_en = 0;
+						rech_au_en = 0;
 						presence_key_chemin = 1;
 						etape = MENU_PRINCIPAL;
 					}
 				}
 				break;
-			case ETAPE_DEMARRAGE:
-				etape = MENU_PRINCIPAL;//TODO
-				break;
 			case MENU_PRINCIPAL:
 				puts("\nMENU PRINCIPAL");
-				puts("1-Recherche");
+				if(rech_tx_en || rech_im_en || rech_au_en)
+					puts("1-Recherche");
+				else
+					puts("X-Recherche (Indexation nécessaire)");
 				puts("2-Configuration");
-				puts("3-Réindexation");
+				puts("3-Indexation");
 				puts("\n0-Quitter");
 				scanf("%1s",buf);
 				switch(buf[0]){
-					case '1': etape = MENU_RECHERCHE; break;
+					case '1':
+						if(rech_tx_en || rech_im_en || rech_au_en)
+							etape = MENU_RECHERCHE;
+						break;
 					case '2': etape = MENU_CONFIGURATION; break;
-					case '3': etape = ETAPE_INDEXATION; break;
+					case '3': etape = MENU_INDEXATION; break;
 					case '0': running = 0; break;
-					case '*': puts("Crédits : Loïc Bréard, Arthur France, Ludivine Albertus, Moufdi Nom trop long tu le tapera toi meme, Nicolas Boirel"); break;
+					case '*': puts("Crédits : Loïc Bréard, Arthur France, Ludivine Albertus, Moufdi Oulad hadj messaoud, Nicolas Boirel"); break;
+				}
+				break;
+			case MENU_INDEXATION:
+				puts("\nMENU_INDEXATION");
+				puts("1-Tout indexer");
+				puts("2-Indexation texte");
+				puts("3-Indexation image");
+				puts("4-Indexation audio");
+				puts("\n0-Retour");
+				scanf("%1s",buf);
+				switch(buf[0]){
+					case '0': etape = MENU_PRINCIPAL; break;
+					case '1': //TODO Indexation texte
+						//TODO Indexation image
+						//TODO Indexation audio
+						break;
+					case '2': //TODO Indexation texte
+						break;
+					case '3': //TODO Indexation image
+						break;
+					case '4': //TODO Indexation audio
+						break;
+				}
+			case MENU_RECHERCHE:
+				puts("\nMENU RECHERCHE");
+				if(rech_tx_en){
+					puts("1-Recherche de textes par mot-clé");
+					puts("2-Recherche de textes par texte de référence");
+				}else{
+					puts("X-Recherche de textes par mot-clé            (indexation nécéssaire)");
+					puts("X-Recherche de textes par texte de référence (indexation nécéssaire)");
+				}
+				if(rech_im_en){
+					puts("3-Recherche d'images par code couleur");
+					puts("4-Recherche d'images par nom de couleur");
+					puts("5-Recherche d'images par image de référence");
+				}else{
+					puts("X-Recherche d'images par code couleur        (indexation nécéssaire)");
+					puts("X-Recherche d'images par nom de couleur      (indexation nécéssaire)");
+					puts("X-Recherche d'images par image de référence  (indexation nécéssaire)");
+				}
+				if(rech_au_en){
+					puts("6-Recherche de fichiers audio à partir d'un jingle");
+				}else{
+					puts("X-Recherche de fichiers audio à partir d'un jingle (indexation nécéssaire)");
+				}
+				puts("\n0-Retour");
+				scanf("%1s",buf);
+				switch(buf[0]){
+					case '0': etape = MENU_PRINCIPAL; break;
+					case '1':
+						if(rech_tx_en){
+							
+						}
+						break;
 				}
 				break;
 			case MENU_CONFIGURATION:
 				puts("\nMENU DE CONFIGURATION");
 				printf("Chemin BDD : %s\n",chemin_bdd);
 				puts("1-Modifier le chemin vers la BDD");
-				puts("2-Modifier les parametres image");
-				puts("3-Modifier les parametres audio");
-				puts("4-Modifier les parametres texte");
-				puts("\n0-Retour");
+				puts("2-Modifier les parametres texte");
+				puts("3-Modifier les parametres image");
+				puts("4-Modifier les parametres audio");
+				if(!rech_tx_en || !rech_im_en || !rech_au_en)
+					puts("\n0-Indexation et Retour");
+				else
+					puts("\n0-Retour");
 				scanf("%1s",buf);
 				switch(buf[0]){
 					case '1': etape = MENU_DEMANDE_CHEMIN; break;
-					case '2': etape = MENU_CONFIG_IMAGE; break;
-					case '3': etape = MENU_CONFIG_AUDIO; break;
-					case '4': etape = MENU_CONFIG_TEXTE; break;
-					case '0': etape = MENU_PRINCIPAL; break;
+					case '2': etape = MENU_CONFIG_TEXTE; break;
+					case '3': etape = MENU_CONFIG_IMAGE; break;
+					case '4': etape = MENU_CONFIG_AUDIO; break;
+					case '0':
+						etape = MENU_PRINCIPAL;
+						if(!rech_tx_en || !rech_im_en || !rech_au_en){
+							indexation_auto(dirPath,rech_tx_en,rech_im_en,rech_au_en,&map);
+							rech_tx_en = 1;
+							rech_im_en = 1;
+							rech_au_en = 1;
+						}
+						break;
+					case '=': etape = MENU_REINITIALISATION; break;
+				}
+				break;
+			case MENU_CONFIG_TEXTE:
+				puts("\nMENU DE CONFIGURATION TEXTE");
+				puts("Paramètres :");
+				printf("1-Nombre de mots maximum retenus par fichier: %ld\n",getConfigValueLong(&map,"nb_mots_max_texte",&flag));
+				printf("2-Taille minimale des mots retenus : %ld\n",getConfigValueLong(&map,"taille_min_mot",&flag));
+				printf("3-Nombre de résultats de recherche : %ld\n",getConfigValueLong(&map,"nb_res_texte",&flag));
+				puts("\n0-Retour");
+				scanf("%1s",buf);
+				switch(buf[0]){
+					case '1':{
+						unsigned int val;
+						do{
+							puts("Entrer le nombre maximum de mots par fichier (0->Annuler):");
+							scanf("%u",&val);
+						}while(val > 8);
+						if(val == 0)
+							puts("Annulation");
+						else{
+							flag = changeValueLong(&map,"nb_mots_max_texte",val);
+							rech_tx_en = 0;
+							indexation_texte_unset(&map);
+							if(flag != SUCCES)
+								puts("Echec modification");
+						}
+						break;
+					}
+					case '2':{
+						unsigned int val;
+						do{
+							puts("Entrer la taille minimale des mots (0->Annuler):");
+							scanf("%u",&val);
+						}while(val > 200);
+						if(val == 0)
+							puts("Annulation");
+						else{
+							flag = changeValueLong(&map,"taille_min_mot",val);
+							rech_tx_en = 0;
+							indexation_texte_unset(&map);
+							if(flag != SUCCES)
+								puts("Echec modification");
+						}
+						break;
+					}
+					case '3':{
+						unsigned int val;
+						do{
+							puts("Entrer le nombre de résultats affichés lors de la recherche (1 - 20) (0->Annuler):");
+							puts("(Un nombre de résultats important a plus tendance a faire ressortir des résultats non révélateurs)");
+							scanf("%u",&val);
+						}while(val > 20);
+						if(val == 0)
+							puts("Annulation");
+						else{
+							flag = changeValueLong(&map,"nb_res_texte",val);
+							rech_tx_en = 0;
+							indexation_texte_unset(&map);
+							if(flag != SUCCES)
+								puts("Echec modification");
+						}
+						break;
+					}
+					case '0': etape = MENU_CONFIGURATION; break;
 				}
 				break;
 			case MENU_CONFIG_IMAGE:
@@ -235,11 +472,10 @@ int main(){
 							puts("Annulation");
 						else{
 							flag = changeValueLong(&map,"nb_bits_image",val);
-							if(flag != SUCCES){
+							rech_im_en = 0;
+							indexation_image_unset(&map);
+							if(flag != SUCCES)
 								puts("Echec modification");
-							}else{
-								mapModif = 1;
-							}
 						}
 						break;
 					}
@@ -254,11 +490,10 @@ int main(){
 							puts("Annulation");
 						else{
 							flag = changeValueLong(&map,"nb_couleurs_max_image",val);
-							if(flag != SUCCES){
+							rech_im_en = 0;
+							indexation_image_unset(&map);
+							if(flag != SUCCES)
 								puts("Echec modification");
-							}else{
-								mapModif = 1;
-							}
 						}
 						break;
 					}
@@ -273,11 +508,10 @@ int main(){
 							puts("Annulation");
 						else{
 							flag = changeValueFloat(&map,"seuil_couleur_image",val);
-							if(flag != SUCCES){
+							rech_im_en = 0;
+							indexation_image_unset(&map);
+							if(flag != SUCCES)
 								puts("Echec modification");
-							}else{
-								mapModif = 1;
-							}
 						}
 						break;
 					}
@@ -292,16 +526,115 @@ int main(){
 							puts("Annulation");
 						else{
 							flag = changeValueLong(&map,"nb_res_image",val);
-							if(flag != SUCCES){
+							rech_im_en = 0;
+							indexation_image_unset(&map);
+							if(flag != SUCCES)
 								puts("Echec modification");
-							}else{
-								mapModif = 1;
-							}
 						}
 						break;
 					}
 					case '0': etape = MENU_CONFIGURATION; break;
 				}
+				break;
+			case MENU_CONFIG_AUDIO:
+				puts("\nMENU DE CONFIGURATION IMAGE");
+				puts("Paramètres :");
+				printf("1-Nombre de bits de quantification par couleur : %ld\n",getConfigValueLong(&map,"nb_bits_image",&flag));
+				printf("2-Nombre de couleurs maximum mémorisées par image : %ld\n",getConfigValueLong(&map,"nb_couleurs_max_image",&flag));
+				printf("3-Seuil minimal de considération d'une couleur (en %% de couverture de l'image) : %f\n",getConfigValueFloat(&map,"seuil_couleur_image",&flag));
+				printf("4-Nombre de résultats de recherche : %ld\n",getConfigValueLong(&map,"nb_res_image",&flag));
+				puts("\n0-Retour");
+				scanf("%1s",buf);
+				switch(buf[0]){
+					case '1':{
+						unsigned int val;
+						do{
+							puts("Entrer le nombre de bits de quantification (1-8) (0->Annuler):");
+							puts("/!\\ Plus le nombre de bits est élevé, plus la recherche est précise, mais le temps de calcul augmente");
+							scanf("%u",&val);
+						}while(val > 8);
+						if(val == 0)
+							puts("Annulation");
+						else{
+							flag = changeValueLong(&map,"nb_bits_image",val);
+							rech_im_en = 0;
+							indexation_image_unset(&map);
+							if(flag != SUCCES)
+								puts("Echec modification");
+						}
+						break;
+					}
+					case '2':{
+						unsigned int val;
+						do{
+							puts("Entrer le nombre de couleurs max considérées(1 - 200) (0->Annuler):");
+							puts("/!\\ Plus le nombre de couleurs est élevé, plus la recherche est précise, mais le temps de calcul augmente");
+							scanf("%u",&val);
+						}while(val > 200);
+						if(val == 0)
+							puts("Annulation");
+						else{
+							flag = changeValueLong(&map,"nb_couleurs_max_image",val);
+							rech_im_en = 0;
+							indexation_image_unset(&map);
+							if(flag != SUCCES)
+								puts("Echec modification");
+						}
+						break;
+					}
+					case '3':{
+						float val;
+						do{
+							puts("Entrer le seuil minimal de considération d'une couleur (0.0-100) (-1 ->Annuler):");
+							puts("(Valeur en pourcentage de couverture de l'image)");
+							scanf("%f",&val);
+						}while((val > 100 || val < 0) && val != -1);
+						if(val == -1)
+							puts("Annulation");
+						else{
+							flag = changeValueFloat(&map,"seuil_couleur_image",val);
+							rech_im_en = 0;
+							indexation_image_unset(&map);
+							if(flag != SUCCES)
+								puts("Echec modification");
+						}
+						break;
+					}
+					case '4':{
+						unsigned int val;
+						do{
+							puts("Entrer le nombre de résultats affichés lors de la recherche (1 - 20) (0->Annuler):");
+							puts("(Un nombre de résultats important a plus tendance a faire ressortir des résultats non révélateurs)");
+							scanf("%u",&val);
+						}while(val > 20);
+						if(val == 0)
+							puts("Annulation");
+						else{
+							flag = changeValueLong(&map,"nb_res_image",val);
+							rech_im_en = 0;
+							indexation_image_unset(&map);
+							if(flag != SUCCES)
+								puts("Echec modification");
+						}
+						break;
+					}
+					case '0': etape = MENU_CONFIGURATION; break;
+				}
+				break;
+			case MENU_REINITIALISATION:
+				puts("\nREINITIALISATION");
+				puts("Toutes les données générées par le logiciel vont être supprimmées.");
+				puts("Êtes-vous sûr ? Y/n");
+				scanf("%1s",buf);
+				if(buf[0] == 'Y'){
+					sds cmd = sdscat(sdsnew("rm -r "),dirPath);
+					system(cmd);
+					//printf("Commande system : %s\n",cmd);
+					sdsfree(cmd);
+					running = 0;
+					reinit = 1;
+				}else
+					etape = MENU_CONFIGURATION;
 				break;
 			default:
 				running = 0;
@@ -309,7 +642,7 @@ int main(){
 				break;
 		}
 	}while(running);
-	if(mapModif){
+	if(!reinit){
 		flag = save_config_file(map);
 		if(flag != SUCCES){
 			perror("Erreur sauvegarde fichier config ");

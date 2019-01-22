@@ -1,13 +1,11 @@
 #ifndef __INDEXATION__
 #define __INDEXATION__
 
-#include "indexation_texte.h"
+#include "sauvegarde_descripteurs.h"
+#include "config_reader.h"
+/*#include "indexation_texte.h"
 #include "indexation_image.h"
-#include "indexation_audio.h"
-
-#define MODE_INDEX_TEXTE 0
-#define MODE_INDEX_IMAGE 1
-#define MODE_INDEX_AUDIO 2
+#include "indexation_audio.h"*/
 
 /**
  * DESCRIPTION PLACEHOLDER
@@ -15,6 +13,13 @@
  * @param  PLACEHOLDER
  * @return PLACEHOLDER
  */
-void indexer(int mode /*TODO*/);
+//void indexer(int mode /*TODO*/);
 
+void getAllFiles(const char * chemin_fichiers,const char * extension,Capsule * caps);
+
+void indexer_texte(const char * chemin_desc,const ConfMap * map);
+
+void indexer_image(const char * chemin_desc,const ConfMap * map);
+
+void indexer_audio(const char * chemin_desc,const ConfMap * map);
 #endif

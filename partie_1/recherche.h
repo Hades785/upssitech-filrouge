@@ -1,22 +1,17 @@
 #ifndef __RECHERCHE__
 #define __RECHERCHE__
+#include "config_reader.h"
 
-#include "recherche_texte.h"
-#include "recherche_image.h"
-#include "recherche_audio.h"
+void recherche_texte_mot(ConfMap * map);
 
-#define MODE_RECH_TEXTE_MOT 0
-#define MODE_RECH_TEXTE_FICHIER 1
-#define MODE_RECH_IMAGE_COULEUR 2
-#define MODE_RECH_IMAGE_FICHIER 3
-#define MODE_RECH_AUDIO_FICHIER 4
+void recherche_texte_fichier(ConfMap * map);
 
-/**
- * DESCRIPTION PLACEHOLDER
- *
- * @param  PLACEHOLDER
- * @return PLACEHOLDER
- */
-void rechercher(int mode /*TODO*/);
+void recherche_image_nom(ConfMap * map);
+
+void recherche_image_code(ConfMap * map);
+
+void recherche_image_fichier(ConfMap * map);
+
+void recherche_audio(ConfMap * map);
 
 #endif

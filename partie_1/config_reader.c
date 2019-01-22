@@ -97,9 +97,9 @@ long getConfigValueLong(ConfMap * map,const char * key,unsigned char * success_f
 	sds s = getConfigValue(map,key);
 	if(s == NULL){
 		*success_flag = ECHEC;
-		return 0;
+		return -1;
 	}
-	long resp;
+	long resp = -1;
 	sscanf(s,"%ld",&resp);
 	sdsfree(s);
 	return resp;

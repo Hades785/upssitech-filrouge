@@ -1,11 +1,14 @@
-app.out: main.o indexation.o indexation_texte.o indexation_image.o indexation_audio.o recherche.o recherche_texte.o recherche_image.o recherche_audio.o sds.o sauvegarde_descripteurs.o config_reader.o
+app.out: main.o indexation.o indexation_texte.o indexation_image.o indexation_audio.o recherche_image.o recherche_audio.o sds.o sauvegarde_descripteurs.o config_reader.o
 	@gcc -o app.out main.o indexation.o indexation_texte.o indexation_image.o indexation_audio.o recherche.o recherche_texte.o recherche_image.o recherche_audio.o sds.o sauvegarde_descripteurs.o config_reader.o -lm
 	
-main.o: main.c indexation.h recherche.h sds.h constantes.h config_reader.h sauvegarde_descripteurs.h
+main.o: main.c indexation.h sds.h constantes.h config_reader.h sauvegarde_descripteurs.h
 	@gcc -c main.c
 
-indexation.o: indexation.c indexation.h indexation_texte.h indexation_image.h indexation_audio.h
+indexation.o: indexation.c indexation.h indexation_texte.h indexation_image.h indexation_audio.h sauvegarde_descripteurs.h config_reader.h
 	@gcc -c indexation.c
+	
+recherche.o: recherche.c recherche.h recherche_texte.h recherche_image. recherche_audio.h
+	@gcc -c recherche.c
 
 indexation_texte.o: indexation_texte.c indexation_texte.h sds.h constantes.h sauvegarde_descripteurs.h config_reader.h
 	@gcc -c indexation_texte.c
@@ -15,9 +18,6 @@ indexation_image.o: indexation_image.c indexation_image.h sds.h
 
 indexation_audio.o: indexation_audio.c indexation_audio.h
 	@gcc -c indexation_audio.c
-
-recherche.o: recherche.c recherche.h recherche_texte.h recherche_image.h recherche_audio.h
-	@gcc -c recherche.c
 
 recherche_texte.o: recherche_texte.c recherche_texte.h indexation_texte.h
 	@gcc -c recherche_texte.c
@@ -120,6 +120,13 @@ test_desc_gris.out: test_desc_gris.c recherche_image.h recherche_image.o indexat
 	@gcc -c test_desc_gris.c
 	@gcc -o test_desc_gris.out test_desc_gris.o recherche_image.o indexation_image.o sds.o sauvegarde_descripteurs.o -lm
 	./test_desc_gris.out
+	
+.PHONY:test_indexation.out
+test_indexation.out: test_indexation.c indexation.o indexation.h sauvegarde_descripteurs.h sauvegarde_descripteurs.o sds.o
+	@gcc -c test_indexation.c
+	@gcc -o test_indexation.out test_indexation.o sauvegarde_descripteurs.o indexation.o sds.o -lm
+	./test_indexation.out
+
 	
 .PHONY: clean
 clean:
