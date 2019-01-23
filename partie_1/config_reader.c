@@ -86,14 +86,14 @@ long keyPosition(ConfMap * map,const char * key){
 	return -1;
 }
 
-sds getConfigValue(ConfMap * map,const char * key){
+sds getConfigValue(const ConfMap * map,const char * key){
 	long pos = keyPosition(map,key);
 	if(pos == -1)
 		return NULL;
 	return sdsdup(map->values->descripteurs[pos]);
 }
 
-long getConfigValueLong(ConfMap * map,const char * key,unsigned char * success_flag){
+long getConfigValueLong(const ConfMap * map,const char * key,unsigned char * success_flag){
 	sds s = getConfigValue(map,key);
 	if(s == NULL){
 		*success_flag = ECHEC;
@@ -105,7 +105,7 @@ long getConfigValueLong(ConfMap * map,const char * key,unsigned char * success_f
 	return resp;
 }
 
-float getConfigValueFloat(ConfMap * map,const char * key,unsigned char * success_flag){
+float getConfigValueFloat(const ConfMap * map,const char * key,unsigned char * success_flag){
 	sds s = getConfigValue(map,key);
 	if(s == NULL){
 		*success_flag = ECHEC;

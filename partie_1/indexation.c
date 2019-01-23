@@ -1,11 +1,14 @@
 #include "indexation.h"
 #include "constantes.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <dirent.h>
 #include <assert.h>
 #include <string.h>
 
-sds getDirPath(){
+#include "indexation_image.h"
+
+sds getDirPathI(){
 	return sdscat(sdscat(sdsnew(getenv("HOME")),"/"),STORAGE_FOLDER_NAME);
 }
 
@@ -60,11 +63,11 @@ void indexer_image(const char * chemin_desc,const ConfMap * map){
 	
 	Capsule descs = newCapsule(&flag);
 	Capsule fichiers = newCapsule(&flag);
-	getAllFiles(getConfigValue(map,"chemin_bdd_im",&flag),".txt",&fichiers);
+	getAllFiles(getConfigValue(map,"chemin_bdd_im"),".txt",&fichiers);
 	for(unsigned int i = 0;i < fichiers.nbDescripteurs;i++){
 		addElement(&descs,indexation_image(fichiers.descripteurs[i],nbCouleurs,seuil,i,nbBits));
 	}
-	sds chemin = sdscat(sdscat(getDirPath(),"/"),NOM_FICH_DESC_IMG);
+	sds chemin = sdscat(sdscat(getDirPathI(),"/"),NOM_FICH_DESC_IMG);
 	saveDescripteurs(&flag,descs,chemin);
 	sdsfree(chemin);
 	freeCapsule(descs);

@@ -44,7 +44,6 @@ void recherche_texte_mot(ConfMap * map){
 	{
 		free(resultats[i]);
 	}
-	freeCapsule(base);
 	freeCapsule(base_mots);
 	freeCapsule(mapNoms);
 }

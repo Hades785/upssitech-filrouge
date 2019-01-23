@@ -20,11 +20,11 @@ void freeConfMap(ConfMap map);
 
 long keyPosition(ConfMap * map,const char * key);
 
-sds getConfigValue(ConfMap * map,const char * key);
+sds getConfigValue(const ConfMap * map,const char * key);
 
-long getConfigValueLong(ConfMap * map,const char * key,unsigned char * success_flag);
+long getConfigValueLong(const ConfMap * map,const char * key,unsigned char * success_flag);
 
-float getConfigValueFloat(ConfMap * map,const char * key,unsigned char * success_flag);
+float getConfigValueFloat(const ConfMap * map,const char * key,unsigned char * success_flag);
 
 unsigned char addValue(ConfMap * map,const char * key,const char * value);
 
