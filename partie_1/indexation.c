@@ -37,7 +37,8 @@ void indexer_image(const char * chemin_desc,const ConfMap * map){
 	unsigned char flag;
 	unsigned int nbCouleurs = getConfigValueLong(map,"nb_couleurs_max",&flag);
 	if(flag != SUCCES){
-		
+		puts("Erreur parametres");
+		assert(flag != ECHEC);
 	}
 	Capsule descs = newCapsule(&flag);
 	Capsule fichiers = newCapsule(&flag);

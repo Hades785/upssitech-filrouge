@@ -7,21 +7,58 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 void recherche_texte_mot(ConfMap * map){
 	unsigned char flag;
 	Capsule base = loadDescripteurs(&flag,NOM_FICH_DESC_TEXT);
+	
+	unsigned char nb_res_max = getConfigValueLong(map,"nb_res_texte",&flag);
+	if(flag != SUCCES){
+		puts("Erreur parametre");
+		assert(flag != ECHEC);
+	}
+	
 	fputs("\nEntrer le(s) mot(s) à rechercher :",stdout);
 	char buf[300];
 	scanf("%298s",buf);
 	buf[strlen(buf)] = ' ';
 	//TODO
+	//appel a la fonction de recherche ici
 	
 	freeCapsule(base);
 }
 
 void recherche_texte_pfichier(ConfMap * map){
 	unsigned char flag;//TODO
+	Capsule base = loadDescripteurs(&flag,NOM_FICH_DESC_TEXT);
+	
+	unsigned char nb_res_max = getConfigValueLong(map,"nb_res_texte",&flag);
+	if(flag != SUCCES){
+		puts("Erreur parametre");
+		assert(flag != ECHEC);
+	}
+	
+	unsigned char taille_min_mot = getConfigValueLong(map,"taille_min_mot",&flag);
+	if(flag != SUCCES){
+		puts("Erreur parametre");
+		assert(flag != ECHEC);
+	}
+	
+	unsigned char nb_mots_max = getConfigValueLong(map,"nb_mots_max_texte",&flag);
+	if(flag != SUCCES){
+		puts("Erreur parametre");
+		assert(flag != ECHEC);
+	}
+	
+	fputs("\nEntrer l'adresse du fichier à rechercher :",stdout);
+	char buf[300];
+	scanf("%300s",buf);
+	
+	//appel a la fonction de recherche ici
+	
+	//traitement du resultat
+	
 }
 
 void fin_rech_image(sds * res){
