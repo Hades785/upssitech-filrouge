@@ -143,7 +143,15 @@ void indexer_audio(const char * chemin_desc,const ConfMap * map){
 	getAllFiles(getConfigValue(map,"chemin_bdd_au"),".txt",&fichiers);
 	for(unsigned int i = 0;i < fichiers.nbDescripteurs;i++){
 		printf("Indexation audio : %s\n",fichiers.descripteurs[i]);
-		//TODO addelements descs
+		//TODO: tests
+		sds s = sdsdup(fichiers.descripteurs[i]);
+		sds t = indexation_audio(fichiers.descripteurs[i], nb_echant_pFen, nb_int_amp);
+		s = sdscat(s, ";");
+		s = sdscat(s, t);
+		addElementCopy(&descs, s);
+		
+		sdsfree(t);
+		sdsfree(s);
 	}
 	sds chemin = sdscat(sdscat(getDirPathI(),"/"),NOM_FICH_DESC_AUD);
 	saveDescripteurs(&flag,descs,chemin);

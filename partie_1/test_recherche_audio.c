@@ -3,8 +3,10 @@
 int main() {
     sds path_f = sdsnew("../documents/audio/jingle_fi.txt");
     sds path_b = sdsnew("../documents/audio/test.desc");
+    char flag;
+    Capsule desc_base = loadDescripteurs(&flag, path_b);
 
-    RESULT_RECHERCHE_AUDIO* resultats = recherche_audio(path_f, path_b, 1, 1000, 16);
+    RESULT_RECHERCHE_AUDIO* resultats = recherche_audio(path_f, desc_base, 1, 1000, 16);
 
     RESULT_RECHERCHE_AUDIO* ptr = resultats;
     while(ptr != NULL) {
