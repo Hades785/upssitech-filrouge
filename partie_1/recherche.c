@@ -39,6 +39,7 @@ void recherche_texte_mot(ConfMap * map){
 	recherche_texte_motscles(buf, mapNoms, base_mots, nb_res_max, resultats);
 	
 	// traitement du resultat
+	puts("TRAITEMENT ENCORE A FAIRE !!!!!!!");
 	
 	for(int i = 0; i < nb_res_max; i++)
 	{
@@ -224,5 +225,5 @@ void recherche_image_fichier(ConfMap * map){
 }
 
 void recherche_audio(ConfMap * map){
-	
+	puts("ENCORE A FAIRE !!!!!!!");
 }
