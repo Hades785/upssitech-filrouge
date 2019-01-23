@@ -17,7 +17,7 @@ int main()
 	
 	printf("Begin test recherche par fichiers\n\n");
 	
-	sds descripteur = indexation_texte("test.txt", 0);
+	sds descripteur = indexation_texte("test.txt", 0, 20, 3);
 	recherche_texte_fichier(descripteur, liste_base_texte, table_index, 10);
 	
 	printf("\nTest ended\n");
