@@ -55,7 +55,7 @@ void indexer_image(const char * chemin_desc,const ConfMap * map){
 		assert(flag != ECHEC);
 	}
 	
-	unsigned char nbBits = getConfigValueLong(map,"nb_bits_image",&flag);
+	unsigned int nbBits = getConfigValueLong(map,"nb_bits_image",&flag);
 	if(flag != SUCCES){
 		puts("Erreur parametre");
 		assert(flag != ECHEC);
@@ -80,5 +80,30 @@ void indexer_image(const char * chemin_desc,const ConfMap * map){
 }
 
 void indexer_audio(const char * chemin_desc,const ConfMap * map){
-	puts("ENCORE A FAIRE !!!!!!!");
+	unsigned char flag;
+	unsigned int nb_echant_pFen = (unsigned int)getConfigValueLong(map,"nb_echant_pfen",&flag);
+	if(flag != SUCCES){
+		puts("Erreur parametre");
+		assert(flag != ECHEC);
+	}
+	unsigned int nb_int_amp = (unsigned int)getConfigValueLong(map,"nb_inter_amp",&flag);
+	if(flag != SUCCES){
+		puts("Erreur parametre");
+		assert(flag != ECHEC);
+	}
+	Capsule descs = newCapsule(&flag);
+	Capsule fichiers = newCapsule(&flag);
+	getAllFiles(getConfigValue(map,"chemin_bdd_au"),".txt",&fichiers);
+	for(unsigned int i = 0;i < fichiers.nbDescripteurs;i++){
+		//TODO addelements descs
+	}
+	sds chemin = sdscat(sdscat(getDirPathI(),"/"),NOM_FICH_DESC_AUD);
+	saveDescripteurs(&flag,descs,chemin);
+	sdsfree(chemin);
+	freeCapsule(descs);
+	freeCapsule(fichiers);
+	if(flag != SUCCES){
+		puts("Erreur seuvegarde descripteurs");
+		assert(flag != ECHEC);
+	}
 }

@@ -39,7 +39,7 @@ ConfMap defaultConfMap(){//valeurs par defaut
 	assert(addValueLong(&map,"taille_min_mot",DEF_TAILLE_MIN_MOT) != ECHEC);
 	assert(addValueLong(&map,"nb_res_texte",DEF_NB_RES_TEXTE) != ECHEC);
 	
-	assert(addValueLong(&map,"nb_echant_pfen",DEF_NB_ENCHANT_PFEN) != ECHEC);
+	assert(addValueLong(&map,"nb_echant_pfen",DEF_NB_ECHANT_PFEN) != ECHEC);
 	assert(addValueLong(&map,"nb_inter_amp",DEF_NB_INTER_AMP) != ECHEC);
 	assert(addValueLong(&map,"step_number",DEF_STEP_NUMBER) != ECHEC);
 	
@@ -78,7 +78,7 @@ unsigned char verifMinConf(ConfMap * map){
 	}
 	if(keyPosition(map,"nb_echant_pfen") == -1){
 		resp = 1;
-		addValueLong(map,"nb_echant_pfen",DEF_NB_ENCHANT_PFEN);
+		addValueLong(map,"nb_echant_pfen",DEF_NB_ECHANT_PFEN);
 	}
 	if(keyPosition(map,"nb_inter_amp") == -1){
 		resp = 1;

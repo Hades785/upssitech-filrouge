@@ -135,7 +135,7 @@ void recherche_image_nom(ConfMap * map){
 		puts("Erreur parametre");
 		return;
 	}
-	unsigned char nbBits = (unsigned int)getConfigValueLong(map,"nb_bits_image",&flag);
+	unsigned int nbBits = (unsigned int)getConfigValueLong(map,"nb_bits_image",&flag);
 	if(flag != SUCCES){
 		puts("Erreur parametre");
 		return;
@@ -187,7 +187,7 @@ void recherche_image_code(ConfMap * map){
 		puts("Erreur parametre");
 		return;
 	}
-	unsigned char nbBits = (unsigned int)getConfigValueLong(map,"nb_bits_image",&flag);
+	unsigned int nbBits = (unsigned int)getConfigValueLong(map,"nb_bits_image",&flag);
 	if(flag != SUCCES){
 		puts("Erreur parametre");
 		return;
@@ -224,12 +224,12 @@ void recherche_image_fichier(ConfMap * map){
 		puts("Erreur parametre");
 		return;
 	}
-	unsigned char nbBits = (unsigned int)getConfigValueLong(map,"nb_bits_image",&flag);
+	unsigned int nbBits = (unsigned int)getConfigValueLong(map,"nb_bits_image",&flag);
 	if(flag != SUCCES){
 		puts("Erreur parametre");
 		return;
 	}
-	unsigned char nbCouleursMax = (unsigned int)getConfigValueLong(map,"nb_couleurs_max_image",&flag);
+	unsigned int nbCouleursMax = (unsigned int)getConfigValueLong(map,"nb_couleurs_max_image",&flag);
 	if(flag != SUCCES){
 		puts("Erreur parametre");
 		return;
@@ -265,6 +265,32 @@ void recherche_image_fichier(ConfMap * map){
 }
 
 void recherche_audio(ConfMap * map){
+	unsigned char flag;
+	unsigned int nb_echant_pFen = (unsigned int)getConfigValueLong(map,"nb_echant_pfen",&flag);
+	if(flag != SUCCES){
+		puts("Erreur parametre");
+		return;
+	}
+	unsigned int nb_int_amp = (unsigned int)getConfigValueLong(map,"nb_inter_amp",&flag);
+	if(flag != SUCCES){
+		puts("Erreur parametre");
+		return;
+	}
+	unsigned int step_number = (unsigned int)getConfigValueLong(map,"step_number",&flag);
+	if(flag != SUCCES){
+		puts("Erreur parametre");
+		return;
+	}
+	sds dirPath = sdscat(sdscat(getDirPath(),"/"),NOM_FICH_DESC_AUD);
+	Capsule base = loadDescripteurs(&flag,dirPath);
+	if(flag != SUCCES){
+		printf("Echec ouverture base descripteurs : %s\n",dirPath);
+		sdsfree(dirPath);
+		assert(flag != ECHEC);
+	}
+	sdsfree(dirPath);
 	
 	puts("ENCORE A FAIRE !!!!!!!");
+	
+	freeCapsule(base);
 }
