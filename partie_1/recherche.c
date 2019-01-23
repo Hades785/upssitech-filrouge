@@ -24,7 +24,7 @@ void recherche_texte_mot(ConfMap * map){
 	sdsfree(temp);
 	sdsfree(dirPath);
 	
-	unsigned char nb_res_max = getConfigValueLong(map,"nb_res_texte",&flag);
+	unsigned int nb_res_max = getConfigValueLong(map,"nb_res_texte",&flag);
 	if(flag != SUCCES){
 		puts("Erreur parametre");
 		assert(flag != ECHEC);
@@ -34,9 +34,17 @@ void recherche_texte_mot(ConfMap * map){
 	char buf[300];
 	scanf("%298s",buf);
 	buf[strlen(buf)] = ' ';
-	//TODO
-	//appel a la fonction de recherche ici
 	
+	sds resultats[nb_res_max];
+	recherche_texte_motscles(buf, mapNoms, base_mots, nb_res_max, resultats);
+	
+	// traitement du resultat
+	
+	for(int i = 0; i < nb_res_max; i++)
+	{
+		free(resultats[i]);
+	}
+	freeCapsule(base);
 	freeCapsule(base_mots);
 	freeCapsule(mapNoms);
 }
@@ -52,19 +60,19 @@ void recherche_texte_pfichier(ConfMap * map){
 	sdsfree(temp);
 	sdsfree(dirPath);
 	
-	unsigned char nb_res_max = getConfigValueLong(map,"nb_res_texte",&flag);
+	unsigned int nb_res_max = getConfigValueLong(map,"nb_res_texte",&flag);
 	if(flag != SUCCES){
 		puts("Erreur parametre");
 		assert(flag != ECHEC);
 	}
 	
-	unsigned char taille_min_mot = getConfigValueLong(map,"taille_min_mot",&flag);
+	unsigned int taille_min_mot = getConfigValueLong(map,"taille_min_mot",&flag);
 	if(flag != SUCCES){
 		puts("Erreur parametre");
 		assert(flag != ECHEC);
 	}
 	
-	unsigned char nb_mots_max = getConfigValueLong(map,"nb_mots_max_texte",&flag);
+	unsigned int nb_mots_max = getConfigValueLong(map,"nb_mots_max_texte",&flag);
 	if(flag != SUCCES){
 		puts("Erreur parametre");
 		assert(flag != ECHEC);
@@ -74,10 +82,16 @@ void recherche_texte_pfichier(ConfMap * map){
 	char buf[300];
 	scanf("%300s",buf);
 	
-	//appel a la fonction de recherche ici
+	sds resultats[nb_res_max];
+	sds descripteur = indexation_texte(buf, 0, 50, 3); // les deux dernieres valeurs peuvent etre modifiees ou mise en variable de conf
+	recherche_texte_fichier(descripteur, mapNoms, base_mots, nb_res_max, resultats);
 	
 	//traitement du resultat
 	
+	for(int i = 0; i < nb_res_max; i++)
+	{
+		free(resultats[i]);
+	}
 	freeCapsule(base_mots);
 	freeCapsule(mapNoms);
 }
