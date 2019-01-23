@@ -57,8 +57,9 @@ documents/
 # Descripteurs
 *.desc
 
-# KDevelop project
+# misc
 *.kdev4
-*.desc
+.directory
+.vscode
 MENU_prop.txt
 *.desc

@@ -25,7 +25,7 @@ recherche_texte.o: recherche_texte.c recherche_texte.h indexation_texte.h
 recherche_image.o: recherche_image.c recherche_image.h indexation_image.h sds.h
 	@gcc -c recherche_image.c -lm
 
-recherche_audio.o: recherche_audio.c recherche_audio.h indexation_audio.h
+recherche_audio.o: recherche_audio.c recherche_audio.h indexation_audio.h constantes.h
 	@gcc -c recherche_audio.c
 	
 sds.o: sds.c sds.h sdsalloc.h
@@ -84,6 +84,18 @@ tst_tabocc.out:indexation_texte.h indexation_texte.o sds.h sds.o
 	@gcc -c tst_tabocc.c
 	@gcc -o tst_tabocc.out tst_tabocc.o sds.o indexation_texte.o
 	./tst_tabocc.out
+	
+test_indexation_audio.o: test_indexation_audio.c indexation_audio.h constantes.h sds.h sauvegarde_descripteurs.h
+	@gcc -c test_indexation_audio.c
+
+test_ia.out: test_indexation_audio.o indexation_audio.o sds.o sauvegarde_descripteurs.o
+	@gcc -o test_ia.out test_indexation_audio.o indexation_audio.o sds.o sauvegarde_descripteurs.o
+
+test_recherche_audio.o: test_recherche_audio.c recherche_audio.h indexation_audio.h constantes.h sds.h
+	@gcc -c test_recherche_audio.c
+
+test_ra.out: test_recherche_audio.o recherche_audio.o indexation_audio.o sds.o sauvegarde_descripteurs.o
+	@gcc -o test_ra.out test_recherche_audio.o recherche_audio.o indexation_audio.o sds.o sauvegarde_descripteurs.o -lm
 
 .PHONY: tstCreateDescripteurImage.out
 tstCreateDescripteurImage.out: tstCreateDescripteurImage.c indexation_image.h sds.h indexation_image.o sds.o
