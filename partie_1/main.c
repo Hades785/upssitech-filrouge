@@ -13,6 +13,9 @@
 
 enum Etape{
 	MENU_DEMANDE_CHEMIN,
+	MENU_DEMANDE_CHEMIN_TX,
+	MENU_DEMANDE_CHEMIN_IM,
+	MENU_DEMANDE_CHEMIN_AU,
 	MENU_PRINCIPAL,
 	MENU_RECHERCHE,
 	MENU_CONFIGURATION,
@@ -209,18 +212,22 @@ int main(){
 	}
 	fputs(".",stdout);
 	
-	DIR * dirBdd;
-	sds chemin_bdd;
+	//DIR * dirBdd;
+	DIR * dirBddTexte = NULL;
+	DIR * dirBddImage = NULL;
+	DIR * dirBddAudio = NULL;
+	//sds chemin_bdd;
+	sds chemin_bdd_tx,chemin_bdd_im,chemin_bdd_au;
 	
-	unsigned char presence_key_chemin = 0;
-	long pos = keyPosition(&map,"chemin_bdd");
+	unsigned char presence_key_chemin_tx = 0;
+	long pos = keyPosition(&map,"chemin_bdd_tx");
 	if(pos == -1){
 		etape = MENU_DEMANDE_CHEMIN;
-		chemin_bdd = sdsempty();
+		chemin_bdd_tx = sdsempty();
 	}else{
-		chemin_bdd = sdsdup(map.values->descripteurs[pos]);
-		dirBdd = opendir(chemin_bdd);
-		if(dirBdd == NULL){
+		chemin_bdd_tx = sdsdup(map.values->descripteurs[pos]);
+		dirBddTexte = opendir(chemin_bdd_tx);
+		if(dirBddTexte == NULL){
 			if(errno == ENOENT){
 				etape = MENU_DEMANDE_CHEMIN;
 			}else{
@@ -230,7 +237,51 @@ int main(){
 				return -1;
 			}
 		}else{
-			presence_key_chemin = 1;
+			presence_key_chemin_tx = 1;
+		}
+	}
+	
+	unsigned char presence_key_chemin_im = 0;
+	pos = keyPosition(&map,"chemin_bdd_im");
+	if(pos == -1){
+		etape = MENU_DEMANDE_CHEMIN;
+		chemin_bdd_im = sdsempty();
+	}else{
+		chemin_bdd_im = sdsdup(map.values->descripteurs[pos]);
+		dirBddImage = opendir(chemin_bdd_im);
+		if(dirBddImage == NULL){
+			if(errno == ENOENT){
+				etape = MENU_DEMANDE_CHEMIN;
+			}else{
+				perror("Erreur fatale 4 ");
+				sdsfree(dirPath);
+				freeConfMap(map);
+				return -1;
+			}
+		}else{
+			presence_key_chemin_im = 1;
+		}
+	}
+	
+	unsigned char presence_key_chemin_au = 0;
+	pos = keyPosition(&map,"chemin_bdd_au");
+	if(pos == -1){
+		etape = MENU_DEMANDE_CHEMIN;
+		chemin_bdd_au = sdsempty();
+	}else{
+		chemin_bdd_au = sdsdup(map.values->descripteurs[pos]);
+		dirBddAudio = opendir(chemin_bdd_au);
+		if(dirBddAudio == NULL){
+			if(errno == ENOENT){
+				etape = MENU_DEMANDE_CHEMIN;
+			}else{
+				perror("Erreur fatale 4 ");
+				sdsfree(dirPath);
+				freeConfMap(map);
+				return -1;
+			}
+		}else{
+			presence_key_chemin_au = 1;
 		}
 	}
 	puts(".");
@@ -245,40 +296,126 @@ int main(){
 	do{
 		switch(etape){
 			case MENU_DEMANDE_CHEMIN:
-				puts("Entrer le chemin vers la base de données :");
+				if(!presence_key_chemin_tx) etape = MENU_DEMANDE_CHEMIN_TX;
+				else if(!presence_key_chemin_im) etape = MENU_DEMANDE_CHEMIN_IM;
+				else if(!presence_key_chemin_au) etape = MENU_DEMANDE_CHEMIN_AU;
+				else{
+					puts("\nMENU CHANGEMENT CHEMIN");
+					printf("1-Textes : %s\n",chemin_bdd_tx);
+					printf("2-Images : %s\n",chemin_bdd_im);
+					printf("3-Audio  : %s\n",chemin_bdd_au);
+					puts("\n0-Retour");
+					scanf("%1s",buf);
+					switch(buf[0]){
+						case '0': etape = MENU_CONFIGURATION; break;
+						case '1': etape = MENU_DEMANDE_CHEMIN_TX; break;
+						case '2': etape = MENU_DEMANDE_CHEMIN_IM; break;
+						case '3': etape = MENU_DEMANDE_CHEMIN_AU; break;
+					}
+				}
+				break;
+			case MENU_DEMANDE_CHEMIN_TX:
+				puts("Entrer le chemin vers la base de données de textes:");
 				puts("(soit en relatif si l'execution se fait toujours depuis le même répertoire, soit en absolu.)");
-				puts("(Rappel : sur WSL, les disques sont en /mnt/)");
-				if(presence_key_chemin) puts("(entrer '0' retournera au menu de configuration)");
+				puts("(Rappel : sur WSL, les disques sont montés en /mnt/)");
+				if(presence_key_chemin_tx) puts("(entrer '0' pour annuler)");
 				scanf("%300s",buf);
-				if(buf[0] == '0' && presence_key_chemin){
+				if(buf[0] == '0' && presence_key_chemin_tx){
 					puts("Annulation");
-					etape = MENU_CONFIGURATION;
+					etape = MENU_DEMANDE_CHEMIN;
 				}else{
-					dirBdd = opendir(buf);
-					if(dirBdd == NULL){
+					if(dirBddTexte != NULL) closedir(dirBddTexte);
+					dirBddTexte = opendir(buf);
+					if(dirBddTexte == NULL){
 						if(errno != ENOENT){
 							perror("Erreur fatale 5 ");
 							running = 0;
 						}else{
 							printf("Répertoire non trouvé : %s\n",buf);
 						}
-					}else if(presence_key_chemin){
-						sdsfree(chemin_bdd);
-						chemin_bdd = sdsnew(buf);
-						changeValue(&map,"chemin_bdd",buf);
-						etape = MENU_PRINCIPAL;
+					}else if(presence_key_chemin_tx){
+						sdsfree(chemin_bdd_tx);
+						chemin_bdd_tx = sdsnew(buf);
+						changeValue(&map,"chemin_bdd_tx",buf);
+						etape = MENU_DEMANDE_CHEMIN;
 					}else{
-						sdsfree(chemin_bdd);
-						chemin_bdd = sdsnew(buf);
-						addValue(&map,"chemin_bdd",buf);
+						sdsfree(chemin_bdd_tx);
+						chemin_bdd_tx = sdsnew(buf);
+						addValue(&map,"chemin_bdd_tx",buf);
 						indexation_texte_unset(&map);
-						indexation_image_unset(&map);
-						indexation_audio_unset(&map);
 						rech_tx_en = 0;
+						presence_key_chemin_tx = 1;
+						etape = MENU_DEMANDE_CHEMIN;
+					}
+				}
+				break;
+			case MENU_DEMANDE_CHEMIN_IM:
+				puts("Entrer le chemin vers la base de données d'images:");
+				puts("(soit en relatif si l'execution se fait toujours depuis le même répertoire, soit en absolu.)");
+				puts("(Rappel : sur WSL, les disques sont montés en /mnt/)");
+				if(presence_key_chemin_im) puts("(entrer '0' pour annuler)");
+				scanf("%300s",buf);
+				if(buf[0] == '0' && presence_key_chemin_im){
+					puts("Annulation");
+					etape = MENU_DEMANDE_CHEMIN;
+				}else{
+					if(dirBddImage != NULL) closedir(dirBddImage);
+					dirBddImage = opendir(buf);
+					if(dirBddImage == NULL){
+						if(errno != ENOENT){
+							perror("Erreur fatale 5 ");
+							running = 0;
+						}else{
+							printf("Répertoire non trouvé : %s\n",buf);
+						}
+					}else if(presence_key_chemin_im){
+						sdsfree(chemin_bdd_im);
+						chemin_bdd_im = sdsnew(buf);
+						changeValue(&map,"chemin_bdd_im",buf);
+						etape = MENU_DEMANDE_CHEMIN;
+					}else{
+						sdsfree(chemin_bdd_im);
+						chemin_bdd_im = sdsnew(buf);
+						addValue(&map,"chemin_bdd_im",buf);
+						indexation_image_unset(&map);
 						rech_im_en = 0;
+						presence_key_chemin_im = 1;
+						etape = MENU_DEMANDE_CHEMIN;
+					}
+				}
+				break;
+			case MENU_DEMANDE_CHEMIN_AU:
+				puts("Entrer le chemin vers la base de données audio:");
+				puts("(soit en relatif si l'execution se fait toujours depuis le même répertoire, soit en absolu.)");
+				puts("(Rappel : sur WSL, les disques sont montés en /mnt/)");
+				if(presence_key_chemin_au) puts("(entrer '0' pour annuler)");
+				scanf("%300s",buf);
+				if(buf[0] == '0' && presence_key_chemin_au){
+					puts("Annulation");
+					etape = MENU_DEMANDE_CHEMIN;
+				}else{
+					if(dirBddAudio != NULL) closedir(dirBddAudio);
+					dirBddAudio = opendir(buf);
+					if(dirBddAudio == NULL){
+						if(errno != ENOENT){
+							perror("Erreur fatale 5 ");
+							running = 0;
+						}else{
+							printf("Répertoire non trouvé : %s\n",buf);
+						}
+					}else if(presence_key_chemin_au){
+						sdsfree(chemin_bdd_au);
+						chemin_bdd_au = sdsnew(buf);
+						changeValue(&map,"chemin_bdd_au",buf);
+						etape = MENU_DEMANDE_CHEMIN;
+					}else{
+						sdsfree(chemin_bdd_au);
+						chemin_bdd_au = sdsnew(buf);
+						addValue(&map,"chemin_bdd_au",buf);
+						indexation_audio_unset(&map);
 						rech_au_en = 0;
-						presence_key_chemin = 1;
-						etape = MENU_PRINCIPAL;
+						presence_key_chemin_au = 1;
+						etape = MENU_DEMANDE_CHEMIN;
 					}
 				}
 				break;
@@ -314,9 +451,9 @@ int main(){
 				switch(buf[0]){
 					case '0': etape = MENU_PRINCIPAL; break;
 					case '1':
-						indexer_texte(chemin_bdd,&map);
-						indexer_image(chemin_bdd,&map);
-						indexer_audio(chemin_bdd,&map);
+						indexer_texte(chemin_bdd_tx,&map);
+						indexer_image(chemin_bdd_im,&map);
+						indexer_audio(chemin_bdd_au,&map);
 						indexation_texte_set(&map);
 						rech_tx_en = 1;
 						indexation_image_set(&map);
@@ -325,17 +462,17 @@ int main(){
 						rech_au_en = 1;
 						break;
 					case '2':
-						indexer_texte(chemin_bdd,&map);
+						indexer_texte(chemin_bdd_tx,&map);
 						indexation_texte_set(&map);
 						rech_tx_en = 1;
 						break;
 					case '3':
-						indexer_image(chemin_bdd,&map);
+						indexer_image(chemin_bdd_im,&map);
 						indexation_image_set(&map);
 						rech_im_en = 1;
 						break;
 					case '4':
-						indexer_audio(chemin_bdd,&map);
+						indexer_audio(chemin_bdd_au,&map);
 						indexation_audio_set(&map);
 						rech_au_en = 1;
 						break;
@@ -377,8 +514,7 @@ int main(){
 				break;
 			case MENU_CONFIGURATION:
 				puts("\nMENU DE CONFIGURATION");
-				printf("Chemin BDD : %s\n",chemin_bdd);
-				puts("1-Modifier le chemin vers la BDD");
+				puts("1-Modifier les chemins vers les BDD");
 				puts("2-Modifier les parametres texte");
 				puts("3-Modifier les parametres image");
 				puts("4-Modifier les parametres audio");
@@ -633,8 +769,8 @@ int main(){
 		}
 	}
 	puts("A bientôt !");
-	closedir(progDir);closedir(dirBdd);
+	closedir(progDir);closedir(dirBddTexte);closedir(dirBddImage);closedir(dirBddAudio);
 	sdsfree(dirPath);
-	sdsfree(chemin_bdd);
+	sdsfree(chemin_bdd_tx);sdsfree(chemin_bdd_im);sdsfree(chemin_bdd_au);
 	freeConfMap(map);
 }

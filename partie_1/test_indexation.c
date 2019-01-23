@@ -2,7 +2,9 @@
 #include <stdio.h>
 
 int main(){
-	Capsule caps = getAllFiles("../documents/images/rgb","");
+	unsigned char flag;
+	Capsule caps = newCapsule(&flag);
+	getAllFiles("../documents",".txt",&caps);
 	for(unsigned int i = 0;i < caps.nbDescripteurs;i++){
 		printf("%u:%s\n",i,caps.descripteurs[i]);
 	}

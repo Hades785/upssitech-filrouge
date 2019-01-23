@@ -3,8 +3,10 @@
 #include "recherche_image.h"
 #include "recherche_audio.h"
 #include "sauvegarde_descripteurs.h"
+#include "constantes.h"
 
 #include <stdio.h>
+#include <string.h>
 
 void recherche_texte_mot(ConfMap * map){
 	unsigned char flag;
@@ -12,10 +14,10 @@ void recherche_texte_mot(ConfMap * map){
 	fputs("\nEntrer le(s) mot(s) à rechercher :",stdout);
 	char buf[300];
 	scanf("%298s",buf);
-	buf[strlen(bof)] = ' ';
+	buf[strlen(buf)] = ' ';
 	//TODO
 	
-	freeCapsule(caps);
+	freeCapsule(base);
 }
 
 void recherche_texte_pfichier(ConfMap * map){
@@ -39,12 +41,12 @@ void fin_rech_image(sds * res){
 void recherche_image_nom(ConfMap * map){
 	unsigned char flag;
 	unsigned int nbResMax = (unsigned int)getConfigValueLong(map,"nb_res_image",&flag);
-	if(flag != SUCCESS){
+	if(flag != SUCCES){
 		puts("Erreur parametre");
 		return;
 	}
 	unsigned char nbBits = (unsigned int)getConfigValueLong(map,"nb_bits_image",&flag);
-	if(flag != SUCCESS){
+	if(flag != SUCCES){
 		puts("Erreur parametre");
 		return;
 	}
@@ -70,25 +72,25 @@ void recherche_image_nom(ConfMap * map){
 			puts("Erreur entrée utilisateur");
 			break;
 	}
-	freeCapsule(caps);
-	fin_rech_image(resultat);
+	freeCapsule(base);
+	fin_rech_image(reponse);
 	unsigned int i = 0;
-	while(resultat[i] != NULL){
-		sdsfree(resultat[i]);
+	while(reponse[i] != NULL){
+		sdsfree(reponse[i]);
 		i++;
 	}
-	free(resultat);
+	free(reponse);
 }
 
 void recherche_image_code(ConfMap * map){
 	unsigned char flag;
 	unsigned int nbResMax = (unsigned int)getConfigValueLong(map,"nb_res_image",&flag);
-	if(flag != SUCCESS){
+	if(flag != SUCCES){
 		puts("Erreur parametre");
 		return;
 	}
 	unsigned char nbBits = (unsigned int)getConfigValueLong(map,"nb_bits_image",&flag);
-	if(flag != SUCCESS){
+	if(flag != SUCCES){
 		puts("Erreur parametre");
 		return;
 	}
@@ -98,20 +100,56 @@ void recherche_image_code(ConfMap * map){
 	scanf("%6X",&color);
 	sds * reponse;
 	
-	reponse = recherche_image(color,caps,nbResMax,nbBits);
+	reponse = recherche_image(color,base,nbResMax,nbBits);
 	
-	freeCapsule(caps);
-	fin_rech_image(resultat);
+	freeCapsule(base);
+	fin_rech_image(reponse);
 	unsigned int i = 0;
-	while(resultat[i] != NULL){
-		sdsfree(resultat[i]);
+	while(reponse[i] != NULL){
+		sdsfree(reponse[i]);
 		i++;
 	}
-	free(resultat);
+	free(reponse);
 }
 
 void recherche_image_fichier(ConfMap * map){
+	unsigned char flag;
+	unsigned int nbResMax = (unsigned int)getConfigValueLong(map,"nb_res_image",&flag);
+	if(flag != SUCCES){
+		puts("Erreur parametre");
+		return;
+	}
+	unsigned char nbBits = (unsigned int)getConfigValueLong(map,"nb_bits_image",&flag);
+	if(flag != SUCCES){
+		puts("Erreur parametre");
+		return;
+	}
+	unsigned char nbCouleursMax = (unsigned int)getConfigValueLong(map,"nb_couleurs_max_image",&flag);
+	if(flag != SUCCES){
+		puts("Erreur parametre");
+		return;
+	}
+	float seuil = getConfigValueFloat(map,"seuil_couleur_image",&flag);
+	if(flag != SUCCES){
+		puts("Erreur parametre");
+		return;
+	}
+	Capsule base = loadDescripteurs(&flag,NOM_FICH_DESC_IMG);
+	fputs("Entrer le chemin (absolu ou relatif à l'éxecution) de l'image a rechercher (.txt):",stdout);
+	char buf[300];
+	scanf("%300s",buf);
+	sds * reponse;
 	
+	reponse = recherche_image_file(buf,base,nbResMax,nbBits,nbCouleursMax,seuil);
+	
+	freeCapsule(base);
+	fin_rech_image(reponse);
+	unsigned int i = 0;
+	while(reponse[i] != NULL){
+		sdsfree(reponse[i]);
+		i++;
+	}
+	free(reponse);
 }
 
 void recherche_audio(ConfMap * map){
