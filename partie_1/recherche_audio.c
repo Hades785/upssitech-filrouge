@@ -9,6 +9,36 @@ typedef struct _sample {
 } Sample;
 
 
+// RESULTATS
+
+void add_result(RESULT_RECHERCHE_AUDIO** results, const sds filename, const float match_time, const int score) {
+    if(*results == NULL) {
+        *results = (RESULT_RECHERCHE_AUDIO*) malloc(sizeof(RESULT_RECHERCHE_AUDIO));
+        (*results)->filename = filename;
+        (*results)->match_time = match_time;
+        (*results)->score = score;
+        (*results)->next = NULL;
+    } else add_result(&(*results)->next, filename, match_time, score);
+}
+
+void free_results_audio(RESULT_RECHERCHE_AUDIO* results) {
+    if(results->next != NULL)
+        free_results_audio(results->next);
+    sdsfree(results->filename);
+    free(results);
+}
+
+
+// RECHERCHE
+
+int distance_loop_iterations(const int count_corpus_lines, const int count_jingle_lines, const int window_step) {
+    return (int) floor((((float)count_corpus_lines)/window_step)-(((float)count_jingle_lines)/window_step)+1);
+}
+
+float match_time(const int dist_loop_iteration, const int count_corpus_lines, const int count_jingle_lines, const int nb_sample_window, const int window_step) {
+    return (float)dist_loop_iteration*count_corpus_lines/distance_loop_iterations(count_corpus_lines, count_jingle_lines, window_step)/(16000/nb_sample_window);
+}
+
 int distance(const sds* ligne_desc_corpus, const sds* ligne_desc_jingle, const int nb_intervalle_amp) {
     unsigned int dist = 0;
     for(int i = 0; i < nb_intervalle_amp; i++) {
@@ -18,12 +48,14 @@ int distance(const sds* ligne_desc_corpus, const sds* ligne_desc_jingle, const i
     return dist;
 }
 
-void recherche_audio(const sds chemin_fichier, const sds chemin_base, const int window_step, const int nb_sample_window, const int nb_intervalle_amp) {
+RESULT_RECHERCHE_AUDIO* recherche_audio(const sds chemin_fichier, const sds chemin_base, const int window_step, const int nb_sample_window, const int nb_intervalle_amp) {
+    RESULT_RECHERCHE_AUDIO* resultats = NULL;
+
     // Recuperation descripteurs base
     char flag;
     Capsule capsule = loadDescripteurs(&flag, chemin_base);
     if(flag == ECHEC)
-        return;
+        return resultats;
     
     // Recuperation du descripteur du fichier "jingle"
     sds desc_jingle = indexation_audio(chemin_fichier, nb_sample_window, nb_intervalle_amp); // OPTION: NO REINDEX -> FETCH INDEX IN DB
@@ -35,10 +67,13 @@ void recherche_audio(const sds chemin_fichier, const sds chemin_base, const int 
     // Separation des echantillons descripteurs base
     int* count_base_descs_lines = (int*) malloc(sizeof(int)*nombreDescripteurs(capsule));
     sds** base_descs_lines = (sds**) malloc(sizeof(sds*)*nombreDescripteurs(capsule));
+    sds* filenames = (sds*) malloc(sizeof(sds) * nombreDescripteurs(capsule));
     for(int i = 0; i < nombreDescripteurs(capsule); i++) {
-        sds filename = sdsnewlen("",50);
-        sscanf(capsule.descripteurs[i], "%[^;]", filename);
-        sdsupdatelen(filename);
+        filenames[i] = sdsnewlen("",50);
+        sscanf(capsule.descripteurs[i], "%[^;]", filenames[i]);
+        sdsupdatelen(filenames[i]);
+
+        sds filename = sdsdup(filenames[i]);
         filename = sdscat(filename, ";");
         sdstrim(capsule.descripteurs[i], filename);
         base_descs_lines[i] = sdssplitlen(capsule.descripteurs[i], sdslen(capsule.descripteurs[i]), "]", 1, &count_base_descs_lines[i]);
@@ -65,30 +100,32 @@ void recherche_audio(const sds chemin_fichier, const sds chemin_base, const int 
     // Tableau de recuperation des evaluations de distance
     int** distances = (int**) malloc(sizeof(int*) * nombreDescripteurs(capsule));
     for(int i = 0; i < nombreDescripteurs(capsule); i++) {
-        int a = (int) floor((((float)count_base_descs_lines[i])/window_step)-(((float)count_desc_lines)/window_step)+1);
+        int a = distance_loop_iterations(count_base_descs_lines[i], count_desc_lines, window_step);
         distances[i] = (int*) malloc(sizeof(int*) * a);
         for(int j = 0; j < a; j++)
             distances[i][j] = 0;
     }
 
-    // Comparaison [*TODO* store results of sample distance and interpret results to give time]
+    // Comparaison
     for(int i = 0; i < nombreDescripteurs(capsule); i++) {
         // For every *window_step* sample evalute distance with "jingle" samples
         for(int j = 0, jj = 0; j < count_base_descs_lines[i]-1 && j <= count_base_descs_lines[i]-count_desc_lines; j+=window_step, jj++) {
             for(int k = 0; k < count_desc_lines-1; k++)
-                // Calcul de distance entre les echantillons [*TODO*]
+                // Calcul de distance entre les echantillons
                 distances[i][jj] += distance(samples_c[i][j+k].values, samples_j[k].values, nb_intervalle_amp);
         }
     }
 
-    // [*DEBUG*] print distances probablements match
+    // Resultats
     for(int i = 0; i < nombreDescripteurs(capsule); i++) {
-        int a =(int) floor((((float)count_base_descs_lines[i])/window_step)-(((float)count_desc_lines)/window_step)+1);
-        printf("%d : %d -> %d\n", i, count_base_descs_lines[i]-1, a);
+        int a = distance_loop_iterations(count_base_descs_lines[i], count_desc_lines, window_step);
         for(int j = 0; j < a; j++)
-            if(distances[i][j] < 5000)
-                printf("%d|%d : %d\n", i, j, distances[i][j]);
-        printf("\n");
+            if(distances[i][j] < 5000) {
+                float matched_time = match_time(j, count_base_descs_lines[i], count_desc_lines, nb_sample_window, window_step);
+                // printf("%s : %fs (score : %d)\n", filenames[i], matched_time, distances[i][j]);
+                add_result(&resultats, sdsdup(filenames[i]), matched_time, distances[i][j]);
+            }
+        // printf("\n");
     }
 
     // Liberation memoire allouee
@@ -110,6 +147,12 @@ void recherche_audio(const sds chemin_fichier, const sds chemin_base, const int 
         sdsfreesplitres(samples_j[i].values, samples_j[i].count_values);
     free(samples_j);
     sdsfreesplitres(desc_jingle_lines, count_desc_lines);
+    for(int i = 0; i < nombreDescripteurs(capsule); i++)
+        sdsfree(filenames[i]);
+    free(filenames);
     freeCapsule(capsule);
     sdsfree(desc_jingle);
+
+    // Retour
+    return resultats;
 }
