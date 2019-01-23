@@ -77,7 +77,7 @@ void freeConfMap(ConfMap map){
 	free(map.keys);
 }
 
-long keyPosition(ConfMap * map,const char * key){
+long keyPosition(const ConfMap * map,const char * key){
 	for(unsigned int i = 0;i < map->keys->nbDescripteurs;i++){
 		if(strcmp(map->keys->descripteurs[i],key) == 0){
 			return (long)i;
@@ -102,6 +102,7 @@ long getConfigValueLong(const ConfMap * map,const char * key,unsigned char * suc
 	long resp = -1;
 	sscanf(s,"%ld",&resp);
 	sdsfree(s);
+	*success_flag = SUCCES;
 	return resp;
 }
 
@@ -114,6 +115,7 @@ float getConfigValueFloat(const ConfMap * map,const char * key,unsigned char * s
 	float resp;
 	sscanf(s,"%f",&resp);
 	sdsfree(s);
+	*success_flag = SUCCES;
 	return resp;
 }
 

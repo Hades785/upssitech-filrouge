@@ -115,16 +115,22 @@ unsigned char recherche_audio_en(ConfMap * map){
 void indexation_texte_set(ConfMap * map){
 	if(keyPosition(map,"index_texte_valide") != -1)
 		changeValueLong(map,"index_texte_valide",1);
+	else
+		addValueLong(map,"index_texte_valide",1);
 }
 
 void indexation_image_set(ConfMap * map){
 	if(keyPosition(map,"index_image_valide") != -1)
 		changeValueLong(map,"index_image_valide",1);
+	else
+		addValueLong(map,"index_image_valide",1);
 }
 
 void indexation_audio_set(ConfMap * map){
 	if(keyPosition(map,"index_audio_valide") != -1)
 		changeValueLong(map,"index_audio_valide",1);
+	else
+		addValueLong(map,"index_audio_valide",1);
 }
 
 void indexation_texte_unset(ConfMap * map){
@@ -477,6 +483,7 @@ int main(){
 						rech_au_en = 1;
 						break;
 				}
+				break;
 			case MENU_RECHERCHE:
 				puts("\nMENU RECHERCHE");
 				if(rech_tx_en){

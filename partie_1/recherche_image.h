@@ -54,6 +54,8 @@ unsigned int valDiff(unsigned int couleur1,unsigned int couleur2,unsigned char n
 
 sds * resultGenerator(unsigned int nbResMax,DescripteurImage ** tabDesc);
 
+unsigned int simpColor(unsigned int fullColor,unsigned char nbBits);
+
 /**
  * renvoie un tableau de sds
  * chaque sds est un resultat par ordre decroissant de match

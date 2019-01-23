@@ -43,7 +43,7 @@ void indexer_texte(const char * chemin_desc,const ConfMap * map){
 
 void indexer_image(const char * chemin_desc,const ConfMap * map){
 	unsigned char flag;
-	unsigned int nbCouleurs = getConfigValueLong(map,"nb_couleurs_max",&flag);
+	unsigned int nbCouleurs = getConfigValueLong(map,"nb_couleurs_max_image",&flag);
 	if(flag != SUCCES){
 		puts("Erreur parametre");
 		assert(flag != ECHEC);
@@ -65,6 +65,7 @@ void indexer_image(const char * chemin_desc,const ConfMap * map){
 	Capsule fichiers = newCapsule(&flag);
 	getAllFiles(getConfigValue(map,"chemin_bdd_im"),".txt",&fichiers);
 	for(unsigned int i = 0;i < fichiers.nbDescripteurs;i++){
+		printf("Indexation image : %s\n",fichiers.descripteurs[i]);
 		addElement(&descs,indexation_image(fichiers.descripteurs[i],nbCouleurs,seuil,i,nbBits));
 	}
 	sds chemin = sdscat(sdscat(getDirPathI(),"/"),NOM_FICH_DESC_IMG);

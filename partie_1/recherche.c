@@ -13,6 +13,13 @@ sds getDirPath(){
 	return sdscat(sdscat(sdsnew(getenv("HOME")),"/"),STORAGE_FOLDER_NAME);
 }
 
+void fin_rech_texte(sds * resultats,unsigned int nb_resultats){
+	for(unsigned int i = 0;i < nb_resultats && resultats[i] != NULL;i++){
+		printf("%u\t%s\n",i+1,resultats[i]);
+	}
+	//TODO permettre l'affichage
+}
+
 void recherche_texte_mot(ConfMap * map){
 	unsigned char flag;
 	sds dirPath = sdscat(getDirPath(),"/");
@@ -35,22 +42,27 @@ void recherche_texte_mot(ConfMap * map){
 	scanf("%298s",buf);
 	buf[strlen(buf)] = ' ';
 	
-	sds resultats[nb_res_max];
+	sds * resultats = malloc(sizeof(sds*)*nb_res_max);
+	assert(resultats != NULL);
+	for(unsigned int i = 0;i < nb_res_max;i++){
+		resultats[i] = NULL;
+	}
 	recherche_texte_motscles(buf, mapNoms, base_mots, nb_res_max, resultats);
 	
 	// traitement du resultat
-	puts("TRAITEMENT ENCORE A FAIRE !!!!!!!");
+	fin_rech_texte(resultats,nb_res_max);
 	
 	for(int i = 0; i < nb_res_max; i++)
 	{
-		free(resultats[i]);
+		sdsfree(resultats[i]);
 	}
+	free(resultats);
 	freeCapsule(base_mots);
 	freeCapsule(mapNoms);
 }
 
 void recherche_texte_pfichier(ConfMap * map){
-	unsigned char flag;//TODO
+	unsigned char flag;
 	sds dirPath = sdscat(getDirPath(),"/");
 	sds temp = sdscat(sdsdup(dirPath),NOM_FICH_MAP_MOTS);
 	Capsule base_mots = loadDescripteurs(&flag,temp);
@@ -82,16 +94,22 @@ void recherche_texte_pfichier(ConfMap * map){
 	char buf[300];
 	scanf("%300s",buf);
 	
-	sds resultats[nb_res_max];
-	sds descripteur = indexation_texte(buf, 0, 50, 3); // les deux dernieres valeurs peuvent etre modifiees ou mise en variable de conf
+	sds * resultats = malloc(sizeof(sds*)*nb_res_max);
+	assert(resultats != NULL);
+	for(unsigned int i = 0;i < nb_res_max;i++){
+		resultats[i] = NULL;
+	}
+	sds descripteur = indexation_texte(buf, 0, nb_mots_max, taille_min_mot);
 	recherche_texte_fichier(descripteur, mapNoms, base_mots, nb_res_max, resultats);
+	sdsfree(descripteur);
 	
-	//traitement du resultat
+	fin_rech_texte(resultats,nb_res_max);
 	
 	for(int i = 0; i < nb_res_max; i++)
 	{
-		free(resultats[i]);
+		sdsfree(resultats[i]);
 	}
+	free(resultats);
 	freeCapsule(base_mots);
 	freeCapsule(mapNoms);
 }
@@ -102,12 +120,12 @@ void fin_rech_image(sds * res){
 		printf("%u\t%s\n",i+1,res[i]);
 		i++;
 	}
-	puts("\nPour ouvrir une image, entrer son numéro. 0 pour quitter.");
+	/*puts("\nPour ouvrir une image, entrer son numéro. 0 pour quitter.");
 	unsigned int resNum;
 	scanf("%u",&resNum);
 	if(resNum != 0 && resNum < i){
-		//TODO ouvrir image
-	}
+		puts("ENCORE A FAIRE !!!!!!!");//TODO ouvrir image
+	}*/
 }
 
 void recherche_image_nom(ConfMap * map){
@@ -122,7 +140,15 @@ void recherche_image_nom(ConfMap * map){
 		puts("Erreur parametre");
 		return;
 	}
-	Capsule base = loadDescripteurs(&flag,NOM_FICH_DESC_IMG);
+	sds dirPath = sdscat(sdscat(getDirPath(),"/"),NOM_FICH_DESC_IMG);
+	Capsule base = loadDescripteurs(&flag,dirPath);
+	if(flag != SUCCES){
+		printf("Echec ouverture base descripteurs : %s\n",dirPath);
+		sdsfree(dirPath);
+		assert(flag != ECHEC);
+	}
+	sdsfree(dirPath);
+	//printf("Nombre de descripteurs : %u\n",base.nbDescripteurs);
 	puts("Choisissez une couleur :");
 	puts("1-noir     2-blanc");
 	puts("3-rouge    4-vert");
@@ -166,7 +192,14 @@ void recherche_image_code(ConfMap * map){
 		puts("Erreur parametre");
 		return;
 	}
-	Capsule base = loadDescripteurs(&flag,NOM_FICH_DESC_IMG);
+	sds dirPath = sdscat(sdscat(getDirPath(),"/"),NOM_FICH_DESC_IMG);
+	Capsule base = loadDescripteurs(&flag,dirPath);
+	if(flag != SUCCES){
+		printf("Echec ouverture base descripteurs : %s\n",dirPath);
+		sdsfree(dirPath);
+		assert(flag != ECHEC);
+	}
+	sdsfree(dirPath);
 	fputs("Entrer la couleur en Hexadécimal sur 24 bits (RVB) : ",stdout);
 	unsigned int color;
 	scanf("%6X",&color);
@@ -206,7 +239,14 @@ void recherche_image_fichier(ConfMap * map){
 		puts("Erreur parametre");
 		return;
 	}
-	Capsule base = loadDescripteurs(&flag,NOM_FICH_DESC_IMG);
+	sds dirPath = sdscat(sdscat(getDirPath(),"/"),NOM_FICH_DESC_IMG);
+	Capsule base = loadDescripteurs(&flag,dirPath);
+	if(flag != SUCCES){
+		printf("Echec ouverture base descripteurs : %s\n",dirPath);
+		sdsfree(dirPath);
+		assert(flag != ECHEC);
+	}
+	sdsfree(dirPath);
 	fputs("Entrer le chemin (absolu ou relatif à l'éxecution) de l'image a rechercher (.txt):",stdout);
 	char buf[300];
 	scanf("%300s",buf);
@@ -225,5 +265,6 @@ void recherche_image_fichier(ConfMap * map){
 }
 
 void recherche_audio(ConfMap * map){
+	
 	puts("ENCORE A FAIRE !!!!!!!");
 }

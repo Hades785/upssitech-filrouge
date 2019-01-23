@@ -10,7 +10,7 @@
 int main(){
 	unsigned char flag;
 	unsigned char a=5;
-	/*Capsule caps=newCapsule(&flag);
+	Capsule caps=newCapsule(&flag);
 	assert(flag != ECHEC);
 	for(unsigned int i = 1;i <= 50;i++){
 		sds chem = sdscatprintf(sdsempty(),"../documents/images/rgb/%02u.txt",i);
@@ -20,16 +20,16 @@ int main(){
 	}
 	
 	
-	saveDescripteurs(&flag,caps,"rechercheimage.desc");
+	/*saveDescripteurs(&flag,caps,"rechercheimage.desc");
 	assert(flag != ECHEC);
 	
 	//printf("gate1");getchar();
 	
 	freeCapsule(caps);
 	
-	//printf("gate2");getchar();*/
+	//printf("gate2");getchar();
 	
-	Capsule caps = loadDescripteurs(&flag,"rechercheimage.desc");
+	Capsule caps = loadDescripteurs(&flag,"rechercheimage.desc");*/
 	
 	//printf("gate3");getchar();
 	
@@ -37,13 +37,13 @@ int main(){
 	
 	//printf("gate4");getchar();
 	
-	/*unsigned int i = 0;
+	unsigned int i = 0;
 	while(res[i] != NULL){
 		//printf("res:%u",i);getchar();
 		printf("%u:%s\n",i,res[i]);
 		i++;
-	}*/
-	unsigned int i = 0;
+	}
+	i = 0;
 	while(res[i] != NULL){
 		sdsfree(res[i]);
 		i++;

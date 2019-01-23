@@ -123,6 +123,8 @@ sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbRes
 	
 	//printf("color: %x\n",couleur);
 	
+	//printf("Rech im %X:%u:%u:%u\n",couleur,caps.nbDescripteurs,nbResMax,nbBits);
+	
 	float * tabPoints = malloc(sizeof(float)*nbResMax);
 	
 	//et un tableau pour stocker les descripteurs decodes du top du classement (y faut bien savoir qui a gagne)
@@ -196,6 +198,8 @@ sds * recherche_image(unsigned int couleur,const Capsule caps,unsigned int nbRes
 }
 
 sds * recherche_image_file(const char * fichier,const Capsule caps,unsigned int nbResMax,unsigned char nbBits,unsigned int nbCouleursMax,float seuilMin){
+	
+	//printf("Rech im %s:%u:%u:%u:%u:%f\n",fichier,caps.nbDescripteurs,nbResMax,nbBits,nbCouleursMax,seuilMin);
 	
 	float * tabPoints = malloc(sizeof(float)*nbResMax);
 	DescripteurImage ** tabDesc = malloc(sizeof(DescripteurImage*)*nbResMax);

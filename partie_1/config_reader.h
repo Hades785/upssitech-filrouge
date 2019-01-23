@@ -18,7 +18,7 @@ unsigned char save_config_file(ConfMap map);
 
 void freeConfMap(ConfMap map);
 
-long keyPosition(ConfMap * map,const char * key);
+long keyPosition(const ConfMap * map,const char * key);
 
 sds getConfigValue(const ConfMap * map,const char * key);
 
