@@ -105,33 +105,23 @@ void freeTabOcc(TabOcc * t)
 	free(t->nbOcc);
 }
 
-unsigned char test_alpha(int lettre)
+unsigned char test_alpha(int lettre) // Permet de savoir si la donnée en paramètre est une lettre
 {
-	//printf("%c", lettre);
-	
 	if((lettre >= 'a' && lettre <= 'z') || (lettre >= 'A' && lettre <= 'Z')
 		|| (lettre >= 192 && lettre <= 255)) // Si c'est une lettre
-	{
 		return 1;
-	}
 	else
-	{/*
-		char ch[2];
-		ch[0] = lettre;
-		ch[1] = 0;
-		
-		if(strstr(accents, ch) != NULL) // Si c'est une lettre accentuée
-		{
-			printf("trouvé !");
-			return 1;
-		}
-		else*/
-			return 0;
-	}
+		return 0;
 }
 
 int suppr_accent_et_maj(int lettre)
 {
+	/*
+	Passe les majuscules en minuscules, et supprime tous les accents possibles.
+	Cela permet d'éviter les problèmes liés aux accents (car le caractère est alors stocké sur plus d'un octet),
+	et de ne pas avoir de redondance entre les mots. Ex : inutile de noter indépendamment "Pour" et "pour".
+	*/
+	
 	if(lettre >= 'a' && lettre <= 'z') return lettre;
 	else if(lettre >= 'A' && lettre <= 'Z') return (lettre+32);
 	else if(lettre >= 192 && lettre <= 198) return ('a');
@@ -155,6 +145,11 @@ int suppr_accent_et_maj(int lettre)
 Capsule genere_table(Capsule caps)
 {
 	/*
+	Cette fonction permet de passer d'un ensemble de descripteurs par fichier, à
+	des descripteurs par mot. Cela est nécessaire pour la création de la table d'indexation,
+	qui permet de faciliter la recherche par mot-clé.
+	
+	Format de la fonction :
 	[declaration capsule]
 	[declaration confmap]
 	[remplissage confmap]
