@@ -23,10 +23,21 @@ void recherche_texte_mot(ConfMap * map){
 	char buf[300];
 	scanf("%298s",buf);
 	buf[strlen(buf)] = ' ';
-	//TODO
-	//appel a la fonction de recherche ici
 	
+	Capsule liste_base_texte = loadDescripteurs(&flag, NOM_FICH_MAP_NOM_TEXT);
+	Capsule table_index = loadDescripteurs(&flag, NOM_FICH_MAP_MOTS);
+	sds resultats[nb_res_max];
+	recherche_texte_motscles(buf, liste_base_texte, table_index, nb_res_max, resultats);
+	
+	// traitement du resultat
+	
+	for(int i = 0; i < nb_res_max; i++)
+	{
+		free(resultats[i]);
+	}
 	freeCapsule(base);
+	freeCapsule(liste_base_texte);
+	freeCapsule(table_index);
 }
 
 void recherche_texte_pfichier(ConfMap * map){
@@ -55,10 +66,18 @@ void recherche_texte_pfichier(ConfMap * map){
 	char buf[300];
 	scanf("%300s",buf);
 	
-	//appel a la fonction de recherche ici
+	Capsule liste_base_texte = loadDescripteurs(&flag, NOM_FICH_MAP_NOM_TEXT);
+	Capsule table_index = loadDescripteurs(&flag, NOM_FICH_MAP_MOTS);
+	sds resultats[nb_res_max];
+	sds descripteur = indexation_texte(buf, 0, 50, 3); // les deux dernieres valeurs peuvent etre modifiees ou mise en variable de conf
+	recherche_texte_fichier(descripteur, liste_base_texte, table_index, nb_res_max, resultats);
 	
 	//traitement du resultat
 	
+	for(int i = 0; i < nb_res_max; i++)
+	{
+		free(resultats[i]);
+	}
 }
 
 void fin_rech_image(sds * res){
