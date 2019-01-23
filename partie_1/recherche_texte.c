@@ -184,9 +184,8 @@ void lire_index(Capsule table_index, sds motscles, int id[], int nb_res)
 	sdsfree(comp);
 }
 
-void recherche_texte_motscles(const sds motscles, Capsule liste_base_texte, Capsule table_index_texte, int nb_res)
+void recherche_texte_motscles(const sds motscles, Capsule liste_base_texte, Capsule table_index_texte, int nb_res, sds resultats[])
 {
-	sds resultats[nb_res]; // resultats sous forme de chemin d acces
 	int id[nb_res];
 	
 	for(int i = 0; i < nb_res; i++)
@@ -199,16 +198,14 @@ void recherche_texte_motscles(const sds motscles, Capsule liste_base_texte, Caps
 	for(int i = 0; i < nb_res; i++)
 	{
 		resultats[i] = getNom(id[i], liste_base_texte);
-		if(strlen(resultats[i]) != 0)
-			printf("%s\n", resultats[i]);
 	}
 }
 
-void recherche_texte_fichier(const sds descripteur, Capsule liste_base_texte, Capsule table_index_texte, int nb_res)
+void recherche_texte_fichier(const sds descripteur, Capsule liste_base_texte, Capsule table_index_texte, int nb_res, sds resultats[])
 {
 	sds motscles = listeMots(descripteur);
 	
-	recherche_texte_motscles(motscles, liste_base_texte, table_index_texte, nb_res);
+	recherche_texte_motscles(motscles, liste_base_texte, table_index_texte, nb_res, resultats);
 	
 	sdsfree(motscles);
 }
