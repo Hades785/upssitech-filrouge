@@ -9,11 +9,22 @@
 #include <string.h>
 #include <assert.h>
 
+sds getDirPath(){
+	return sdscat(sdscat(sdsnew(getenv("HOME")),"/"),STORAGE_FOLDER_NAME);
+}
+
 void recherche_texte_mot(ConfMap * map){
 	unsigned char flag;
-	Capsule base = loadDescripteurs(&flag,NOM_FICH_DESC_TEXT);
+	sds dirPath = sdscat(getDirPath(),"/");
+	sds temp = sdscat(sdsdup(dirPath),NOM_FICH_MAP_MOTS);
+	Capsule base_mots = loadDescripteurs(&flag,temp);
+	sdsfree(temp);
+	temp = sdscat(sdsdup(dirPath),NOM_FICH_MAP_NOM_TEXT);
+	Capsule mapNoms = loadDescripteurs(&flag,temp);
+	sdsfree(temp);
+	sdsfree(dirPath);
 	
-	unsigned char nb_res_max = getConfigValueLong(map,"nb_res_texte",&flag);
+	unsigned int nb_res_max = getConfigValueLong(map,"nb_res_texte",&flag);
 	if(flag != SUCCES){
 		puts("Erreur parametre");
 		assert(flag != ECHEC);
@@ -24,10 +35,8 @@ void recherche_texte_mot(ConfMap * map){
 	scanf("%298s",buf);
 	buf[strlen(buf)] = ' ';
 	
-	Capsule liste_base_texte = loadDescripteurs(&flag, NOM_FICH_MAP_NOM_TEXT);
-	Capsule table_index = loadDescripteurs(&flag, NOM_FICH_MAP_MOTS);
 	sds resultats[nb_res_max];
-	recherche_texte_motscles(buf, liste_base_texte, table_index, nb_res_max, resultats);
+	recherche_texte_motscles(buf, mapNoms, base_mots, nb_res_max, resultats);
 	
 	// traitement du resultat
 	
@@ -36,27 +45,34 @@ void recherche_texte_mot(ConfMap * map){
 		free(resultats[i]);
 	}
 	freeCapsule(base);
-	freeCapsule(liste_base_texte);
-	freeCapsule(table_index);
+	freeCapsule(base_mots);
+	freeCapsule(mapNoms);
 }
 
 void recherche_texte_pfichier(ConfMap * map){
 	unsigned char flag;//TODO
-	Capsule base = loadDescripteurs(&flag,NOM_FICH_DESC_TEXT);
+	sds dirPath = sdscat(getDirPath(),"/");
+	sds temp = sdscat(sdsdup(dirPath),NOM_FICH_MAP_MOTS);
+	Capsule base_mots = loadDescripteurs(&flag,temp);
+	sdsfree(temp);
+	temp = sdscat(sdsdup(dirPath),NOM_FICH_MAP_NOM_TEXT);
+	Capsule mapNoms = loadDescripteurs(&flag,temp);
+	sdsfree(temp);
+	sdsfree(dirPath);
 	
-	unsigned char nb_res_max = getConfigValueLong(map,"nb_res_texte",&flag);
+	unsigned int nb_res_max = getConfigValueLong(map,"nb_res_texte",&flag);
 	if(flag != SUCCES){
 		puts("Erreur parametre");
 		assert(flag != ECHEC);
 	}
 	
-	unsigned char taille_min_mot = getConfigValueLong(map,"taille_min_mot",&flag);
+	unsigned int taille_min_mot = getConfigValueLong(map,"taille_min_mot",&flag);
 	if(flag != SUCCES){
 		puts("Erreur parametre");
 		assert(flag != ECHEC);
 	}
 	
-	unsigned char nb_mots_max = getConfigValueLong(map,"nb_mots_max_texte",&flag);
+	unsigned int nb_mots_max = getConfigValueLong(map,"nb_mots_max_texte",&flag);
 	if(flag != SUCCES){
 		puts("Erreur parametre");
 		assert(flag != ECHEC);
@@ -66,11 +82,9 @@ void recherche_texte_pfichier(ConfMap * map){
 	char buf[300];
 	scanf("%300s",buf);
 	
-	Capsule liste_base_texte = loadDescripteurs(&flag, NOM_FICH_MAP_NOM_TEXT);
-	Capsule table_index = loadDescripteurs(&flag, NOM_FICH_MAP_MOTS);
 	sds resultats[nb_res_max];
 	sds descripteur = indexation_texte(buf, 0, 50, 3); // les deux dernieres valeurs peuvent etre modifiees ou mise en variable de conf
-	recherche_texte_fichier(descripteur, liste_base_texte, table_index, nb_res_max, resultats);
+	recherche_texte_fichier(descripteur, mapNoms, base_mots, nb_res_max, resultats);
 	
 	//traitement du resultat
 	
@@ -78,6 +92,8 @@ void recherche_texte_pfichier(ConfMap * map){
 	{
 		free(resultats[i]);
 	}
+	freeCapsule(base_mots);
+	freeCapsule(mapNoms);
 }
 
 void fin_rech_image(sds * res){
