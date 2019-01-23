@@ -264,7 +264,7 @@ void recherche_image_fichier(ConfMap * map){
 	free(reponse);
 }
 
-void recherche_audio(ConfMap * map){
+void recherche_audio_fichier(ConfMap * map){
 	unsigned char flag;
 	unsigned int nb_echant_pFen = (unsigned int)getConfigValueLong(map,"nb_echant_pfen",&flag);
 	if(flag != SUCCES){
@@ -289,8 +289,21 @@ void recherche_audio(ConfMap * map){
 		assert(flag != ECHEC);
 	}
 	sdsfree(dirPath);
+
+	// TODO: Get chemin fichier (non, le fichier n'est pas le jingle predefini, il doit pouvoir etre choisi)
+	sds chemin_fichier = sdsempty();
 	
-	puts("ENCORE A FAIRE !!!!!!!");
+	RESULT_RECHERCHE_AUDIO* resultats = recherche_audio(chemin_fichier, base, step_number, nb_echant_pFen, nb_int_amp);
+
+    RESULT_RECHERCHE_AUDIO* ptr = resultats;
+    while(ptr != NULL) {
+        printf("%s : %fs (%d)\n", ptr->filename, ptr->match_time, ptr->score);
+        ptr = ptr->next;
+    }
+
+    free_results_audio(resultats);
+
+	sdsfree(chemin_fichier);
 	
 	freeCapsule(base);
 }

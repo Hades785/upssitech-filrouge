@@ -48,14 +48,8 @@ int distance(const sds* ligne_desc_corpus, const sds* ligne_desc_jingle, const i
     return dist;
 }
 
-RESULT_RECHERCHE_AUDIO* recherche_audio(const sds chemin_fichier, const sds chemin_base, const int window_step, const int nb_sample_window, const int nb_intervalle_amp) {
+RESULT_RECHERCHE_AUDIO* recherche_audio(const sds chemin_fichier, const Capsule desc_base, const int window_step, const int nb_sample_window, const int nb_intervalle_amp) {
     RESULT_RECHERCHE_AUDIO* resultats = NULL;
-
-    // Recuperation descripteurs base
-    char flag;
-    Capsule capsule = loadDescripteurs(&flag, chemin_base);
-    if(flag == ECHEC)
-        return resultats;
     
     // Recuperation du descripteur du fichier "jingle"
     sds desc_jingle = indexation_audio(chemin_fichier, nb_sample_window, nb_intervalle_amp); // OPTION: NO REINDEX -> FETCH INDEX IN DB
@@ -65,18 +59,18 @@ RESULT_RECHERCHE_AUDIO* recherche_audio(const sds chemin_fichier, const sds chem
     sds* desc_jingle_lines = sdssplitlen(desc_jingle, sdslen(desc_jingle), "]", 1, &count_desc_lines);
 
     // Separation des echantillons descripteurs base
-    int* count_base_descs_lines = (int*) malloc(sizeof(int)*nombreDescripteurs(capsule));
-    sds** base_descs_lines = (sds**) malloc(sizeof(sds*)*nombreDescripteurs(capsule));
-    sds* filenames = (sds*) malloc(sizeof(sds) * nombreDescripteurs(capsule));
-    for(int i = 0; i < nombreDescripteurs(capsule); i++) {
+    int* count_base_descs_lines = (int*) malloc(sizeof(int)*nombreDescripteurs(desc_base));
+    sds** base_descs_lines = (sds**) malloc(sizeof(sds*)*nombreDescripteurs(desc_base));
+    sds* filenames = (sds*) malloc(sizeof(sds) * nombreDescripteurs(desc_base));
+    for(int i = 0; i < nombreDescripteurs(desc_base); i++) {
         filenames[i] = sdsnewlen("",50);
-        sscanf(capsule.descripteurs[i], "%[^;]", filenames[i]);
+        sscanf(desc_base.descripteurs[i], "%[^;]", filenames[i]);
         sdsupdatelen(filenames[i]);
 
         sds filename = sdsdup(filenames[i]);
         filename = sdscat(filename, ";");
-        sdstrim(capsule.descripteurs[i], filename);
-        base_descs_lines[i] = sdssplitlen(capsule.descripteurs[i], sdslen(capsule.descripteurs[i]), "]", 1, &count_base_descs_lines[i]);
+        sdstrim(desc_base.descripteurs[i], filename);
+        base_descs_lines[i] = sdssplitlen(desc_base.descripteurs[i], sdslen(desc_base.descripteurs[i]), "]", 1, &count_base_descs_lines[i]);
         sdsfree(filename);
     }
     
@@ -88,8 +82,8 @@ RESULT_RECHERCHE_AUDIO* recherche_audio(const sds chemin_fichier, const sds chem
     }
 
     // Separation des valeurs des echantillons des fichiers de la base
-    Sample** samples_c = (Sample**) malloc(sizeof(Sample*)*nombreDescripteurs(capsule));
-    for(int i = 0; i < nombreDescripteurs(capsule); i++) {
+    Sample** samples_c = (Sample**) malloc(sizeof(Sample*)*nombreDescripteurs(desc_base));
+    for(int i = 0; i < nombreDescripteurs(desc_base); i++) {
         samples_c[i] = (Sample*) malloc(sizeof(Sample)*count_base_descs_lines[i]);
         for(int j = 0; j < count_base_descs_lines[i]; j++) {
             sdstrim(base_descs_lines[i][j], "[");
@@ -98,8 +92,8 @@ RESULT_RECHERCHE_AUDIO* recherche_audio(const sds chemin_fichier, const sds chem
     }
     
     // Tableau de recuperation des evaluations de distance
-    int** distances = (int**) malloc(sizeof(int*) * nombreDescripteurs(capsule));
-    for(int i = 0; i < nombreDescripteurs(capsule); i++) {
+    int** distances = (int**) malloc(sizeof(int*) * nombreDescripteurs(desc_base));
+    for(int i = 0; i < nombreDescripteurs(desc_base); i++) {
         int a = distance_loop_iterations(count_base_descs_lines[i], count_desc_lines, window_step);
         distances[i] = (int*) malloc(sizeof(int*) * a);
         for(int j = 0; j < a; j++)
@@ -107,7 +101,7 @@ RESULT_RECHERCHE_AUDIO* recherche_audio(const sds chemin_fichier, const sds chem
     }
 
     // Comparaison
-    for(int i = 0; i < nombreDescripteurs(capsule); i++) {
+    for(int i = 0; i < nombreDescripteurs(desc_base); i++) {
         // For every *window_step* sample evalute distance with "jingle" samples
         for(int j = 0, jj = 0; j < count_base_descs_lines[i]-1 && j <= count_base_descs_lines[i]-count_desc_lines; j+=window_step, jj++) {
             for(int k = 0; k < count_desc_lines-1; k++)
@@ -117,7 +111,7 @@ RESULT_RECHERCHE_AUDIO* recherche_audio(const sds chemin_fichier, const sds chem
     }
 
     // Resultats
-    for(int i = 0; i < nombreDescripteurs(capsule); i++) {
+    for(int i = 0; i < nombreDescripteurs(desc_base); i++) {
         int a = distance_loop_iterations(count_base_descs_lines[i], count_desc_lines, window_step);
         for(int j = 0; j < a; j++)
             if(distances[i][j] < 5000) {
@@ -129,17 +123,17 @@ RESULT_RECHERCHE_AUDIO* recherche_audio(const sds chemin_fichier, const sds chem
     }
 
     // Liberation memoire allouee
-    for(int i = 0; i < nombreDescripteurs(capsule); i++) {
+    for(int i = 0; i < nombreDescripteurs(desc_base); i++) {
         free(distances[i]);
     }
     free(distances);
-    for(int i = 0; i < nombreDescripteurs(capsule); i++) {
+    for(int i = 0; i < nombreDescripteurs(desc_base); i++) {
         for(int j = 0; j < count_base_descs_lines[i]; j++)
             sdsfreesplitres(samples_c[i][j].values, samples_c[i][j].count_values);
         free(samples_c[i]);
     }
     free(samples_c);
-    for(int i = 0; i < nombreDescripteurs(capsule); i++)
+    for(int i = 0; i < nombreDescripteurs(desc_base); i++)
         sdsfreesplitres(base_descs_lines[i], count_base_descs_lines[i]);
     free(base_descs_lines);
     free(count_base_descs_lines);
@@ -147,10 +141,9 @@ RESULT_RECHERCHE_AUDIO* recherche_audio(const sds chemin_fichier, const sds chem
         sdsfreesplitres(samples_j[i].values, samples_j[i].count_values);
     free(samples_j);
     sdsfreesplitres(desc_jingle_lines, count_desc_lines);
-    for(int i = 0; i < nombreDescripteurs(capsule); i++)
+    for(int i = 0; i < nombreDescripteurs(desc_base); i++)
         sdsfree(filenames[i]);
     free(filenames);
-    freeCapsule(capsule);
     sdsfree(desc_jingle);
 
     // Retour
