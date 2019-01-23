@@ -9,9 +9,20 @@
 #include <string.h>
 #include <assert.h>
 
+sds getDirPath(){
+	return sdscat(sdscat(sdsnew(getenv("HOME")),"/"),STORAGE_FOLDER_NAME);
+}
+
 void recherche_texte_mot(ConfMap * map){
 	unsigned char flag;
-	Capsule base = loadDescripteurs(&flag,NOM_FICH_DESC_TEXT);
+	sds dirPath = sdscat(getDirPath(),"/");
+	sds temp = sdscat(sdsdup(dirPath),NOM_FICH_MAP_MOTS);
+	Capsule base_mots = loadDescripteurs(&flag,temp);
+	sdsfree(temp);
+	temp = sdscat(sdsdup(dirPath),NOM_FICH_MAP_NOM_TEXT);
+	Capsule mapNoms = loadDescripteurs(&flag,temp);
+	sdsfree(temp);
+	sdsfree(dirPath);
 	
 	unsigned char nb_res_max = getConfigValueLong(map,"nb_res_texte",&flag);
 	if(flag != SUCCES){
@@ -26,12 +37,20 @@ void recherche_texte_mot(ConfMap * map){
 	//TODO
 	//appel a la fonction de recherche ici
 	
-	freeCapsule(base);
+	freeCapsule(base_mots);
+	freeCapsule(mapNoms);
 }
 
 void recherche_texte_pfichier(ConfMap * map){
 	unsigned char flag;//TODO
-	Capsule base = loadDescripteurs(&flag,NOM_FICH_DESC_TEXT);
+	sds dirPath = sdscat(getDirPath(),"/");
+	sds temp = sdscat(sdsdup(dirPath),NOM_FICH_MAP_MOTS);
+	Capsule base_mots = loadDescripteurs(&flag,temp);
+	sdsfree(temp);
+	temp = sdscat(sdsdup(dirPath),NOM_FICH_MAP_NOM_TEXT);
+	Capsule mapNoms = loadDescripteurs(&flag,temp);
+	sdsfree(temp);
+	sdsfree(dirPath);
 	
 	unsigned char nb_res_max = getConfigValueLong(map,"nb_res_texte",&flag);
 	if(flag != SUCCES){
@@ -59,6 +78,8 @@ void recherche_texte_pfichier(ConfMap * map){
 	
 	//traitement du resultat
 	
+	freeCapsule(base_mots);
+	freeCapsule(mapNoms);
 }
 
 void fin_rech_image(sds * res){
