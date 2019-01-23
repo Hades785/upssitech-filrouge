@@ -12,6 +12,6 @@ void recherche_image_code(ConfMap * map);
 
 void recherche_image_fichier(ConfMap * map);
 
-void recherche_audio(ConfMap * map);
+void rechercher_audio(ConfMap * map);
 
 #endif

@@ -264,7 +264,7 @@ void recherche_image_fichier(ConfMap * map){
 	free(reponse);
 }
 
-void recherche_audio(ConfMap * map){
+void rechercher_audio(ConfMap * map){
 	unsigned char flag;
 	unsigned int nb_echant_pFen = (unsigned int)getConfigValueLong(map,"nb_echant_pfen",&flag);
 	if(flag != SUCCES){

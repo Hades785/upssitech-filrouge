@@ -7,6 +7,8 @@
 #include <string.h>
 
 #include "indexation_image.h"
+#include "indexation_texte.h"
+#include "indexation_audio.h"
 
 sds getDirPathI(){
 	return sdscat(sdscat(sdsnew(getenv("HOME")),"/"),STORAGE_FOLDER_NAME);
@@ -38,7 +40,52 @@ void getAllFiles(const char * chemin_fichiers,const char * extension,Capsule * c
 }
 
 void indexer_texte(const char * chemin_desc,const ConfMap * map){
-	puts("ENCORE A FAIRE !!!!!!!");
+	unsigned char flag;
+	unsigned int nb_mots_max = (unsigned int)getConfigValueLong(map,"nb_mots_max_texte",&flag);
+	if(flag != SUCCES){
+		puts("Erreur parametre");
+		assert(flag != ECHEC);
+	}
+	unsigned int taille_min_mot = (unsigned int)getConfigValueLong(map,"taille_min_mot",&flag);
+	if(flag != SUCCES){
+		puts("Erreur parametre");
+		assert(flag != ECHEC);
+	}
+	Capsule descs = newCapsule(&flag);
+	Capsule mapNoms = newCapsule(&flag);
+	Capsule fichiers = newCapsule(&flag);
+	getAllFiles(getConfigValue(map,"chemin_bdd_tx"),".xml",&fichiers);
+	for(unsigned int i = 0;i < fichiers.nbDescripteurs;i++){
+		printf("Indexation texte : %s\n",fichiers.descripteurs[i]);
+		addElement(&mapNoms,sdscatprintf(sdsempty(),"%u:%s",i,fichiers.descripteurs[i]));
+		addElement(&descs,indexation_texte(fichiers.descripteurs[i],i,nb_mots_max,taille_min_mot));
+	}
+	freeCapsule(fichiers);
+	sds chemin = sdscat(sdscat(getDirPathI(),"/"),NOM_FICH_DESC_TEXT);
+	saveDescripteurs(&flag,descs,chemin);
+	sdsfree(chemin);
+	if(flag != SUCCES){
+		puts("Erreur seuvegarde descripteurs");
+		assert(flag != ECHEC);
+	}
+	chemin = sdscat(sdscat(getDirPathI(),"/"),NOM_FICH_MAP_NOM_TEXT);
+	saveDescripteurs(&flag,mapNoms,chemin);
+	freeCapsule(mapNoms);
+	sdsfree(chemin);
+	if(flag != SUCCES){
+		puts("Erreur seuvegarde descripteurs");
+		assert(flag != ECHEC);
+	}
+	Capsule mapMots = genere_table(descs);
+	freeCapsule(descs);
+	chemin = sdscat(sdscat(getDirPathI(),"/"),NOM_FICH_MAP_MOTS);
+	saveDescripteurs(&flag,mapMots,chemin);
+	freeCapsule(mapMots);
+	sdsfree(chemin);
+	if(flag != SUCCES){
+		puts("Erreur seuvegarde descripteurs");
+		assert(flag != ECHEC);
+	}
 }
 
 void indexer_image(const char * chemin_desc,const ConfMap * map){
@@ -95,6 +142,7 @@ void indexer_audio(const char * chemin_desc,const ConfMap * map){
 	Capsule fichiers = newCapsule(&flag);
 	getAllFiles(getConfigValue(map,"chemin_bdd_au"),".txt",&fichiers);
 	for(unsigned int i = 0;i < fichiers.nbDescripteurs;i++){
+		printf("Indexation audio : %s\n",fichiers.descripteurs[i]);
 		//TODO addelements descs
 	}
 	sds chemin = sdscat(sdscat(getDirPathI(),"/"),NOM_FICH_DESC_AUD);

@@ -516,7 +516,7 @@ int main(){
 					case '3': if(rech_im_en) recherche_image_code(&map); break;
 					case '4': if(rech_im_en) recherche_image_nom(&map); break;
 					case '5': if(rech_im_en) recherche_image_fichier(&map); break;
-					case '6': if(rech_au_en) recherche_audio(&map); break;
+					case '6': if(rech_au_en) rechercher_audio(&map); break;
 				}
 				break;
 			case MENU_CONFIGURATION:
