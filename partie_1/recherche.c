@@ -15,8 +15,8 @@ sds getDirPath(){
 
 void fin_rech_texte(sds * resultats,unsigned int nb_resultats){
 	for(unsigned int i = 0;i < nb_resultats && resultats[i] != NULL;i++){
-		fprintf(stderr, "%u\t%p\n", i, resultats[i]);
-		// printf("%u\t%s\n",i+1,resultats[i]);
+		//fprintf(stderr, "%u\t%p\n", i, resultats[i]);
+		printf("%u\t%s\n",i+1,resultats[i]);
 		// sdsfree(resultats[i]); // i = 0 -> segfault (liberation adresse erronnee)
 	}
 	//TODO permettre l'affichage
@@ -59,13 +59,15 @@ void recherche_texte_mot(ConfMap * map){
 	// traitement du resultat
 	fin_rech_texte(resultats,nb_res_max);
 	
-	// for(int i = 0; i < nb_res_max; i++)
-	// {
-	// 	sdsfree(resultats[i]);
-	// }
-	// free(resultats); // segfault
-	// freeCapsule(base_mots); // segfault
-	// freeCapsule(mapNoms); // segfault
+	int i = 0;
+	while(resultats[i] != NULL && i < nb_res_max)
+	{
+		sdsfree(resultats[i]);
+		i++;
+	}
+	free(resultats); // segfault
+	freeCapsule(base_mots); // segfault
+	freeCapsule(mapNoms); // segfault
 }
 
 void recherche_texte_pfichier(ConfMap * map){
