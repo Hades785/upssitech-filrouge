@@ -270,7 +270,7 @@ TabOcc lecture_fichier(const char * accesFichier, unsigned int * nbMotsTotal,uns
     }
 	else
 	{
-		printf("Impossible d'ouvrir le fichier"); getchar();
+		puts("Impossible d'ouvrir le fichier");
 		
 		TabOcc tabocc = newTabOcc();
 		return tabocc;

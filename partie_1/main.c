@@ -343,6 +343,8 @@ int main(){
 						sdsfree(chemin_bdd_tx);
 						chemin_bdd_tx = sdsnew(buf);
 						changeValue(&map,"chemin_bdd_tx",buf);
+						indexation_texte_unset(&map);
+						rech_tx_en = 0;
 						etape = MENU_DEMANDE_CHEMIN;
 					}else{
 						sdsfree(chemin_bdd_tx);
@@ -378,6 +380,8 @@ int main(){
 						sdsfree(chemin_bdd_im);
 						chemin_bdd_im = sdsnew(buf);
 						changeValue(&map,"chemin_bdd_im",buf);
+						indexation_image_unset(&map);
+						rech_im_en = 0;
 						etape = MENU_DEMANDE_CHEMIN;
 					}else{
 						sdsfree(chemin_bdd_im);
@@ -413,6 +417,8 @@ int main(){
 						sdsfree(chemin_bdd_au);
 						chemin_bdd_au = sdsnew(buf);
 						changeValue(&map,"chemin_bdd_au",buf);
+						indexation_audio_unset(&map);
+						rech_au_en = 0;
 						etape = MENU_DEMANDE_CHEMIN;
 					}else{
 						sdsfree(chemin_bdd_au);
