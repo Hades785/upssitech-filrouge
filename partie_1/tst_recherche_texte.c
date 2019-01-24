@@ -8,18 +8,22 @@
 int main()
 {
 	unsigned char flag;
-	Capsule liste_base_texte = loadDescripteurs(&flag, "index.txt");
-	Capsule table_index = loadDescripteurs(&flag, "table_index.txt");
+	Capsule liste_base_texte = loadDescripteurs(&flag, "/home/fuzuki/PFilRouge/map_id_nom.desc");
+	Capsule table_index = loadDescripteurs(&flag, "/home/fuzuki/PFilRouge/map_mots.desc");
 	sds res[10];
+	for(int i = 0; i < 10; i++)
+	{
+		res[i] = NULL;
+	}
 	
 	printf("Begin test recherche par mots cles\n\n");
 	
-	recherche_texte_motscles("chat fichier texte indexer patate ", liste_base_texte, table_index, 10, res);
+	recherche_texte_motscles("prix ", liste_base_texte, table_index, 10, res);
 	
 	for(int i = 0; i < 10; i++)
 	{
-		if(strlen(res[i]) > 0)
-			printf("%s\n", res[i]);
+		if(res[i] != NULL)
+			printf("%d\t%s\n", i+1, res[i]);
 	}
 	
 	printf("\nTest ended\n");

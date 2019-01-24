@@ -14,25 +14,24 @@ typedef struct Cel_Occ
 sds getNom(int id, Capsule liste_base_texte)
 {
 	int test_id;
-	sds nom;
+	sds nom = NULL;
 	
-	if(id == -1)
-		return sdsempty();
-	nom = sdsempty();
-	
-	for(int i = 0; i < nombreDescripteurs(liste_base_texte); i++)
-	{
-		// dans l optique ou dans le fichier liste_base_texte, la relation identifiant nom
-		// est ecrite tel que "{identifiant:nom}" sans aucun autre caractere
-		// (puisque le fichier n est a la base pas un fichiers de descripteurs, chaque
-		// donnee traitant un fichier different seront separees par des accolade pour pouvoir
-		// se servir du type capsule)
-		sscanf(liste_base_texte.descripteurs[i], "%d:%s", &test_id, nom);
-		if(id == test_id)
-			break;
+	if(id != -1) {
+		nom = sdsempty();
+		for(int i = 0; i < nombreDescripteurs(liste_base_texte); i++)
+		{
+			// dans l optique ou dans le fichier liste_base_texte, la relation identifiant nom
+			// est ecrite tel que "{identifiant:nom}" sans aucun autre caractere
+			// (puisque le fichier n est a la base pas un fichiers de descripteurs, chaque
+			// donnee traitant un fichier different seront separees par des accolade pour pouvoir
+			// se servir du type capsule)
+			sscanf(liste_base_texte.descripteurs[i], "%d:%s", &test_id, nom);
+			if(id == test_id)
+				return nom;
+		}
 	}
-	
-	return nom;
+
+	return NULL;
 }
 
 // renvoie la liste des mots retenus dans un fichier depuis un descripteur
@@ -198,6 +197,8 @@ void recherche_texte_motscles(const sds motscles, Capsule liste_base_texte, Caps
 	for(int i = 0; i < nb_res; i++)
 	{
 		resultats[i] = getNom(id[i], liste_base_texte);
+		fprintf(stderr, "%d:%s\n", id[i], resultats[i]);
+		// sdsfree(resultats[i]);
 	}
 }
 
