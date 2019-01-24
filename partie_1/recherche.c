@@ -38,7 +38,7 @@ void recherche_texte_mot(ConfMap * map){
 	
 	fputs("\nEntrer le(s) mot(s) à rechercher :",stdout);
 	char buf[300];
-	scanf("%297s",buf);
+	scanf("%*c%298[^\n]", buf);
 	unsigned int ln = strlen(buf);
 	buf[ln] = ' ';
 	buf[ln+1] = '\0';
