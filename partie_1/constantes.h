@@ -14,8 +14,8 @@
 #define DEF_NB_RES_TEXTE 15
 
 #define DEF_NB_ECHANT_PFEN 1000
-#define DEF_NB_INTER_AMP 30
-#define DEF_STEP_NUMBER 10
+#define DEF_NB_INTER_AMP 16
+#define DEF_STEP_NUMBER 1
 
 #define NOM_FICH_DESC_TEXT "base_textes.desc"
 #define NOM_FICH_MAP_NOM_TEXT "map_id_nom.desc"
