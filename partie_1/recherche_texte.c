@@ -14,10 +14,9 @@ typedef struct Cel_Occ
 sds getNom(int id, Capsule liste_base_texte)
 {
 	int test_id;
-	sds nom = NULL;
 	
 	if(id != -1) {
-		nom = sdsnewlen("", 50);
+		char buf[100];
 		for(int i = 0; i < nombreDescripteurs(liste_base_texte); i++)
 		{
 			// dans l optique ou dans le fichier liste_base_texte, la relation identifiant nom
@@ -25,11 +24,9 @@ sds getNom(int id, Capsule liste_base_texte)
 			// (puisque le fichier n est a la base pas un fichiers de descripteurs, chaque
 			// donnee traitant un fichier different seront separees par des accolade pour pouvoir
 			// se servir du type capsule)
-			sscanf(liste_base_texte.descripteurs[i], "%d:%s", &test_id, nom);
-			if(id == test_id) {
-				sdsupdatelen(nom);
-				return nom;
-			}
+			sscanf(liste_base_texte.descripteurs[i], "%d:%s", &test_id, buf);
+			if(id == test_id)
+				return sdsnew(buf);
 		}
 	}
 
@@ -41,14 +38,13 @@ sds listeMots(sds descripteur)
 {
 	int nbMotsRetenus;
 	char * ptr;
-	sds mot;
+	char mot[100];
 	sds listeMots = sdsempty();
 	
 	sscanf(descripteur, "[%*d;%*d;%d]", &nbMotsRetenus);
 	
 	ptr = strchr(descripteur, ']');
 	ptr += 2; // on se place sur le premier mot
-	mot = sdsempty();
 	
 	for(int i = 0; i < nbMotsRetenus; i++)
 	{
@@ -57,7 +53,6 @@ sds listeMots(sds descripteur)
 		ptr = strchr(ptr, ';');
 		ptr++;
 	}
-	sdsfree(mot);
 	
 	return listeMots;
 }
@@ -69,13 +64,13 @@ void lire_index(Capsule table_index, sds motscles, int id[], int nb_res)
 	char * ptr_mc; // pointeur de parcours des mots cles
 	char * ptr_index; // pointeur de lecture de la table d index
 	sds mot, comp;
-	int identifiant, occurence, compteur;
+	int identifiant = -1, occurence = -1, compteur;
 	int occurences[nb_res];
 	TabOccurences * listeOccurences;
 	TabOccurences * courant;
 	
-	mot = sdsempty();
-	comp = sdsempty();
+	mot = sdsnewlen("", 100);
+	comp = sdsnewlen("", 100);
 	listeOccurences = (TabOccurences*) malloc(sizeof(TabOccurences));
 	listeOccurences->precedent = NULL;
 	listeOccurences->identifiant = -1;
@@ -124,6 +119,8 @@ void lire_index(Capsule table_index, sds motscles, int id[], int nb_res)
 							courant->suivant = (TabOccurences*) malloc(sizeof(TabOccurences));
 							courant->suivant->precedent = courant;
 							courant->suivant->identifiant = -2;
+							courant->suivant->occurences = -2;
+							courant->suivant->suivant = NULL;
 						}
 						break;
 					}
@@ -134,6 +131,7 @@ void lire_index(Capsule table_index, sds motscles, int id[], int nb_res)
 						courant = courant->suivant;
 						courant->identifiant = identifiant;
 						courant->occurences = occurence;
+						courant->suivant = NULL;
 						break;
 					}
 					courant = courant->suivant;
