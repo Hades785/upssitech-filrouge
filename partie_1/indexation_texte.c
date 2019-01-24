@@ -30,7 +30,8 @@ long position_mot_dans_tabocc(TabOcc t, const char * mot)
 	return -1;
 }
 
-void addMotStrict(TabOcc *t,const char * mot,unsigned int nbOccur){
+void addMotStrict(TabOcc *t,const char * mot,unsigned int nbOccur)
+{
 	if(t->nbEle == t->size)
 	{
 		sds * newTabS = malloc(sizeof(sds)*(t->size+20));
@@ -79,7 +80,8 @@ unsigned int totalOccurences(TabOcc t)
 	return tt;
 }
 
-void triTabOcc(TabOcc * t){
+void triTabOcc(TabOcc * t)
+{
 	sds temps;
 	unsigned int tempu;
 	for(unsigned int i = 1;i < t->nbEle;i++){
@@ -195,6 +197,12 @@ Capsule genere_table(Capsule caps)
 
 TabOcc lecture_fichier(const char * accesFichier, unsigned int * nbMotsTotal,unsigned int tailleMinMot)
 {
+	/*
+	Cette fonction lis le fichier dont le chemin d'accès est donné en paramètre,
+	et renvoie un tableau d'occurrence contenant les mots retenus et leur nombre
+	d'occurrence associé. Ce tableau permettra de créer le descripteur à proprement parler.
+	*/
+	
 	FILE* fichier;
 
     fichier = fopen(accesFichier, "r");
@@ -286,6 +294,10 @@ TabOcc tri_occurence(TabOcc tab,unsigned int nbMotsMax)
 
 sds renvoie_descripteur(TabOcc tabTrie,int id,unsigned int nbMotsTotal)
 {
+	/*
+	Comme son nom l'indique, cette fonction prend notamment un tabocc en paramètre,
+	et renvoie le descripteur correspondant sous forme de sds.
+	*/
 	sds s = sdsempty();
 	//unsigned int nbMotsRetenus = totalOccurences(tabTrie);
 	//[id;nbMotsTotal;nbMotsRetenus][mot1:occ1;mot2:occ2;...]
@@ -304,7 +316,8 @@ sds renvoie_descripteur(TabOcc tabTrie,int id,unsigned int nbMotsTotal)
 	return s;
 }
 
-TabOcc decode_descripteur(const char * descripteur, int * idFichier){
+TabOcc decode_descripteur(const char * descripteur, int * idFichier)
+{
 	//[id;nbMotsTotal;nbMotsRetenus][mot1:occ1;mot2:occ2;...]
 	TabOcc tab = newTabOcc();
 	unsigned int nbMotsRetenus;
