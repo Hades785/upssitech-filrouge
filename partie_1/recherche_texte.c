@@ -17,7 +17,7 @@ sds getNom(int id, Capsule liste_base_texte)
 	sds nom = NULL;
 	
 	if(id != -1) {
-		nom = sdsempty();
+		nom = sdsnewlen("", 50);
 		for(int i = 0; i < nombreDescripteurs(liste_base_texte); i++)
 		{
 			// dans l optique ou dans le fichier liste_base_texte, la relation identifiant nom
@@ -26,8 +26,10 @@ sds getNom(int id, Capsule liste_base_texte)
 			// donnee traitant un fichier different seront separees par des accolade pour pouvoir
 			// se servir du type capsule)
 			sscanf(liste_base_texte.descripteurs[i], "%d:%s", &test_id, nom);
-			if(id == test_id)
+			if(id == test_id) {
+				sdsupdatelen(nom);
 				return nom;
+			}
 		}
 	}
 
@@ -197,8 +199,6 @@ void recherche_texte_motscles(const sds motscles, Capsule liste_base_texte, Caps
 	for(int i = 0; i < nb_res; i++)
 	{
 		resultats[i] = getNom(id[i], liste_base_texte);
-		fprintf(stderr, "%d:%s\n", id[i], resultats[i]);
-		// sdsfree(resultats[i]);
 	}
 }
 
