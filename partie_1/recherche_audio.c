@@ -22,6 +22,8 @@ void add_result(RESULT_RECHERCHE_AUDIO** results, const sds filename, const floa
 }
 
 void free_results_audio(RESULT_RECHERCHE_AUDIO* results) {
+    if(results == NULL)
+        return;
     if(results->next != NULL)
         free_results_audio(results->next);
     sdsfree(results->filename);
@@ -53,6 +55,9 @@ RESULT_RECHERCHE_AUDIO* recherche_audio(const sds chemin_fichier, const Capsule 
     
     // Recuperation du descripteur du fichier "jingle"
     sds desc_jingle = indexation_audio(chemin_fichier, nb_sample_window, nb_intervalle_amp); // OPTION: NO REINDEX -> FETCH INDEX IN DB
+
+    if(sdslen(desc_jingle) == 0)
+        return resultats;
 
     // Separation des echantillons descripteur "jingle"
     int count_desc_lines = 0;
