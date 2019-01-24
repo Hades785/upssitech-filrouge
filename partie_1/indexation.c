@@ -37,6 +37,7 @@ void getAllFiles(const char * chemin_fichiers,const char * extension,Capsule * c
 		}
 		fichierTrouve = readdir(fileDirectory);
 	}while(fichierTrouve != NULL);
+	closedir(fileDirectory);
 }
 
 void indexer_texte(const char * chemin_desc,const ConfMap * map){
@@ -54,7 +55,9 @@ void indexer_texte(const char * chemin_desc,const ConfMap * map){
 	Capsule descs = newCapsule(&flag);
 	Capsule mapNoms = newCapsule(&flag);
 	Capsule fichiers = newCapsule(&flag);
-	getAllFiles(getConfigValue(map,"chemin_bdd_tx"),".xml",&fichiers);
+	sds bdd = getConfigValue(map,"chemin_bdd_tx");
+	getAllFiles(bdd,".xml",&fichiers);
+	sdsfree(bdd);
 	for(unsigned int i = 0;i < fichiers.nbDescripteurs;i++){
 		printf("Indexation texte : %s\n",fichiers.descripteurs[i]);
 		addElement(&mapNoms,sdscatprintf(sdsempty(),"%u:%s",i,fichiers.descripteurs[i]));
@@ -110,7 +113,9 @@ void indexer_image(const char * chemin_desc,const ConfMap * map){
 	
 	Capsule descs = newCapsule(&flag);
 	Capsule fichiers = newCapsule(&flag);
-	getAllFiles(getConfigValue(map,"chemin_bdd_im"),".txt",&fichiers);
+	sds bdd = getConfigValue(map,"chemin_bdd_im");
+	getAllFiles(bdd,".txt",&fichiers);
+	sdsfree(bdd);
 	for(unsigned int i = 0;i < fichiers.nbDescripteurs;i++){
 		printf("Indexation image : %s\n",fichiers.descripteurs[i]);
 		addElement(&descs,indexation_image(fichiers.descripteurs[i],nbCouleurs,seuil,i,nbBits));
@@ -140,7 +145,9 @@ void indexer_audio(const char * chemin_desc,const ConfMap * map){
 	}
 	Capsule descs = newCapsule(&flag);
 	Capsule fichiers = newCapsule(&flag);
-	getAllFiles(getConfigValue(map,"chemin_bdd_au"),".txt",&fichiers);
+	sds bdd = getConfigValue(map,"chemin_bdd_au");
+	getAllFiles(bdd,".txt",&fichiers);
+	sdsfree(bdd);
 	for(unsigned int i = 0;i < fichiers.nbDescripteurs;i++){
 		printf("Indexation audio : %s\n",fichiers.descripteurs[i]);
 		//TODO: tests
