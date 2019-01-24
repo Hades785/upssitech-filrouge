@@ -39,14 +39,19 @@ void recherche_texte_mot(ConfMap * map){
 	
 	fputs("\nEntrer le(s) mot(s) à rechercher :",stdout);
 	char buf[300];
-	scanf("%298s",buf);
-	buf[strlen(buf)] = ' ';
+	scanf("%297s",buf);
+	unsigned int ln = strlen(buf);
+	buf[ln] = ' ';
+	buf[ln+1] = '\0';
 	
 	sds * resultats = malloc(sizeof(sds*)*nb_res_max);
 	assert(resultats != NULL);
 	for(unsigned int i = 0;i < nb_res_max;i++){
 		resultats[i] = NULL;
 	}
+	
+	printf("-%s-\n",buf);
+	
 	recherche_texte_motscles(buf, mapNoms, base_mots, nb_res_max, resultats);
 	
 	// traitement du resultat
