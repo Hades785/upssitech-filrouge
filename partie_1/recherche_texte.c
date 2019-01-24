@@ -129,6 +129,7 @@ void lire_index(Capsule table_index, sds motscles, int id[], int nb_res)
 						courant = courant->suivant;
 						courant->identifiant = identifiant;
 						courant->occurences = occurence;
+						courant->suivant = NULL;
 						break;
 					}
 					courant = courant->suivant;
