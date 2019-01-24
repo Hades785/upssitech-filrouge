@@ -174,7 +174,8 @@ void recherche_image_nom(ConfMap * map){
 		case '8': reponse = recherche_image_col(JAUNE_T,base,nbResMax,nbBits); break;
 		default:
 			puts("Erreur entrée utilisateur");
-			break;
+			freeCapsule(base);
+			return;
 	}
 	freeCapsule(base);
 	fin_rech_image(reponse);
@@ -261,13 +262,17 @@ void recherche_image_fichier(ConfMap * map){
 	reponse = recherche_image_file(buf,base,nbResMax,nbBits,nbCouleursMax,seuil);
 	
 	freeCapsule(base);
-	fin_rech_image(reponse);
-	unsigned int i = 0;
-	while(reponse[i] != NULL){
-		sdsfree(reponse[i]);
-		i++;
+	if(reponse == NULL){
+		puts("Chemin invalide.");
+	}else{
+		fin_rech_image(reponse);
+		unsigned int i = 0;
+		while(reponse[i] != NULL){
+			sdsfree(reponse[i]);
+			i++;
+		}
+		free(reponse);
 	}
-	free(reponse);
 }
 
 void rechercher_audio(ConfMap * map){

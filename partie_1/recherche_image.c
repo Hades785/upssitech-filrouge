@@ -201,6 +201,10 @@ sds * recherche_image_file(const char * fichier,const Capsule caps,unsigned int 
 	
 	//printf("Rech im %s:%u:%u:%u:%u:%f\n",fichier,caps.nbDescripteurs,nbResMax,nbBits,nbCouleursMax,seuilMin);
 	
+	sds s = indexation_image(fichier,nbCouleursMax,seuilMin,0,nbBits);
+	if(s == NULL){
+		return NULL;
+	}
 	float * tabPoints = malloc(sizeof(float)*nbResMax);
 	DescripteurImage ** tabDesc = malloc(sizeof(DescripteurImage*)*nbResMax);
 	assert(tabPoints != NULL && tabDesc != NULL);
@@ -213,7 +217,7 @@ sds * recherche_image_file(const char * fichier,const Capsule caps,unsigned int 
 	//on cree le descripteur de l'image donnee
 	DescripteurImage * cible = malloc(sizeof(DescripteurImage));
 	assert(cible != NULL);
-	sds s = indexation_image(fichier,nbCouleursMax,seuilMin,0,nbBits);
+	
 	*cible = decodeDescripteur(s);
 	sdsfree(s);
 	

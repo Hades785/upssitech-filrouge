@@ -1,4 +1,5 @@
 #include "indexation_image.h"
+#include "constantes.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -112,7 +113,7 @@ sds createDescripteur(const unsigned int * histo,unsigned char nbBits,const char
 
 
 
-void decodeImage(Image * im,const char * fichierImage)
+unsigned char decodeImage(Image * im,const char * fichierImage)
 {
 	FILE * fichier=NULL;
 	unsigned int nbr_matrice;
@@ -161,16 +162,17 @@ void decodeImage(Image * im,const char * fichierImage)
 				}
 			}
 		}
-	fclose(fichier);
-
+		fclose(fichier);
+		return SUCCES;
 	}
+	return ECHEC;
 	
 }
 
 
 sds indexation_image(const char * cheminFichier,unsigned int nbCouleursMax,float seuilMin,int id ,unsigned char nbBits)
 { 	Image im;
-	decodeImage(&im,cheminFichier);
+	if(decodeImage(&im,cheminFichier)==ECHEC) return NULL;
 	int *histo=histogramme(im,nbBits);
 	free(im.image);
 	sds s = createDescripteur(histo,nbBits,cheminFichier,id,nbCouleursMax,seuilMin);

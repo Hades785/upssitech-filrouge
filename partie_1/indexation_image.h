@@ -30,7 +30,7 @@ unsigned int *histogramme(const Image im,unsigned char nbBits);
 //image : l'image a traiter
 //nbBits : la simplification a appliquer sur l'image
 
-void decodeImage(Image * im, const char * fichierImage);
+unsigned char decodeImage(Image * im, const char * fichierImage);
 //Cette fonction remplis une image de pixels a partir du contenu textuel des images proposees
 
 sds createDescripteur(const unsigned int * histo,unsigned char nbBits,const char * cheminAbsolu,int id,unsigned int nbCouleursMax,float seuilMin);
