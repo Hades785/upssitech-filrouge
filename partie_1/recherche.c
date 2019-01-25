@@ -212,7 +212,7 @@ void recherche_image_code(ConfMap * map){
 	scanf("%6X",&color);
 	sds * reponse;
 	
-	reponse = recherche_image(color,base,nbResMax,nbBits);
+	reponse = recherche_image(simpColor(color,nbBits),base,nbResMax,nbBits);
 	
 	freeCapsule(base);
 	fin_rech_image(reponse);
