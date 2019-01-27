@@ -1,0 +1,569 @@
+Script started on 2019-01-25 15:09:13+0100
+]0;fuzuki@fuzuki-neon: ~/UPSSITECH/code/upssitech-filrouge/partie_1[01;32mfuzuki@fuzuki-neon[00m:[01;34m~/UPSSITECH/code/upssitech-filrouge/partie_1[00m$ make clean
+]0;fuzuki@fuzuki-neon: ~/UPSSITECH/code/upssitech-filrouge/partie_1[01;32mfuzuki@fuzuki-neon[00m:[01;34m~/UPSSITECH/code/upssitech-filrouge/partie_1[00m$ make clean[K[K[K[K[Kapp.out
+]0;fuzuki@fuzuki-neon: ~/UPSSITECH/code/upssitech-filrouge/partie_1[01;32mfuzuki@fuzuki-neon[00m:[01;34m~/UPSSITECH/code/upssitech-filrouge/partie_1[00m$ ./app.out
+Moteur de recherche de fichiers équipe 3
+Chargement...
+Entrer le chemin vers la base de données de textes:
+(soit en relatif si l'execution se fait toujours depuis le même répertoire, soit en absolu.)
+(Rappel : sur WSL, les disques sont montés en /mnt/)
+../documents/tes xte/ 
+Entrer le chemin vers la base de données d'images:
+(soit en relatif si l'execution se fait toujours depuis le même répertoire, soit en absolu.)
+(Rappel : sur WSL, les disques sont montés en /mnt/)
+../documents/images 
+Répertoire non trouvé : ../documents/image
+Entrer le chemin vers la base de données d'images:
+(soit en relatif si l'execution se fait toujours depuis le même répertoire, soit en absolu.)
+(Rappel : sur WSL, les disques sont montés en /mnt/)
+../doucments/ima^[[D^[[D^[[D                       cuments/images
+Entrer le chemin vers la base de données audio:
+(soit en relatif si l'execution se fait toujours depuis le même répertoire, soit en absolu.)
+(Rappel : sur WSL, les disques sont montés en /mnt/)
+../documents/audio
+
+MENU CHANGEMENT CHEMIN
+1-Textes : ../documents/texte
+2-Images : ../documents/images
+3-Audio  : ../documents/audio
+
+0-Retour
+0
+
+MENU DE CONFIGURATION
+1-Modifier les chemins vers les BDD
+2-Modifier les parametres texte
+3-Modifier les parametres image
+4-Modifier les parametres audio
+
+0-Indexation et Retour
+0 0
+Indexation dossier : ../documents/texte
+Indexation texte : ../documents/texte/05-Photographie___Philip_Blenkinsop_a.xml
+Indexation texte : ../documents/texte/22-Les_clubs_de_football_anglais.xml
+Indexation texte : ../documents/texte/26-Lyon_prend_ses_aises_en.xml
+Indexation texte : ../documents/texte/12-Jean-Marie_Sevestre,_libraire_et_PDG.xml
+Indexation texte : ../documents/texte/12-Musiques_du_monde___les.xml
+Indexation texte : ../documents/texte/29-Ligue_des_champions___Lyon.xml
+Indexation texte : ../documents/texte/12-Musique_classique___un__Oberon_.xml
+Indexation texte : ../documents/texte/28-Danse___Robyn_Orlin_et.xml
+Indexation texte : ../documents/texte/15-Un_quasar_solitaire_bouleverse_les.xml
+Indexation texte : ../documents/texte/15-_Si_on_veut_aller_trop.xml
+Indexation texte : ../documents/texte/14-Grippe_aviaire___l_OMS_exhorte.xml
+Indexation texte : ../documents/texte/09-Miracle___le_cricket_est.xml
+Indexation texte : ../documents/texte/18-Ligue_1___Lyon_a.xml
+Indexation texte : ../documents/texte/27-A_Lens,_le_Louvre_sera.xml
+Indexation texte : ../documents/texte/03-Mimer_un_signal_nerveux_pour.xml
+Indexation texte : ../documents/texte/15-La_mort_de_Robert_Wise,.xml
+Indexation texte : ../documents/texte/27-Le_Stade_de_France_s_ouvre.xml
+Indexation texte : ../documents/texte/22-Danse___quarante_jeunes_de.xml
+Indexation texte : ../documents/texte/05-Rock___l_Illinois_magique_de.xml
+Indexation texte : ../documents/texte/23-Les_Bleus,_tombeurs_de_la.xml
+Indexation texte : ../documents/texte/05-Le_Colombien_Juan_Pablo_Montoya.xml
+Indexation texte : ../documents/texte/22-Des_laboureurs,_des_OGM..._et.xml
+Indexation texte : ../documents/texte/08-La_mission_Deep_Impact_permet.xml
+Indexation texte : ../documents/texte/15-Capturer_et_emprisonner_le_CO.xml
+Indexation texte : ../documents/texte/12-Agassi_plie_face_au_meilleur.xml
+Indexation texte : ../documents/texte/15-Lille_s_incline_dans_les.xml
+Indexation texte : ../documents/texte/13-Ligue_des_champions____Si.xml
+Indexation texte : ../documents/texte/08-Carlos_do_Carmo____Le.xml
+Indexation texte : ../documents/texte/16-Une_sonde_japonaise_va_tenter.xml
+Indexation texte : ../documents/texte/15-Capturer_et_emprisonner_le_CO2,.xml
+Indexation texte : ../documents/texte/05-Edition___les_mots_et.xml
+Indexation texte : ../documents/texte/22-Grippe_aviaire___la_course.xml
+Indexation texte : ../documents/texte/10-Le_cyclone_Katrina_complique_le.xml
+Indexation texte : ../documents/texte/28-A_Hossegor,_Kelly_Slater_peut.xml
+Indexation texte : ../documents/texte/06-US_Open___Mauresmo_et.xml
+Indexation dossier : ../documents/images
+Indexation dossier : ../documents/images/gris
+Indexation dossier : ../documents/images/rgb
+Indexation image : ../documents/images/gris/52.txt
+Indexation image : ../documents/images/gris/62.txt
+Indexation image : ../documents/images/gris/53.txt
+Indexation image : ../documents/images/gris/51.txt
+Indexation image : ../documents/images/gris/55.txt
+Indexation image : ../documents/images/gris/59.txt
+Indexation image : ../documents/images/gris/56.txt
+Indexation image : ../documents/images/gris/54.txt
+Indexation image : ../documents/images/gris/60.txt
+Indexation image : ../documents/images/gris/58.txt
+Indexation image : ../documents/images/gris/57.txt
+Indexation image : ../documents/images/gris/63.txt
+Indexation image : ../documents/images/gris/61.txt
+Indexation image : ../documents/images/rgb/03.txt
+Indexation image : ../documents/images/rgb/37.txt
+Indexation image : ../documents/images/rgb/34.txt
+Indexation image : ../documents/images/rgb/45.txt
+Indexation image : ../documents/images/rgb/06.txt
+Indexation image : ../documents/images/rgb/23.txt
+Indexation image : ../documents/images/rgb/04.txt
+Indexation image : ../documents/images/rgb/30.txt
+Indexation image : ../documents/images/rgb/02.txt
+Indexation image : ../documents/images/rgb/38.txt
+Indexation image : ../documents/images/rgb/42.txt
+Indexation image : ../documents/images/rgb/28.txt
+Indexation image : ../documents/images/rgb/11.txt
+Indexation image : ../documents/images/rgb/46.txt
+Indexation image : ../documents/images/rgb/36.txt
+Indexation image : ../documents/images/rgb/07.txt
+Indexation image : ../documents/images/rgb/31.txt
+Indexation image : ../documents/images/rgb/09.txt
+Indexation image : ../documents/images/rgb/13.txt
+Indexation image : ../documents/images/rgb/33.txt
+Indexation image : ../documents/images/rgb/48.txt
+Indexation image : ../documents/images/rgb/43.txt
+Indexation image : ../documents/images/rgb/22.txt
+Indexation image : ../documents/images/rgb/29.txt
+Indexation image : ../documents/images/rgb/39.txt
+Indexation image : ../documents/images/rgb/01.txt
+Indexation image : ../documents/images/rgb/24.txt
+Indexation image : ../documents/images/rgb/05.txt
+Indexation image : ../documents/images/rgb/19.txt
+Indexation image : ../documents/images/rgb/10.txt
+Indexation image : ../documents/images/rgb/15.txt
+Indexation image : ../documents/images/rgb/50.txt
+Indexation image : ../documents/images/rgb/14.txt
+Indexation image : ../documents/images/rgb/47.txt
+Indexation image : ../documents/images/rgb/21.txt
+Indexation image : ../documents/images/rgb/17.txt
+Indexation image : ../documents/images/rgb/44.txt
+Indexation image : ../documents/images/rgb/35.txt
+Indexation image : ../documents/images/rgb/40.txt
+Indexation image : ../documents/images/rgb/32.txt
+Indexation image : ../documents/images/rgb/12.txt
+Indexation image : ../documents/images/rgb/27.txt
+Indexation image : ../documents/images/rgb/20.txt
+Indexation image : ../documents/images/rgb/18.txt
+Indexation image : ../documents/images/rgb/41.txt
+Indexation image : ../documents/images/rgb/08.txt
+Indexation image : ../documents/images/rgb/26.txt
+Indexation image : ../documents/images/rgb/16.txt
+Indexation image : ../documents/images/rgb/25.txt
+Indexation image : ../documents/images/rgb/49.txt
+Indexation dossier : ../documents/audio
+Indexation audio : ../documents/audio/jingle_fi.txt
+Indexation audio : ../documents/audio/corpus_fi.txt
+
+MENU PRINCIPAL
+1-Recherche
+2-Configuration
+3-Indexation
+
+0-Quitter
+0
+A bientôt !
+]0;fuzuki@fuzuki-neon: ~/UPSSITECH/code/upssitech-filrouge/partie_1[01;32mfuzuki@fuzuki-neon[00m:[01;34m~/UPSSITECH/code/upssitech-filrouge/partie_1[00m$ ./app.outmake app.out[3P./app.out
+Moteur de recherche de fichiers équipe 3
+Chargement...
+
+MENU PRINCIPAL
+1-Recherche
+2-Configuration
+3-Indexation
+
+0-Quitter
+2
+
+MENU DE CONFIGURATION
+1-Modifier les chemins vers les BDD
+2-Modifier les parametres texte
+3-Modifier les parametres image
+4-Modifier les parametres audio
+
+0-Retour
+3
+
+MENU DE CONFIGURATION IMAGE
+Paramètres :
+1-Nombre de bits de quantification par couleur : 4
+2-Nombre de couleurs maximum mémorisées par image : 50
+3-Seuil minimal de considération d'une couleur (en % de couverture de l'image) : 0.100000
+4-Nombre de résultats de recherche : 15
+
+0-Retour
+0
+
+MENU DE CONFIGURATION
+1-Modifier les chemins vers les BDD
+2-Modifier les parametres texte
+3-Modifier les parametres image
+4-Modifier les parametres audio
+
+0-Retour
+0
+
+MENU PRINCIPAL
+1-Recherche
+2-Configuration
+3-Indexation
+
+0-Quitter
+1
+
+MENU RECHERCHE
+1-Recherche de textes par mot-clé
+2-Recherche de textes par texte de référence
+3-Recherche d'images par code couleur
+4-Recherche d'images par nom de couleur
+5-Recherche d'images par image de référence
+6-Recherche de fichiers audio à partir d'un jingle
+
+0-Retour
+1
+
+Entrer le(s) mot(s) à rechercher :grippe
+-grippe -
+1:	../documents/texte/14-Grippe_aviaire___l_OMS_exhorte.xml
+2:	../documents/texte/22-Grippe_aviaire___la_course.xml
+
+MENU RECHERCHE
+1-Recherche de textes par mot-clé
+2-Recherche de textes par texte de référence
+3-Recherche d'images par code couleur
+4-Recherche d'images par nom de couleur
+5-Recherche d'images par image de référence
+6-Recherche de fichiers audio à partir d'un jingle
+
+0-Retour
+6
+
+RECHERCHE AUDIO
+Entrer le chemin (absolu ou relatif à l'éxecution) du fichier "jingle" (.txt):0
+Fichier non ouvrable / inexistant
+MENU RECHERCHE
+1-Recherche de textes par mot-clé
+2-Recherche de textes par texte de référence
+3-Recherche d'images par code couleur
+4-Recherche d'images par nom de couleur
+5-Recherche d'images par image de référence
+6-Recherche de fichiers audio à partir d'un jingle
+
+0-Retour
+1
+
+Entrer le(s) mot(s) à rechercher :musique
+-musique -
+1:	../documents/texte/12-Musiques_du_monde___les.xml
+2:	../documents/texte/12-Musique_classique___un__Oberon_.xml
+3:	../documents/texte/22-Danse___quarante_jeunes_de.xml
+
+MENU RECHERCHE
+1-Recherche de textes par mot-clé
+2-Recherche de textes par texte de référence
+3-Recherche d'images par code couleur
+4-Recherche d'images par nom de couleur
+5-Recherche d'images par image de référence
+6-Recherche de fichiers audio à partir d'un jingle
+
+0-Retour
+1
+
+Entrer le(s) mot(s) à rechercher :Pinquier^[[D            Pinquier
+-Pinquier -
+
+MENU RECHERCHE
+1-Recherche de textes par mot-clé
+2-Recherche de textes par texte de référence
+3-Recherche d'images par code couleur
+4-Recherche d'images par nom de couleur
+5-Recherche d'images par image de référence
+6-Recherche de fichiers audio à partir d'un jingle
+
+0-Retour
+1
+
+Entrer le(s) mot(s) à rechercher :17?#9
+-17?#9 -
+
+MENU RECHERCHE
+1-Recherche de textes par mot-clé
+2-Recherche de textes par texte de référence
+3-Recherche d'images par code couleur
+4-Recherche d'images par nom de couleur
+5-Recherche d'images par image de référence
+6-Recherche de fichiers audio à partir d'un jingle
+
+0-Retour
+2
+
+Entrer l'adresse du fichier à rechercher :../documents/texte/12  0 indexation          12-Agassi_plie_face_au_meilleur.xml
+1:	../documents/texte/12-Agassi_plie_face_au_meilleur.xml
+
+MENU RECHERCHE
+1-Recherche de textes par mot-clé
+2-Recherche de textes par texte de référence
+3-Recherche d'images par code couleur
+4-Recherche d'images par nom de couleur
+5-Recherche d'images par image de référence
+6-Recherche de fichiers audio à partir d'un jingle
+
+0-Retour
+2
+
+Entrer l'adresse du fichier à rechercher :../documents/texte/14-Grippe_aviaire___l_OMS_exhorte.xml
+1:	../documents/texte/14-Grippe_aviaire___l_OMS_exhorte.xml
+2:	../documents/texte/22-Grippe_aviaire___la_course.xml
+
+MENU RECHERCHE
+1-Recherche de textes par mot-clé
+2-Recherche de textes par texte de référence
+3-Recherche d'images par code couleur
+4-Recherche d'images par nom de couleur
+5-Recherche d'images par image de référence
+6-Recherche de fichiers audio à partir d'un jingle
+
+0-Retour
+0
+
+MENU PRINCIPAL
+1-Recherche
+2-Configuration
+3-Indexation
+
+0-Quitter
+2
+
+MENU DE CONFIGURATION
+1-Modifier les chemins vers les BDD
+2-Modifier les parametres texte
+3-Modifier les parametres image
+4-Modifier les parametres audio
+
+0-Retour
+2
+
+MENU DE CONFIGURATION TEXTE
+Paramètres :
+1-Nombre de mots maximum retenus par fichier: 30
+2-Taille minimale des mots retenus : 3
+3-Nombre de résultats de recherche : 15
+
+0-Retour
+0
+
+MENU DE CONFIGURATION
+1-Modifier les chemins vers les BDD
+2-Modifier les parametres texte
+3-Modifier les parametres image
+4-Modifier les parametres audio
+
+0-Retour
+0
+
+MENU PRINCIPAL
+1-Recherche
+2-Configuration
+3-Indexation
+
+0-Quitter
+1
+
+MENU RECHERCHE
+1-Recherche de textes par mot-clé
+2-Recherche de textes par texte de référence
+3-Recherche d'images par code couleur
+4-Recherche d'images par nom de couleur
+5-Recherche d'images par image de référence
+6-Recherche de fichiers audio à partir d'un jingle
+
+0-Retour
+0
+
+MENU PRINCIPAL
+1-Recherche
+2-Configuration
+3-Indexation
+
+0-Quitter
+2
+
+MENU DE CONFIGURATION
+1-Modifier les chemins vers les BDD
+2-Modifier les parametres texte
+3-Modifier les parametres image
+4-Modifier les parametres audio
+
+0-Retour
+1
+
+MENU CHANGEMENT CHEMIN
+1-Textes : ../documents/texte
+2-Images : ../documents/images
+3-Audio  : ../documents/audio
+
+0-Retour
+00
+
+MENU DE CONFIGURATION
+1-Modifier les chemins vers les BDD
+2-Modifier les parametres texte
+3-Modifier les parametres image
+4-Modifier les parametres audio
+
+0-Retour
+
+MENU PRINCIPAL
+1-Recherche
+2-Configuration
+3-Indexation
+
+0-Quitter
+1
+
+MENU RECHERCHE
+1-Recherche de textes par mot-clé
+2-Recherche de textes par texte de référence
+3-Recherche d'images par code couleur
+4-Recherche d'images par nom de couleur
+5-Recherche d'images par image de référence
+6-Recherche de fichiers audio à partir d'un jingle
+
+0-Retour
+3
+Entrer la couleur en Hexadécimal sur 24 bits (RVB) : F00
+1	../documents/images/rgb/16.txt
+2	../documents/images/rgb/36.txt
+3	../documents/images/rgb/43.txt
+4	../documents/images/rgb/17.txt
+5	../documents/images/rgb/38.txt
+6	../documents/images/rgb/42.txt
+7	../documents/images/rgb/30.txt
+8	../documents/images/rgb/15.txt
+9	../documents/images/rgb/28.txt
+10	../documents/images/rgb/31.txt
+11	../documents/images/rgb/40.txt
+12	../documents/images/rgb/14.txt
+13	../documents/images/gris/55.txt
+14	../documents/images/rgb/33.txt
+15	../documents/images/gris/54.txt
+
+MENU RECHERCHE
+1-Recherche de textes par mot-clé
+2-Recherche de textes par texte de référence
+3-Recherche d'images par code couleur
+4-Recherche d'images par nom de couleur
+5-Recherche d'images par image de référence
+6-Recherche de fichiers audio à partir d'un jingle
+
+0-Retour
+4
+Choisissez une couleur :
+1-noir     2-blanc
+3-rouge    4-vert
+5-bleu     6-cyan
+7-magenta  8-jaune
+3
+1	../documents/images/rgb/16.txt
+2	../documents/images/rgb/36.txt
+3	../documents/images/rgb/43.txt
+4	../documents/images/rgb/17.txt
+5	../documents/images/rgb/38.txt
+6	../documents/images/rgb/42.txt
+7	../documents/images/rgb/30.txt
+8	../documents/images/rgb/15.txt
+9	../documents/images/rgb/28.txt
+10	../documents/images/rgb/31.txt
+11	../documents/images/rgb/40.txt
+12	../documents/images/rgb/14.txt
+13	../documents/images/gris/55.txt
+14	../documents/images/rgb/33.txt
+15	../documents/images/gris/54.txt
+
+MENU RECHERCHE
+1-Recherche de textes par mot-clé
+2-Recherche de textes par texte de référence
+3-Recherche d'images par code couleur
+4-Recherche d'images par nom de couleur
+5-Recherche d'images par image de référence
+6-Recherche de fichiers audio à partir d'un jingle
+
+0-Retour
+4
+Choisissez une couleur :
+1-noir     2-blanc
+3-rouge    4-vert
+5-bleu     6-cyan
+7-magenta  8-jaune
+4
+1	../documents/images/rgb/35.txt
+2	../documents/images/rgb/34.txt
+3	../documents/images/gris/55.txt
+4	../documents/images/rgb/32.txt
+5	../documents/images/gris/54.txt
+6	../documents/images/gris/56.txt
+7	../documents/images/gris/62.txt
+8	../documents/images/rgb/41.txt
+9	../documents/images/gris/57.txt
+10	../documents/images/rgb/04.txt
+11	../documents/images/gris/63.txt
+12	../documents/images/rgb/12.txt
+13	../documents/images/rgb/02.txt
+14	../documents/images/gris/60.txt
+15	../documents/images/rgb/23.txt
+
+MENU RECHERCHE
+1-Recherche de textes par mot-clé
+2-Recherche de textes par texte de référence
+3-Recherche d'images par code couleur
+4-Recherche d'images par nom de couleur
+5-Recherche d'images par image de référence
+6-Recherche de fichiers audio à partir d'un jingle
+
+0-Retour
+5
+Entrer le chemin (absolu ou relatif à l'éxecution) de l'image a rechercher (.txt):../documents/images/rgb/45.txt
+1	../documents/images/rgb/45.txt
+2	../documents/images/rgb/46.txt
+3	../documents/images/rgb/13.txt
+4	../documents/images/rgb/47.txt
+5	../documents/images/rgb/44.txt
+6	../documents/images/rgb/27.txt
+7	../documents/images/rgb/06.txt
+8	../documents/images/rgb/22.txt
+9	../documents/images/gris/59.txt
+10	../documents/images/gris/61.txt
+11	../documents/images/gris/60.txt
+12	../documents/images/rgb/26.txt
+13	../documents/images/gris/58.txt
+14	../documents/images/rgb/05.txt
+15	../documents/images/gris/63.txt
+
+MENU RECHERCHE
+1-Recherche de textes par mot-clé
+2-Recherche de textes par texte de référence
+3-Recherche d'images par code couleur
+4-Recherche d'images par nom de couleur
+5-Recherche d'images par image de référence
+6-Recherche de fichiers audio à partir d'un jingle
+
+0-Retour
+6
+
+RECHERCHE AUDIO
+Entrer le chemin (absolu ou relatif à l'éxecution) du fichier "jingle" (.txt):../documents/aui dio/jingle_fi.txt
+../documents/audio/jingle_fi.txt : 0.000000s (0)
+../documents/audio/corpus_fi.txt : 30.685820s (4309)
+
+MENU RECHERCHE
+1-Recherche de textes par mot-clé
+2-Recherche de textes par texte de référence
+3-Recherche d'images par code couleur
+4-Recherche d'images par nom de couleur
+5-Recherche d'images par image de référence
+6-Recherche de fichiers audio à partir d'un jingle
+
+0-Retour
+0
+
+MENU PRINCIPAL
+1-Recherche
+2-Configuration
+3-Indexation
+
+0-Quitter
+0
+A bientôt !
+]0;fuzuki@fuzuki-neon: ~/UPSSITECH/code/upssitech-filrouge/partie_1[01;32mfuzuki@fuzuki-neon[00m:[01;34m~/UPSSITECH/code/upssitech-filrouge/partie_1[00m$ exit
+exit
+
+Script done on 2019-01-25 15:44:12+0100

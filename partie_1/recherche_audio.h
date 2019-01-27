@@ -8,6 +8,9 @@
 #include "sauvegarde_descripteurs.h"
 
 
+/**
+ * Liste chainee de resultats de recherche pour extraction des resulats
+ */
 typedef struct _rra
 {
     sds filename;
@@ -31,6 +34,11 @@ typedef struct _rra
  */
 RESULT_RECHERCHE_AUDIO* recherche_audio(sds const chemin_fichier, const Capsule desc_base, const int window_step, const int nb_sample_window, const int nb_intervalle_amp);
 
+/**
+ * Libere recursivement la chaine de resultats de recherche
+ * 
+ * @param  results  Liste chainee de resultats
+ */
 void free_results_audio(RESULT_RECHERCHE_AUDIO* results);
 
 #endif
