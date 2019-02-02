@@ -16,6 +16,7 @@ sds getDirPath(){
 void fin_rech_texte(sds * resultats,unsigned int nb_resultats){
 	for(unsigned int i = 0;i < nb_resultats && resultats[i] != NULL;i++){
 		printf("%u:\t%s\n",i+1,resultats[i]);
+		// TODO use xdg-open to allow opening result files
 	}
 }
 
@@ -131,6 +132,7 @@ void fin_rech_image(sds * res){
 	scanf("%u",&resNum);
 	if(resNum != 0 && resNum < i){
 		puts("ENCORE A FAIRE !!!!!!!");//TODO ouvrir image
+		// TODO use xdg-open to open file
 	}*/
 }
 
@@ -316,7 +318,10 @@ void rechercher_audio(ConfMap * map){
         ptr = ptr->next;
     }
 
+	// TODO use xdg-open to open files (OPTIONAL:see for timestamp opening)
+
     free_results_audio(resultats);
 	
 	freeCapsule(base);
 }
+

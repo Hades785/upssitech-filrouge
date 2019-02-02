@@ -57,6 +57,9 @@ documents/
 # Descripteurs
 *.desc
 
+# VIM back files
+*~
+
 # misc
 *.kdev4
 .directory
