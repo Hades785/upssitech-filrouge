@@ -1,0 +1,185 @@
+Script started on 2019-01-27 22:20:05+0100
+]0;arthur@IBM944-R9035MLR: ~/filrouge/partie_1[01;32marthur@IBM944-R9035MLR[00m:[01;34m~/filrouge/partie_1[00m$ make clean
+]0;arthur@IBM944-R9035MLR: ~/filrouge/partie_1[01;32marthur@IBM944-R9035MLR[00m:[01;34m~/filrouge/partie_1[00m$ make app.out
+]0;arthur@IBM944-R9035MLR: ~/filrouge/partie_1[01;32marthur@IBM944-R9035MLR[00m:[01;34m~/filrouge/partie_1[00m$ ./app.out
+Moteur de recherche de fichiers équipe 3
+Chargement...
+Entrer le chemin vers la base de données de textes:
+(soit en relatif si l'execution se fait toujours depuis le même répertoire, soit en absolu.)
+(Rappel : sur WSL, les disques sont montés en /mnt/)
+../documents/texte
+Entrer le chemin vers la base de données d'images:
+(soit en relatif si l'execution se fait toujours depuis le même répertoire, soit en absolu.)
+(Rappel : sur WSL, les disques sont montés en /mnt/)
+../documents/images/rgb
+Entrer le chemin vers la base de données audio:
+(soit en relatif si l'execution se fait toujours depuis le même répertoire, soit en absolu.)
+(Rappel : sur WSL, les disques sont montés en /mnt/)
+../documents/audio
+
+MENU CHANGEMENT CHEMIN
+1-Textes : ../documents/texte
+2-Images : ../documents/images/rgb
+3-Audio  : ../documents/audio
+
+0-Retour
+0
+
+MENU DE CONFIGURATION
+1-Modifier les chemins vers les BDD
+2-Modifier les parametres texte
+3-Modifier les parametres image
+4-Modifier les parametres audio
+
+0-Indexation et Retour
+0
+Indexation dossier : ../documents/texte
+Indexation texte : ../documents/texte/03-Mimer_un_signal_nerveux_pour.xml
+Indexation texte : ../documents/texte/05-Edition___les_mots_et.xml
+Indexation texte : ../documents/texte/05-Le_Colombien_Juan_Pablo_Montoya.xml
+Indexation texte : ../documents/texte/05-Photographie___Philip_Blenkinsop_a.xml
+Indexation texte : ../documents/texte/05-Rock___l_Illinois_magique_de.xml
+Indexation texte : ../documents/texte/06-US_Open___Mauresmo_et.xml
+Indexation texte : ../documents/texte/08-Carlos_do_Carmo____Le.xml
+Indexation texte : ../documents/texte/08-La_mission_Deep_Impact_permet.xml
+Indexation texte : ../documents/texte/09-Miracle___le_cricket_est.xml
+Indexation texte : ../documents/texte/10-Le_cyclone_Katrina_complique_le.xml
+Indexation texte : ../documents/texte/12-Agassi_plie_face_au_meilleur.xml
+Indexation texte : ../documents/texte/12-Jean-Marie_Sevestre,_libraire_et_PDG.xml
+Indexation texte : ../documents/texte/12-Musiques_du_monde___les.xml
+Indexation texte : ../documents/texte/12-Musique_classique___un__Oberon_.xml
+Indexation texte : ../documents/texte/13-Ligue_des_champions____Si.xml
+Indexation texte : ../documents/texte/14-Grippe_aviaire___l_OMS_exhorte.xml
+Indexation texte : ../documents/texte/15-Capturer_et_emprisonner_le_CO.xml
+Indexation texte : ../documents/texte/15-Capturer_et_emprisonner_le_CO2,.xml
+Indexation texte : ../documents/texte/15-La_mort_de_Robert_Wise,.xml
+Indexation texte : ../documents/texte/15-Lille_s_incline_dans_les.xml
+Indexation texte : ../documents/texte/15-Un_quasar_solitaire_bouleverse_les.xml
+Indexation texte : ../documents/texte/15-_Si_on_veut_aller_trop.xml
+Indexation texte : ../documents/texte/16-Une_sonde_japonaise_va_tenter.xml
+Indexation texte : ../documents/texte/18-Ligue_1___Lyon_a.xml
+Indexation texte : ../documents/texte/22-Danse___quarante_jeunes_de.xml
+Indexation texte : ../documents/texte/22-Des_laboureurs,_des_OGM..._et.xml
+Indexation texte : ../documents/texte/22-Grippe_aviaire___la_course.xml
+Indexation texte : ../documents/texte/22-Les_clubs_de_football_anglais.xml
+Indexation texte : ../documents/texte/23-Les_Bleus,_tombeurs_de_la.xml
+Indexation texte : ../documents/texte/26-Lyon_prend_ses_aises_en.xml
+Indexation texte : ../documents/texte/27-A_Lens,_le_Louvre_sera.xml
+Indexation texte : ../documents/texte/27-Le_Stade_de_France_s_ouvre.xml
+Indexation texte : ../documents/texte/28-A_Hossegor,_Kelly_Slater_peut.xml
+Indexation texte : ../documents/texte/28-Danse___Robyn_Orlin_et.xml
+Indexation texte : ../documents/texte/29-Ligue_des_champions___Lyon.xml
+Indexation dossier : ../documents/images/rgb
+Indexation image : ../documents/images/rgb/01.txt
+Indexation image : ../documents/images/rgb/02.txt
+Indexation image : ../documents/images/rgb/03.txt
+Indexation image : ../documents/images/rgb/04.txt
+Indexation image : ../documents/images/rgb/05.txt
+Indexation image : ../documents/images/rgb/06.txt
+Indexation image : ../documents/images/rgb/07.txt
+Indexation image : ../documents/images/rgb/08.txt
+Indexation image : ../documents/images/rgb/09.txt
+Indexation image : ../documents/images/rgb/10.txt
+Indexation image : ../documents/images/rgb/11.txt
+Indexation image : ../documents/images/rgb/12.txt
+Indexation image : ../documents/images/rgb/13.txt
+Indexation image : ../documents/images/rgb/14.txt
+Indexation image : ../documents/images/rgb/15.txt
+Indexation image : ../documents/images/rgb/16.txt
+Indexation image : ../documents/images/rgb/17.txt
+Indexation image : ../documents/images/rgb/18.txt
+Indexation image : ../documents/images/rgb/19.txt
+Indexation image : ../documents/images/rgb/20.txt
+Indexation image : ../documents/images/rgb/21.txt
+Indexation image : ../documents/images/rgb/22.txt
+Indexation image : ../documents/images/rgb/23.txt
+Indexation image : ../documents/images/rgb/24.txt
+Indexation image : ../documents/images/rgb/25.txt
+Indexation image : ../documents/images/rgb/26.txt
+Indexation image : ../documents/images/rgb/27.txt
+Indexation image : ../documents/images/rgb/28.txt
+Indexation image : ../documents/images/rgb/29.txt
+Indexation image : ../documents/images/rgb/30.txt
+Indexation image : ../documents/images/rgb/31.txt
+Indexation image : ../documents/images/rgb/32.txt
+Indexation image : ../documents/images/rgb/33.txt
+Indexation image : ../documents/images/rgb/34.txt
+Indexation image : ../documents/images/rgb/35.txt
+Indexation image : ../documents/images/rgb/36.txt
+Indexation image : ../documents/images/rgb/37.txt
+Indexation image : ../documents/images/rgb/38.txt
+Indexation image : ../documents/images/rgb/39.txt
+Indexation image : ../documents/images/rgb/40.txt
+Indexation image : ../documents/images/rgb/41.txt
+Indexation image : ../documents/images/rgb/42.txt
+Indexation image : ../documents/images/rgb/43.txt
+Indexation image : ../documents/images/rgb/44.txt
+Indexation image : ../documents/images/rgb/45.txt
+Indexation image : ../documents/images/rgb/46.txt
+Indexation image : ../documents/images/rgb/47.txt
+Indexation image : ../documents/images/rgb/48.txt
+Indexation image : ../documents/images/rgb/49.txt
+Indexation image : ../documents/images/rgb/50.txt
+Indexation image : ../documents/images/rgb/main_900.txt
+Indexation dossier : ../documents/audio
+Indexation audio : ../documents/audio/corpus_fi.txt
+Indexation audio : ../documents/audio/jingle_fi.txt
+
+MENU PRINCIPAL
+1-Recherche
+2-Configuration
+3-Indexation
+
+0-Quitter
+1
+
+MENU RECHERCHE
+1-Recherche de textes par mot-clé
+2-Recherche de textes par texte de référence
+3-Recherche d'images par code couleur
+4-Recherche d'images par nom de couleur
+5-Recherche d'images par image de référence
+6-Recherche de fichiers audio à partir d'un jingle
+
+0-Retour
+3
+Entrer la couleur en Hexadécimal sur 24 bits (RVB) : ff0000
+1	../documents/images/rgb/main_900.txt
+2	../documents/images/rgb/50.txt
+3	../documents/images/rgb/49.txt
+4	../documents/images/rgb/48.txt
+5	../documents/images/rgb/47.txt
+6	../documents/images/rgb/46.txt
+7	../documents/images/rgb/45.txt
+8	../documents/images/rgb/44.txt
+9	../documents/images/rgb/43.txt
+10	../documents/images/rgb/42.txt
+11	../documents/images/rgb/41.txt
+12	../documents/images/rgb/40.txt
+13	../documents/images/rgb/39.txt
+14	../documents/images/rgb/38.txt
+15	../documents/images/rgb/37.txt
+
+MENU RECHERCHE
+1-Recherche de textes par mot-clé
+2-Recherche de textes par texte de référence
+3-Recherche d'images par code couleur
+4-Recherche d'images par nom de couleur
+5-Recherche d'images par image de référence
+6-Recherche de fichiers audio à partir d'un jingle
+
+0-Retour
+0
+
+MENU PRINCIPAL
+1-Recherche
+2-Configuration
+3-Indexation
+
+0-Quitter
+0
+A bientôt !
+]0;arthur@IBM944-R9035MLR: ~/filrouge/partie_1[01;32marthur@IBM944-R9035MLR[00m:[01;34m~/filrouge/partie_1[00m$ exit
+exit
+
+Script done on 2019-01-27 22:22:07+0100
