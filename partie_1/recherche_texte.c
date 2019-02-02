@@ -38,7 +38,7 @@ sds listeMots(sds descripteur)
 {
 	int nbMotsRetenus;
 	char * ptr;
-	char mot[35];
+	char mot[100];
 	sds listeMots = sdsempty();
 	
 	sscanf(descripteur, "[%*d;%*d;%d]", &nbMotsRetenus);
@@ -48,7 +48,7 @@ sds listeMots(sds descripteur)
 	
 	for(int i = 0; i < nbMotsRetenus; i++)
 	{
-		sscanf(ptr, "%32[^:]", mot);
+		sscanf(ptr, "%97[^:]", mot);
 		listeMots = sdscat(listeMots, mot);
 		ptr = strchr(ptr, ';');
 		ptr++;
@@ -63,7 +63,7 @@ void lire_index(Capsule table_index, sds motscles, int id[], int nb_res)
 	// format : mot1;fichier1:nbocc;fichier2...
 	char * ptr_mc; // pointeur de parcours des mots cles
 	char * ptr_index; // pointeur de lecture de la table d index
-	char mot[35], comp[35];
+	char mot[100], comp[100];
 	int identifiant, occurence, compteur;
 	int occurences[nb_res];
 	TabOccurences * listeOccurences;
@@ -80,12 +80,12 @@ void lire_index(Capsule table_index, sds motscles, int id[], int nb_res)
 	ptr_index = "";
 	while(strlen(ptr_mc) != 0)
 	{
-		sscanf(ptr_mc, "%32s", mot);
+		sscanf(ptr_mc, "%97s", mot);
 		
 		// on recupere le mot de la table d index
 		for(int i = 0; i < nombreDescripteurs(table_index); i++)
 		{
-			sscanf(table_index.descripteurs[i], "%32[^;]", comp);
+			sscanf(table_index.descripteurs[i], "%97[^;]", comp);
 			if(strcmp(mot, comp) == 0)
 			{
 				ptr_index = strchr(table_index.descripteurs[i], ';');
