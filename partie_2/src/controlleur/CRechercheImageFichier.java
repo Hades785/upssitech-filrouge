@@ -2,15 +2,17 @@ package controlleur;
 
 import java.util.ArrayList;
 
+import jni.MoteurC;
+
 public class CRechercheImageFichier {
 
-	public ArrayList<String> rechercherImageFichier(String chemin)
+	public ArrayList<String> rechercherImageFichier(String chemin, int nbRes, int nbBits)
 	{
 		String resultats;
 		ArrayList<String> resFormattes = new ArrayList<>();
 		
 		//TODO ajouter nom classe de la methode statique
-		resultats = rechercherImage(chemin);
+		resultats = MoteurC.rechercherImage(chemin, nbRes, nbBits);
 		
 		// separations des resultats
 		String[] tmp = resultats.split("\n");

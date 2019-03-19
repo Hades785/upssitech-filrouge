@@ -2,15 +2,17 @@ package controlleur;
 
 import java.util.ArrayList;
 
+import jni.MoteurC;
+
 public class CRechercheImageCouleur {
 
-	public ArrayList<String> rechercherImageCouleur(int couleur)
+	public ArrayList<String> rechercherImageCouleur(int couleur, int nbRes, int nbBits)
 	{
 		String resultats;
 		ArrayList<String> resFormattes = new ArrayList<>();
 		
 		//TODO ajouter nom classe de la methode statique
-		resultats = rechercherCouleur(couleur);
+		resultats = MoteurC.rechercherCouleur(couleur, nbRes, nbBits);
 		
 		// separations des resultats
 		String[] tmp = resultats.split("\n");
