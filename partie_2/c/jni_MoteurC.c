@@ -1,4 +1,4 @@
-#include "Java_jni_MoteurC.h"
+#include "jni_MoteurC.h"
 
 JNIEXPORT void JNICALL Java_jni_MoteurC_initC(JNIEnv* jniEnv, jclass jClass)
 {
