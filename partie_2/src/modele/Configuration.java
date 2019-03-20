@@ -2,32 +2,32 @@ package modele;
 
 public class Configuration {
 	
-	//paramètres de configuration texte
+	//paramï¿½tres de configuration texte
 	
-	String cheminBDTexte;
-	int nbMotsMaxTexte;  //Nombre de mots maximum retenus par fichier
-	int tailleMinMot;  //Taille minimale des mots retenus
-	int nbrResTexte;  //-Nombre de résultats de recherche texte
+	private String cheminBDTexte;
+	private int nbMotsMaxTexte;  //Nombre de mots maximum retenus par fichier
+	private int tailleMinMot;  //Taille minimale des mots retenus
+	private int nbrResTexte;  //-Nombre de rï¿½sultats de recherche texte
 	
-	//paramètres de configuration image
+	//paramï¿½tres de configuration image
 	
-	String cheminBDImage;
-	int nbBitsImage;  //Nombre de bits de quantification par couleur
-	int nbCouleursMaxImage; //Nombre de couleurs maximum mémorisées par image
-	float seuilCouleurImage; //Seuil minimal de considération d'une couleur (en % de couverture de l'image)
-	int nbResImage;  //Nombre de résultats de recherche image
+	private String cheminBDImage;
+	private int nbBitsImage;  //Nombre de bits de quantification par couleur
+	private int nbCouleursMaxImage; //Nombre de couleurs maximum mï¿½morisï¿½es par image
+	private float seuilCouleurImage; //Seuil minimal de considï¿½ration d'une couleur (en % de couverture de l'image)
+	private int nbResImage;  //Nombre de rï¿½sultats de recherche image
 	
-	////paramètres de configuration audio
+	////paramï¿½tres de configuration audio
 	
-	String cheminBDAudio;
-	int nbEchantParFen;  //Nombre d'échantillons par fenêtre
-	int nbInterAmp;  //Nombre d'intervalles en amplitude
-	int nbrFenetres;  //Nombre de fenêtres de décalage entre mesure
+	private String cheminBDAudio;
+	private int nbEchantParFen;  //Nombre d'ï¿½chantillons par fenï¿½tre
+	private int nbInterAmp;  //Nombre d'intervalles en amplitude
+	private int nbrFenetres;  //Nombre de fenï¿½tres de dï¿½calage entre mesure
 	
 	
 	public Configuration() {
 		 
-	//Initialisation des paramètres par défaut 
+	//Initialisation des paramï¿½tres par dï¿½faut 
 		 cheminBDTexte="/mnt/e/upssitech-filrouge/documents/texte";
 		 cheminBDImage="/mnt/e/upssitech-filrouge/documents/images";
 		 cheminBDAudio="/mnt/e/upssitech-filrouge/documents/audio";
@@ -47,66 +47,135 @@ public class Configuration {
 		 nbrFenetres=1;
 	
 	}
-	
-	//Fonctions de Configuration Texte
-	
-	public void configCheminTexte(String nouveauChemin) {
-		cheminBDTexte=nouveauChemin;
-	}
-		
-	public void configNbMotsMaxTexte(int nbMotsMaxTexte) {
-		this.nbMotsMaxTexte=nbMotsMaxTexte;
-	}
-	
-	public void configTailleMinMot(int tailleMinMot) {
-		this.tailleMinMot=tailleMinMot;
-	}
-	
-	public void configNbResTexte(int nbResTexte) {
-		this.nbrResTexte=nbResTexte;
-	}
-	
-	//Fonctions de Configuration image
-	
-	public void configCheminImage(String nouveauChemin) {
-		cheminBDImage=nouveauChemin;
-	}
-	
-	public void configNBitsImage(int nbBitsImage) {
-		this.nbBitsImage=nbBitsImage;
-	}
-	
-	public void configNbCouleursMaxImage(int nbCouleurMaxImage) {
-		this.nbCouleursMaxImage=nbCouleurMaxImage;
-	}
-	
-	public void configSeuilCouleurImage(float  seuilCouleurImage) {
-		this.seuilCouleurImage=this.seuilCouleurImage;
-	}
-	
 
-	public void configNbResImage(int nbResImage) {
-		this.nbResImage=nbResImage;
+
+	public String getCheminBDTexte() {
+		return cheminBDTexte;
 	}
-	
-	//Fonctions de Configuration audio
-	
-	public void configCheminAudio(String nouveauChemin) {
-		cheminBDAudio=nouveauChemin;
+
+
+	public void setCheminBDTexte(String cheminBDTexte) {
+		this.cheminBDTexte = cheminBDTexte;
 	}
-	
-	public void nbEchantParFen(int nbEchantParFen) {
-		this.nbEchantParFen=nbEchantParFen;
+
+
+	public int getNbMotsMaxTexte() {
+		return nbMotsMaxTexte;
 	}
-	
-	public void nbInterAmp(int nbInterAmp) {
-		this.nbInterAmp=nbInterAmp;
+
+
+	public void setNbMotsMaxTexte(int nbMotsMaxTexte) {
+		this.nbMotsMaxTexte = nbMotsMaxTexte;
 	}
-	
-	public void nbrFenetres(int nbrFenetre) {
-		this.nbInterAmp=nbInterAmp;
+
+
+	public int getTailleMinMot() {
+		return tailleMinMot;
 	}
-	
-	
+
+
+	public void setTailleMinMot(int tailleMinMot) {
+		this.tailleMinMot = tailleMinMot;
+	}
+
+
+	public int getNbrResTexte() {
+		return nbrResTexte;
+	}
+
+
+	public void setNbrResTexte(int nbrResTexte) {
+		this.nbrResTexte = nbrResTexte;
+	}
+
+
+	public String getCheminBDImage() {
+		return cheminBDImage;
+	}
+
+
+	public void setCheminBDImage(String cheminBDImage) {
+		this.cheminBDImage = cheminBDImage;
+	}
+
+
+	public int getNbBitsImage() {
+		return nbBitsImage;
+	}
+
+
+	public void setNbBitsImage(int nbBitsImage) {
+		this.nbBitsImage = nbBitsImage;
+	}
+
+
+	public int getNbCouleursMaxImage() {
+		return nbCouleursMaxImage;
+	}
+
+
+	public void setNbCouleursMaxImage(int nbCouleursMaxImage) {
+		this.nbCouleursMaxImage = nbCouleursMaxImage;
+	}
+
+
+	public float getSeuilCouleurImage() {
+		return seuilCouleurImage;
+	}
+
+
+	public void setSeuilCouleurImage(float seuilCouleurImage) {
+		this.seuilCouleurImage = seuilCouleurImage;
+	}
+
+
+	public int getNbResImage() {
+		return nbResImage;
+	}
+
+
+	public void setNbResImage(int nbResImage) {
+		this.nbResImage = nbResImage;
+	}
+
+
+	public String getCheminBDAudio() {
+		return cheminBDAudio;
+	}
+
+
+	public void setCheminBDAudio(String cheminBDAudio) {
+		this.cheminBDAudio = cheminBDAudio;
+	}
+
+
+	public int getNbEchantParFen() {
+		return nbEchantParFen;
+	}
+
+
+	public void setNbEchantParFen(int nbEchantParFen) {
+		this.nbEchantParFen = nbEchantParFen;
+	}
+
+
+	public int getNbInterAmp() {
+		return nbInterAmp;
+	}
+
+
+	public void setNbInterAmp(int nbInterAmp) {
+		this.nbInterAmp = nbInterAmp;
+	}
+
+
+	public int getNbrFenetres() {
+		return nbrFenetres;
+	}
+
+
+	public void setNbrFenetres(int nbrFenetres) {
+		this.nbrFenetres = nbrFenetres;
+	}
 	
 }
