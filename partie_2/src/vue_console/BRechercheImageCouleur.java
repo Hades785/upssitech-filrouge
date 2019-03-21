@@ -3,16 +3,18 @@ package vue_console;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import controlleur.CRechercheImageCouleur;
+
 public class BRechercheImageCouleur {
 	
 	private static Scanner scanner = new Scanner(System.in);
-	private Controleur control;
+	private CRechercheImageCouleur control;
 	private Historique hist;
 	private ArrayList<String> resultats;
 	
 	
 	
-	public BRechercheImageCouleur(Controleur control, Historique hist)
+	public BRechercheImageCouleur(CRechercheImageCouleur control, Historique hist)
 	{
 		this.control = control;
 		this.hist = hist;
@@ -48,7 +50,7 @@ public class BRechercheImageCouleur {
 		while(b < 0 || b > 255);
 		
 		
-		resultats = control.Recherche(r, g, b);
+		resultats = control.rechercherImageCouleur(couleur, nbRes, nbBits);
 		
 		System.out.println("Résultats :");
 		for(int i = 0 ; i < resultats.size() ; i++)

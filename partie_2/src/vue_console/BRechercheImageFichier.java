@@ -4,16 +4,18 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import controlleur.CRechercheImageFichier;
+
 public class BRechercheImageFichier {
 	
 	private static Scanner scanner = new Scanner(System.in);
-	private Controleur control;
+	private CRechercheImageFichier control;
 	private Historique hist;
 	private ArrayList<String> resultats;
 	
 	
 	
-	public BRechercheImageFichier(Controleur control, Historique hist)
+	public BRechercheImageFichier(CRechercheImageFichier control, Historique hist)
 	{
 		this.control = control;
 		this.hist = hist;
@@ -22,7 +24,7 @@ public class BRechercheImageFichier {
 	
 	public void Recherche()
 	{
-		private String chemin = "";
+		String chemin = "";
 		File f;
 		
 		do
@@ -38,7 +40,7 @@ public class BRechercheImageFichier {
 		while(!f.exists() || f.isDirectory());
 		
 		
-		resultats = control.Recherche(chemin);
+		resultats = control.rechercherImageFichier(chemin, nbRes, nbBits);
 		
 		System.out.println("Résultats :");
 		for(int i = 0 ; i < resultats.size() ; i++)
@@ -48,6 +50,5 @@ public class BRechercheImageFichier {
 		
 		resultats.clear();
 	}
-	
 	
 }

@@ -3,21 +3,23 @@ package vue_console;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import controlleur.CRechercheTexteMotsCles;
+
 public class BRechercheTexteMotsCles {
 	
 	private static Scanner scanner = new Scanner(System.in);
-	private Controleur control;
+	private CRechercheTexteMotsCles control;
 	private Historique hist;
 	private ArrayList<String> resultats;
-	private ArrayList<String> motsClés;
+	private String motsClés;
 	
 	
 	
-	public BRechercheTexteMotsCles(Controleur control, Historique hist)
+	public BRechercheTexteMotsCles(CRechercheTexteMotsCles control, Historique hist)
 	{
 		this.control = control;
 		this.hist = hist;
-		motsClés = new ArrayList<>();
+		motsClés = new String();
 	}
 	
 	
@@ -38,12 +40,12 @@ public class BRechercheTexteMotsCles {
 		for(int i = 0 ; i < nb ; i++)
 		{
 			System.out.print("Mot " + i + " : ");
-			motsClés.add(scanner.next());
+			motsClés += scanner.next()+ ' ';
 			System.out.println();
 		}
 		
 		
-		resultats = control.Recherche(motsClés);
+		resultats = control.rechercherMotsCles(motsClés, nbRes);
 		
 		System.out.println("Résultats :");
 		for(int i = 0 ; i < resultats.size() ; i++)
@@ -51,7 +53,6 @@ public class BRechercheTexteMotsCles {
 		
 		hist.Historique(motsClés, resultats);
 		
-		motsClés.clear();
 		resultats.clear();
 	}
 	
