@@ -17,7 +17,7 @@ public class MoteurC {
 		//TODO
 	}
 	public static void indexerTexte(String cheminBdd,String cheminMap,String cheminId,int nbMotsMax,int tailleminMot) {
-		indexerTexteTest(cheminBdd,cheminMap,cheminId,nbMotsMax,tailleminMot);
+		indexerTexteC(cheminBdd,cheminMap,cheminId,nbMotsMax,tailleminMot);
 	}
 	
 	private static native void indexerImageC(String cheminBdd,int nbCouleursMax,float seuilCouleur,int nbBits);
@@ -26,7 +26,7 @@ public class MoteurC {
 		//TODO
 	}
 	public static void indexerImage(String cheminBdd,int nbCouleursMax,float seuilCouleur,int nbBits) {
-		indexerImageTest(cheminBdd,nbCouleursMax,seuilCouleur,nbBits);
+		indexerImageC(cheminBdd,nbCouleursMax,seuilCouleur,nbBits);
 	}
 
 	private static native void indexerAudioC(String cheminBdd,int nbEchantillonPFenetre,int nbIntAmp);
@@ -35,7 +35,7 @@ public class MoteurC {
 		//TODO
 	}
 	public static void indexerAudio(String cheminBdd,int nbEchantillonPFenetre,int nbIntAmp) {
-		indexerAudioTest(cheminBdd,nbEchantillonPFenetre, nbIntAmp);
+		indexerAudioC(cheminBdd,nbEchantillonPFenetre, nbIntAmp);
 	}
 
 	private static native String rechercherTexteC(String cheminMap,String cheminId,String cheminFichier,int nbRes);
@@ -45,7 +45,7 @@ public class MoteurC {
 		return "Attention\nFonction non faite";
 	}
 	public static String rechercherTexte(String cheminMap,String cheminId,String cheminFichier,int nbRes) {
-		return rechercherTexteTest(cheminMap,cheminId,cheminFichier, nbRes);
+		return rechercherTexteC(cheminMap,cheminId,cheminFichier, nbRes);
 	}
 
 	private static native String rechercherMotsC(String cheminMap,String cheminId,String mots,int nbRes);
@@ -55,7 +55,7 @@ public class MoteurC {
 		return "Attention\nFonction non faite";
 	}
 	public static String rechercherMots(String cheminMap,String cheminId,String mots,int nbRes) {
-		return rechercherMotsTest(cheminMap,cheminId,mots, nbRes);
+		return rechercherMotsC(cheminMap,cheminId,mots, nbRes);
 	}
 
 	private static native String rechercherImageC(String cheminBdd,String cheminImage,int nbRes,int nbBits);
@@ -65,7 +65,7 @@ public class MoteurC {
 		return "Attention\nFonction non faite";
 	}
 	public static String rechercherImage(String cheminBdd,String cheminImage,int nbRes,int nbBits) {
-		return rechercherImageTest(cheminBdd,cheminImage, nbRes, nbBits);
+		return rechercherImageC(cheminBdd,cheminImage, nbRes, nbBits);
 	}
 
 	private static native String rechercherCouleurC(String cheminBdd,int colorCode,int nbRes,int nbBits);
@@ -75,7 +75,7 @@ public class MoteurC {
 		return "Attention\nFonciton non faite";
 	}
 	public static String rechercherCouleur(String cheminBdd,int colorCode,int nbRes,int nbBits) {
-		return rechercherCouleurTest(cheminBdd,colorCode, nbRes, nbBits);
+		return rechercherCouleurC(cheminBdd,colorCode, nbRes, nbBits);
 	}
 
 	private static native String rechercherAudioC(String cheminBdd,String cheminFichier,int winStep,int nbSampWin,int nbIntAmp);
@@ -85,6 +85,6 @@ public class MoteurC {
 		return "Attention\nFonction non faite";
 	}
 	public static String rechercherAudio(String cheminBdd,String cheminFichier,int winStep,int nbSampWin,int nbIntAmp) {
-		return rechercherAudioTest(cheminBdd,cheminFichier, winStep, nbSampWin, nbIntAmp);
+		return rechercherAudioC(cheminBdd,cheminFichier, winStep, nbSampWin, nbIntAmp);
 	}
 }
