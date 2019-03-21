@@ -5,7 +5,6 @@
 #include "partie_1/constantes.h"
 #include "partie_1/sds.h"
 #include "partie_1/sauvegarde_descripteurs.h"
-#include "partie_1/config_reader.h"
 
 #include "partie_1/indexation_texte.h"
 #include "partie_1/indexation_image.h"
@@ -28,11 +27,64 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerTexteC(JNIEnv* jniEnv,
 {
     int nbMotsMax;
     int tailleMinMot;
+    unsigned char flag;
 
     nbMotsMax = (int) jNbMotsMax;
     tailleMinMot = (int) jTailleMinMot;
 
     printf("DEBUG : %d %d\n", nbMotsMax, tailleMinMot);
+/*
+    Capsule descs = newCapsule(&flag);
+    if(flag != SUCCES)
+        return;
+
+    Capsule mapNoms = newCapsule(&flag);
+    if(flag != SUCCES)
+        return;
+    
+    Capsule fichiers = newCapsule(&flag);
+    if(flag != SUCCES)
+        return;
+
+    for(unsigned int i = 0;i < fichiers.nbDescripteurs;i++){
+        printf("Indexation texte : %s\n",fichiers.descripteurs[i]);
+        addElement(&mapNoms, 
+                   sdscatprintf(sdsempty(), "%u:%s", 
+                                i, fichiers.descripteurs[i]));
+        addElement(&descs,
+                   indexation_texte(fichiers.descripteurs[i], i,
+                                    nb_mots_max, taille_min_mot));
+    }
+    freeCapsule(fichiers);
+
+    sds chemin = sdscat(sdscat(getDirPathI(),"/"), NOM_FICH_DESC_TEXT);
+    saveDescripteurs(&flag,descs,chemin);
+    sdsfree(chemin);
+    if(flag != SUCCES){
+        puts("Erreur seuvegarde descripteurs");
+        assert(flag != ECHEC);
+    }
+
+    chemin = sdscat(sdscat(getDirPathI(),"/"), NOM_FICH_MAP_NOM_TEXT);
+    saveDescripteurs(&flag,mapNoms,chemin);
+    freeCapsule(mapNoms);
+    sdsfree(chemin);
+    if(flag != SUCCES){
+        puts("Erreur seuvegarde descripteurs");
+        assert(flag != ECHEC);
+    }
+
+    Capsule mapMots = genere_table(descs);
+    freeCapsule(descs);
+    chemin = sdscat(sdscat(getDirPathI(),"/"), NOM_FICH_MAP_MOTS);
+    saveDescripteurs(&flag,mapMots,chemin);
+    freeCapsule(mapMots);
+    sdsfree(chemin);
+    if(flag != SUCCES){
+        puts("Erreur seuvegarde descripteurs");
+        assert(flag != ECHEC);
+    }
+*/
 }
 
 JNIEXPORT void JNICALL Java_jni_MoteurC_indexerImageC(JNIEnv* jniEnv,
@@ -71,7 +123,7 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherTexteC(JNIEnv* jniEnv,
                                                             jstring jFilePath,
                                                             jint jNbResults)
 {
-    char* cheminFichier;
+    const char* cheminFichier;
     int nbResultats;
 
     cheminFichier = (*jniEnv)->GetStringUTFChars(jniEnv, jFilePath, NULL);
@@ -86,7 +138,7 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherMotsC(JNIEnv* jniEnv,
                                                            jstring jMotsCles,
                                                            jint jNbResults)
 {
-    char* motsCles;
+    const char* motsCles;
     int nbResultats;
 
     motsCles = (*jniEnv)->GetStringUTFChars(jniEnv, jMotsCles, NULL);
@@ -102,7 +154,7 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherImageC(JNIEnv* jniEnv,
                                                             jint jNbResults,
                                                             jint jNbBits)
 {
-    char* cheminFichier;
+    const char* cheminFichier;
     int nbResultats;
     int nbBits;
 
@@ -139,7 +191,7 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherAudioC(JNIEnv* jniEnv,
                                                             jint jNbSampleFen,
                                                             jint jNbInterAmp)
 {
-    char* cheminFichier;
+    const char* cheminFichier;
     int pasFenetre;
     int nbEchantillonsParFenetre;
     int nbIntervallesAmplitude;
