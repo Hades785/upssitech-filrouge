@@ -1,15 +1,17 @@
 #include "jni_MoteurC.h"
 
-#include "../partie_1/sds.h"
-#include "../partie_1/sauvegarde_descripteurs.h"
+#include "partie_1/constantes.h"
+#include "partie_1/sds.h"
+#include "partie_1/sauvegarde_descripteurs.h"
+#include "partie_1/config_reader.h"
 
-#include "../partie_1/indexation_texte.h"
-#include "../partie_1/indexation_image.h"
-#include "../partie_1/indexation_audio.h"
+#include "partie_1/indexation_texte.h"
+#include "partie_1/indexation_image.h"
+#include "partie_1/indexation_audio.h"
 
-#include "../partie_1/recherche_texte.h"
-#include "../partie_1/recherche_image.h"
-#include "../partie_1/recherche_audio.h"
+#include "partie_1/recherche_texte.h"
+#include "partie_1/recherche_image.h"
+#include "partie_1/recherche_audio.h"
 
 
 JNIEXPORT void JNICALL Java_jni_MoteurC_initC(JNIEnv* jniEnv, jclass jClass)
