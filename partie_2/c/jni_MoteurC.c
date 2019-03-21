@@ -1,5 +1,7 @@
 #include "jni_MoteurC.h"
 
+#include <stdio.h>
+
 #include "partie_1/constantes.h"
 #include "partie_1/sds.h"
 #include "partie_1/sauvegarde_descripteurs.h"
@@ -30,6 +32,7 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerTexteC(JNIEnv* jniEnv,
     nbMotsMax = (int) jNbMotsMax;
     tailleMinMot = (int) jTailleMinMot;
 
+    printf("DEBUG : %d %d\n", nbMotsMax, tailleMinMot);
 }
 
 JNIEXPORT void JNICALL Java_jni_MoteurC_indexerImageC(JNIEnv* jniEnv,
@@ -44,8 +47,9 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerImageC(JNIEnv* jniEnv,
 
     nbCouleursMax = (int) jNbCouleursMax;
     seuilCouleur = (int) jSeuilCouleur;
-    nbBits = (int) seuilCouleur;
+    nbBits = (int) jNbBits;
 
+    printf("DEBUG : %d %d %d\n", nbCouleursMax, seuilCouleur, nbBits);
 }
 
 JNIEXPORT void JNICALL Java_jni_MoteurC_indexerAudioC(JNIEnv* jniEnv,
@@ -59,6 +63,7 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerAudioC(JNIEnv* jniEnv,
     nbEchantillonsParFenetre = (int) jNbSanplePFenetre;
     nbIntervallesAmplitude = (int) jNbInterAmplitude;
 
+    printf("DEBUG : %d %d\n", nbEchantillonsParFenetre, nbIntervallesAmplitude);
 }
 
 JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherTexteC(JNIEnv* jniEnv,
@@ -72,6 +77,8 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherTexteC(JNIEnv* jniEnv,
     cheminFichier = (*jniEnv)->GetStringUTFChars(jniEnv, jFilePath, NULL);
     nbResultats = (int) jNbResults;
 
+    printf("DEBUG : %s %d\n", cheminFichier, nbResultats);
+    return (*jniEnv)->NewStringUTF(jniEnv, "DEBUG : RECHERCHE_TEXTE");
 }
 
 JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherMotsC(JNIEnv* jniEnv,
@@ -85,6 +92,8 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherMotsC(JNIEnv* jniEnv,
     motsCles = (*jniEnv)->GetStringUTFChars(jniEnv, jMotsCles, NULL);
     nbResultats = (int) jNbResults;
 
+    printf("DEBUG : %s %d\n", motsCles, nbResultats);
+    return (*jniEnv)->NewStringUTF(jniEnv, "DEBUG : RECHERCHE_MOTS");
 }
 
 JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherImageC(JNIEnv* jniEnv,
@@ -101,6 +110,8 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherImageC(JNIEnv* jniEnv,
     nbResultats = (int) jNbResults;
     nbBits = (int) jNbBits;
 
+    printf("DEBUG : %s %d %d\n", cheminFichier, nbResultats, nbBits);
+    return (*jniEnv)->NewStringUTF(jniEnv, "DEBUG : RECHERCHE_IMAGE");
 }
 
 JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherCouleurC(JNIEnv* jniEnv,
@@ -117,6 +128,8 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherCouleurC(JNIEnv* jniEnv,
     nbResultats = (int) jNbResults;
     nbBits = (int) jNbBits;
 
+    printf("DEBUG : %d %d %d\n", codeCouleur, nbResultats, nbBits);
+    return (*jniEnv)->NewStringUTF(jniEnv, "DEBUG : RECHERCHE_COULEUR");
 }
 
 JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherAudioC(JNIEnv* jniEnv,
@@ -136,4 +149,6 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherAudioC(JNIEnv* jniEnv,
     nbEchantillonsParFenetre = (int) jNbSampleFen;
     nbIntervallesAmplitude = (int) jNbInterAmp;
 
+    printf("DEBUG : %s %d %d %d\n", cheminFichier, pasFenetre, nbEchantillonsParFenetre, nbIntervallesAmplitude);
+    return (*jniEnv)->NewStringUTF(jniEnv, "DEBUG : RECHERCHE_AUDIO");
 }
