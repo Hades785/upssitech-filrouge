@@ -12,7 +12,7 @@ public class CRechercheTexteMotsCles {
 		ArrayList<String> resFormattes = new ArrayList<>();
 		
 		//TODO ajouter nom classe de la methode statique
-		resultats = MoteurC.rechercherMots(motsCles, nbRes);
+		resultats = MoteurC.rechercherMots(motsCles+" ", nbRes);
 		
 		// separations des resultats
 		String[] tmp = resultats.split("\n");
