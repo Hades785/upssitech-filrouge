@@ -1,6 +1,7 @@
 #include "jni_MoteurC.h"
 
 #include <stdio.h>
+#include <assert.h>
 
 #include "partie_1/constantes.h"
 #include "partie_1/sds.h"
@@ -62,7 +63,7 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerTexteC(JNIEnv* jniEnv,
                                 i, fichiers.descripteurs[i]));
         addElement(&descs,
                    indexation_texte(fichiers.descripteurs[i], i,
-                                    nb_mots_max, taille_min_mot));
+                                    nbMotsMax, tailleMinMot));
     }
     freeCapsule(fichiers);
 
