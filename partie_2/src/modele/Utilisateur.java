@@ -11,7 +11,7 @@ public class Utilisateur {
 
 	public boolean connexionAdmin(String login, String motDePasse) {
 		if(this.login.equals(login) && this.motDePasse.equals(motDePasse))
-			admin = true;
+			definirAdmin();
 		return admin;
 	}
 
