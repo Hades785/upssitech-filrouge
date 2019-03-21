@@ -24,7 +24,7 @@ public class BRechercheTexteMotsCles {
 	
 	
 	
-	public void Recherche(int nombreMax)
+	public void Recherche(int nombreMax, int nbRes)
 	{
 		int nb = 0;
 		

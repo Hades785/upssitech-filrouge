@@ -24,7 +24,7 @@ public class BRechercheAudio {
 	
 	
 	
-	public void Recherche()
+	public void Recherche(int winStep, int nbSampWin, int nbIntAmp)
 	{
 		String chemin = "";
 		File f;

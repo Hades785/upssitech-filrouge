@@ -23,7 +23,7 @@ public class BRechercheTexteFichier {
 	
 	
 	
-	public void Recherche()
+	public void Recherche(int nbRes)
 	{
 		String chemin = "";
 		File f;

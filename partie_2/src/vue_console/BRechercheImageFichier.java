@@ -22,7 +22,7 @@ public class BRechercheImageFichier {
 	}
 	
 	
-	public void Recherche()
+	public void Recherche(int nbRes, int nbBits)
 	{
 		String chemin = "";
 		File f;
