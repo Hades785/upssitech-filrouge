@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import controlleur.CIdentification;
 import controlleur.CIndexation;
+import controlleur.CRechercheAudio;
 import controlleur.CRechercheImageCouleur;
 import controlleur.CRechercheImageFichier;
 import controlleur.CRechercheTexteFichier;
@@ -11,14 +12,15 @@ import controlleur.CRechercheTexteMotsCles;
 
 public class BMain {
 	private static Scanner scanner = new Scanner(System.in);
-	private static Historique historique = Historique.getInstance(); // TODO en supposant qu'il s'agisse d'un singleton
+	//private static Historique historique = Historique.getInstance(); // TODO en supposant qu'il s'agisse d'un singleton
 	
 	private static BIdentification bIdentification = new BIdentification(CIdentification.getInstance());
 	private static BIndexation bIndexation = new BIndexation(new CIndexation());
-	private static BRechercheImageCouleur bRechercheImageCouleur = new BRechercheImageCouleur(new CRechercheImageCouleur(), historique);
-	private static BRechercheImageFichier bRechercheImageFichier = new BRechercheImageFichier(new CRechercheImageFichier(), historique);
-	private static BRechercheTexteFichier bRechercheTexteFichier = new BRechercheTexteFichier(new CRechercheTexteFichier(), historique);
-	private static BRechercheTexteMotsCles bRechercheTexteMotsCles = new BRechercheTexteMotsCles(new CRechercheTexteMotsCles(), historique);
+	private static BRechercheImageCouleur bRechercheImageCouleur = new BRechercheImageCouleur(new CRechercheImageCouleur());
+	private static BRechercheImageFichier bRechercheImageFichier = new BRechercheImageFichier(new CRechercheImageFichier());
+	private static BRechercheTexteFichier bRechercheTexteFichier = new BRechercheTexteFichier(new CRechercheTexteFichier());
+	private static BRechercheTexteMotsCles bRechercheTexteMotsCles = new BRechercheTexteMotsCles(new CRechercheTexteMotsCles());
+	private static BRechercheAudio bRechercheAudio = new BRechercheAudio(new CRechercheAudio());
 	
 	// TODO variables de configurations a deplacer
 	private static final int NB_RES = 10;
@@ -27,8 +29,9 @@ public class BMain {
 	private static final int NB_COULEURS_MAX = 50;
 	private static final int SEUIL_COULEUR = 30;
 	private static final int NB_BITS = 4;
+	private static final int PAS_DECALAGE_FENETRE = 1;
 	private static final int NB_ECHANTILLON_FENETRE = 1000;
-	private static final int NB_INT_AMP = 10;
+	private static final int NB_INT_AMP = 16;
 
 	private static void afficherMenuConfig()
 	{
@@ -60,20 +63,19 @@ public class BMain {
 			switch(choix)
 			{
 				case 1:
-					bRechercheTexteFichier.Recherche();
+					bRechercheTexteFichier.Recherche(NB_RES);
 					break;
 				case 2:
 					bRechercheTexteMotsCles.Recherche(NB_RES);
 					break;
 				case 3:
-					bRechercheImageFichier.Recherche();
+					bRechercheImageFichier.Recherche(NB_RES, NB_BITS);
 					break;
 				case 4:
-					bRechercheImageCouleur.Recherche();
+					bRechercheImageCouleur.Recherche(NB_RES, NB_BITS);
 					break;
 				case 5:
-					// TODO
-					System.out.println("Pas encore implementé...");
+					bRechercheAudio.Recherche(PAS_DECALAGE_FENETRE, NB_ECHANTILLON_FENETRE, NB_INT_AMP);
 					break;
 				case 6:
 					return;

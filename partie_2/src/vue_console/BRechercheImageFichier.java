@@ -15,10 +15,9 @@ public class BRechercheImageFichier {
 	
 	
 	
-	public BRechercheImageFichier(CRechercheImageFichier control, Historique hist)
+	public BRechercheImageFichier(CRechercheImageFichier control)
 	{
 		this.control = control;
-		this.hist = hist;
 	}
 	
 	

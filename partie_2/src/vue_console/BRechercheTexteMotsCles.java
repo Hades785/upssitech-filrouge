@@ -15,10 +15,9 @@ public class BRechercheTexteMotsCles {
 	
 	
 	
-	public BRechercheTexteMotsCles(CRechercheTexteMotsCles control, Historique hist)
+	public BRechercheTexteMotsCles(CRechercheTexteMotsCles control)
 	{
 		this.control = control;
-		this.hist = hist;
 		motsClés = new String();
 	}
 	

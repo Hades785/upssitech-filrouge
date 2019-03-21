@@ -15,10 +15,9 @@ public class BRechercheTexteFichier {
 	
 	
 	
-	public BRechercheTexteFichier(CRechercheTexteFichier control, Historique hist)
+	public BRechercheTexteFichier(CRechercheTexteFichier control)
 	{
 		this.control = control;
-		this.hist = hist;
 	}
 	
 	

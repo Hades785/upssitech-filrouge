@@ -5,7 +5,6 @@ import java.util.Scanner;
 import controlleur.CIndexation;
 
 public class BIndexation {
-	private static Scanner scanner = new Scanner(System.in);
 	private CIndexation control;
 
 	public BIndexation(CIndexation c)

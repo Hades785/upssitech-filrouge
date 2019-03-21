@@ -1,2 +1,4 @@
 /bin/
 *.jar
+*.class
+build_app_jar.xml

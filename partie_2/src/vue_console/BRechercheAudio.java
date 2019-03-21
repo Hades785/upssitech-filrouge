@@ -16,10 +16,9 @@ public class BRechercheAudio {
 	
 	
 	
-	public BRechercheAudio(CRechercheAudio control, Historique hist)
+	public BRechercheAudio(CRechercheAudio control)
 	{
 		this.control = control;
-		this.hist = hist;
 	}
 	
 	
