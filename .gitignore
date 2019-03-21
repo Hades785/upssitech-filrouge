@@ -63,3 +63,4 @@ documents/
 .vscode
 MENU_prop.txt
 *.desc
+partie_2/build_app_jar.xml
