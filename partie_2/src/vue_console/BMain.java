@@ -3,6 +3,7 @@ package vue_console;
 import java.util.Scanner;
 
 import controlleur.CIdentification;
+import controlleur.CIndexation;
 import controlleur.CRechercheImageCouleur;
 import controlleur.CRechercheImageFichier;
 import controlleur.CRechercheTexteFichier;
@@ -13,13 +14,21 @@ public class BMain {
 	private static Historique historique = Historique.getInstance(); // TODO en supposant qu'il s'agisse d'un singleton
 	
 	private static BIdentification bIdentification = new BIdentification(CIdentification.getInstance());
+	private static BIndexation bIndexation = new BIndexation(new CIndexation());
 	private static BRechercheImageCouleur bRechercheImageCouleur = new BRechercheImageCouleur(new CRechercheImageCouleur(), historique);
 	private static BRechercheImageFichier bRechercheImageFichier = new BRechercheImageFichier(new CRechercheImageFichier(), historique);
 	private static BRechercheTexteFichier bRechercheTexteFichier = new BRechercheTexteFichier(new CRechercheTexteFichier(), historique);
 	private static BRechercheTexteMotsCles bRechercheTexteMotsCles = new BRechercheTexteMotsCles(new CRechercheTexteMotsCles(), historique);
 	
 	// TODO variables de configurations a deplacer
-	private static final int NB_RES;
+	private static final int NB_RES = 10;
+	private static final int TAILLE_MIN_MOTS = 3;
+	private static final int NB_MOTS_MAX = 50;
+	private static final int NB_COULEURS_MAX = 50;
+	private static final int SEUIL_COULEUR = 30;
+	private static final int NB_BITS = 4;
+	private static final int NB_ECHANTILLON_FENETRE = 1000;
+	private static final int NB_INT_AMP = 10;
 
 	private static void afficherMenuConfig()
 	{
@@ -92,8 +101,7 @@ public class BMain {
 					afficherMenuRecherche();
 					break;
 				case 2:
-					// TODO
-					System.out.println("Pas encore implementé...");
+					bIndexation.indexation(NB_COULEURS_MAX, SEUIL_COULEUR, NB_BITS, NB_ECHANTILLON_FENETRE, NB_INT_AMP);
 					break;
 				case 3:
 					afficherMenuConfig();
