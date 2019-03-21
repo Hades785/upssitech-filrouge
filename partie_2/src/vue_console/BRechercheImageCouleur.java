@@ -14,41 +14,27 @@ public class BRechercheImageCouleur {
 	
 	
 	
-	public BRechercheImageCouleur(CRechercheImageCouleur control, Historique hist)
+	public BRechercheImageCouleur(CRechercheImageCouleur control)
 	{
 		this.control = control;
-		this.hist = hist;
 	}
 	
 	
 	
 	public void Recherche(int nbRes, int nbBits)
 	{
-		int r = 0;
-		int g = 0;
-		int b = 0;
+		int couleur = 0;
 		
 		do
 		{
-			System.out.println("Rouge :");
-			r = scanner.nextInt();
+			System.out.println("Choisissez votre couleur :");
+			System.out.println("1-noir     2-blanc");
+			System.out.println("3-rouge    4-vert");
+			System.out.println("5-bleu     6-cyan");
+			System.out.println("7-magenta  8-jaune");
+			couleur = scanner.nextInt();
 		}
-		while(r < 0 || r > 255);
-		
-		do
-		{
-			System.out.println("Vert :");
-			g = scanner.nextInt();
-		}
-		while(g < 0 || g > 255);
-		
-		do
-		{
-			System.out.println("Bleu :");
-			b = scanner.nextInt();
-		}
-		while(b < 0 || b > 255);
-		
+		while(couleur < 1 || couleur > 8);
 		
 		resultats = control.rechercherImageCouleur(couleur, nbRes, nbBits);
 		
