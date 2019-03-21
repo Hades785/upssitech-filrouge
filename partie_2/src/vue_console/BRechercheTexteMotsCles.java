@@ -25,8 +25,7 @@ public class BRechercheTexteMotsCles {
 	
 	public void Recherche(int nbRes)
 	{
-		System.out.println("Entrez votre/vos mot(s)-clé(s), séparés d'un espace "
-				+ "[ajouter + ou - devant le mot pour inclure ou exclure]:");
+		System.out.println("Entrez votre/vos mot(s)-clé(s), séparé(s) d'un espace :");
 		motsClés = scanner.nextLine();
 		
 		resultats = control.rechercherMotsCles(motsClés, nbRes);
