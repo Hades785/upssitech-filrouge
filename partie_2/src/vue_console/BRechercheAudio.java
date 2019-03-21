@@ -11,7 +11,7 @@ public class BRechercheAudio {
 	
 	private static Scanner scanner = new Scanner(System.in);
 	private CRechercheAudio control;
-	private Historique hist;
+	//private Historique hist;
 	private ArrayList<String> resultats;
 	
 	
@@ -48,7 +48,7 @@ public class BRechercheAudio {
 		for(int i = 0 ; i < resultats.size() ; i++)
 			System.out.println(resultats.get(i));
 		
-		hist.Historique(chemin, resultats);
+		//hist.Historique(chemin, resultats);
 		
 		resultats.clear();
 	}

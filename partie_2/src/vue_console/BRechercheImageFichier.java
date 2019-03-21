@@ -10,7 +10,7 @@ public class BRechercheImageFichier {
 	
 	private static Scanner scanner = new Scanner(System.in);
 	private CRechercheImageFichier control;
-	private Historique hist;
+	//private Historique hist;
 	private ArrayList<String> resultats;
 	
 	
@@ -46,7 +46,7 @@ public class BRechercheImageFichier {
 		for(int i = 0 ; i < resultats.size() ; i++)
 			System.out.println(resultats.get(i));
 		
-		hist.Historique(chemin, resultats);
+		//hist.Historique(chemin, resultats);
 		
 		resultats.clear();
 	}

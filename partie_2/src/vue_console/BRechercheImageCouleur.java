@@ -9,7 +9,7 @@ public class BRechercheImageCouleur {
 	
 	private static Scanner scanner = new Scanner(System.in);
 	private CRechercheImageCouleur control;
-	private Historique hist;
+	//private Historique hist;
 	private ArrayList<String> resultats;
 	
 	
@@ -56,7 +56,7 @@ public class BRechercheImageCouleur {
 		for(int i = 0 ; i < resultats.size() ; i++)
 			System.out.println(resultats.get(i));
 		
-		hist.Historique(r, g, b, resultats);
+		//hist.Historique(r, g, b, resultats);
 		
 		resultats.clear();
 	}
