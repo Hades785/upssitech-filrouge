@@ -9,7 +9,7 @@ public class BRechercheTexteMotsCles {
 	
 	private static Scanner scanner = new Scanner(System.in);
 	private CRechercheTexteMotsCles control;
-	private Historique hist;
+	//private Historique hist;
 	private ArrayList<String> resultats;
 	private String motsClés;
 	
@@ -24,26 +24,11 @@ public class BRechercheTexteMotsCles {
 	
 	
 	
-	public void Recherche(int nombreMax, int nbRes)
+	public void Recherche(int nbRes)
 	{
-		int nb = 0;
-		
-		do
-		{
-			System.out.print("Combien de mots-clés (" + nombreMax + " max) ?");
-			nb = scanner.nextInt();
-			System.out.println();
-		}
-		while(nb > nombreMax);
-		
-		
-		for(int i = 0 ; i < nb ; i++)
-		{
-			System.out.print("Mot " + i + " : ");
-			motsClés += scanner.next()+ ' ';
-			System.out.println();
-		}
-		
+		System.out.println("Entrez votre/vos mot(s)-clé(s), séparés d'un espace "
+				+ "[ajouter + ou - devant le mot pour inclure ou exclure]:");
+		motsClés = scanner.nextLine();
 		
 		resultats = control.rechercherMotsCles(motsClés, nbRes);
 		
@@ -51,7 +36,7 @@ public class BRechercheTexteMotsCles {
 		for(int i = 0 ; i < resultats.size() ; i++)
 			System.out.println(resultats.get(i));
 		
-		hist.Historique(motsClés, resultats);
+		//hist.Historique(motsClés, resultats);
 		
 		resultats.clear();
 	}
