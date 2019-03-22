@@ -16,7 +16,7 @@ sds indexation_audio(const sds chemin_fichier, const int nb_sample_window, const
     int desc_frame[nb_intervalle_amp];          // Trame de descripteur (une fenetre d'echantillons)
 
     if(file == NULL) {
-        fputs("Fichier non ouvrable / inexistant", stdout);
+        puts("Fichier non ouvrable / inexistant");
     }
     else {
         // Scan tout le fichier

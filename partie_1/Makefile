@@ -11,31 +11,31 @@ recherche.o: recherche.c recherche.h recherche_texte.h recherche_image.h recherc
 	@gcc -c $(DEBUG) recherche.c
 
 indexation_texte.o: indexation_texte.c indexation_texte.h sds.h constantes.h sauvegarde_descripteurs.h config_reader.h
-	@gcc -c indexation_texte.c
+	@gcc -c -mcmodel=large indexation_texte.c
 
 indexation_image.o: indexation_image.c indexation_image.h sds.h
-	@gcc -c indexation_image.c  -lm
+	@gcc -c -mcmodel=large indexation_image.c  -lm
 
 indexation_audio.o: indexation_audio.c indexation_audio.h
-	@gcc -c indexation_audio.c
+	@gcc -c -mcmodel=large indexation_audio.c
 
 recherche_texte.o: recherche_texte.c recherche_texte.h indexation_texte.h
-	@gcc -c $(DEBUG) recherche_texte.c
+	@gcc -c -mcmodel=large $(DEBUG) recherche_texte.c
 
 recherche_image.o: recherche_image.c recherche_image.h indexation_image.h sds.h sauvegarde_descripteurs.h
-	@gcc -c recherche_image.c -lm
+	@gcc -c -mcmodel=large recherche_image.c -lm
 
 recherche_audio.o: recherche_audio.c recherche_audio.h indexation_audio.h constantes.h
-	@gcc -c recherche_audio.c
+	@gcc -c -mcmodel=large recherche_audio.c
 	
 sds.o: sds.c sds.h sdsalloc.h
-	@gcc -c sds.c
+	@gcc -c -mcmodel=large sds.c
 
 sauvegarde_descripteurs.o: sauvegarde_descripteurs.c sauvegarde_descripteurs.h sds.h constantes.h
-	@gcc -c sauvegarde_descripteurs.c
+	@gcc -c -mcmodel=large sauvegarde_descripteurs.c
 	
 config_reader.o: config_reader.c config_reader.h sds.h sauvegarde_descripteurs.h constantes.h
-	@gcc -c config_reader.c
+	@gcc -c -mcmodel=large config_reader.c
 
 tst_recherche_texte.o: tst_recherche_texte.c sds.h indexation_texte.h recherche_texte.h sauvegarde_descripteurs.h
 	@gcc -c tst_recherche_texte.c
