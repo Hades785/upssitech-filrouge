@@ -1,14 +1,16 @@
 package jni;
 
+import controlleur.CIndexation;
+
 public class Tester {
 	static {
 		System.loadLibrary("MoteurC");
 	}
 
 	public static void main(String[] args) {
-		MoteurC.indexerTexte(15, 3);
-		MoteurC.indexerImage(3, 255, 8);
-		MoteurC.indexerAudio(1000, 10);
+		MoteurC.indexerTexte(CIndexation.CHEMIN_FICHIERS_TEXTE,15, 3);
+		MoteurC.indexerImage(CIndexation.CHEMIN_FICHIERS_IMAGE,3, 255, 8);
+		MoteurC.indexerAudio(CIndexation.CHEMIN_FICHIERS_AUDIO,1000, 10);
 		
 		String a = MoteurC.rechercherTexte("FICHIER", 5);
 		String b = MoteurC.rechercherMots("+Chat -Chien", 5);
