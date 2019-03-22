@@ -6,9 +6,9 @@ public class Tester {
 	}
 
 	public static void main(String[] args) {
-		MoteurC.indexerTexte("BDD", "MAP", "ID", 15, 3);
-		MoteurC.indexerImage("BDD", 3, 255, 8);
-		MoteurC.indexerAudio("BDD", 1000, 10);
+		MoteurC.indexerTexte("../documents/texte", "MAP", "ID", 15, 3);
+		MoteurC.indexerImage("../documents/image", 3, 255, 8);
+		MoteurC.indexerAudio("../documents/audio", 1000, 10);
 		
 		String a = MoteurC.rechercherTexte("BDD", "MAP", "FICHIER", 5);
 		String b = MoteurC.rechercherMots("MAP", "ID", "+Chat -Chien", 5);
