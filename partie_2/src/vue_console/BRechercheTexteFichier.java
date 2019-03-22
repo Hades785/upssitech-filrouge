@@ -32,7 +32,7 @@ public class BRechercheTexteFichier {
 			if(chemin != "")
 				System.out.println("Fichier introuvable !");
 			
-			System.out.println("Entrez le chemin d'accès du fichier à comparer :");
+			System.out.println("Entrez le chemin d'acces du fichier a comparer :");
 			chemin = scanner.next();
 			
 			f = new File(chemin);
@@ -42,7 +42,7 @@ public class BRechercheTexteFichier {
 		
 		resultats = control.rechercherFichier(chemin, nbRes);
 		
-		System.out.println("Résultats :");
+		System.out.println("Rï¿½sultats :");
 		for(int i = 0 ; i < resultats.size() ; i++)
 			System.out.println(resultats.get(i));
 		

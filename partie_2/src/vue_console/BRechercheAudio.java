@@ -33,7 +33,7 @@ public class BRechercheAudio {
 			if(chemin != "")
 				System.out.println("Fichier introuvable !");
 			
-			System.out.println("Entrez le chemin d'accès du jingle à comparer :");
+			System.out.println("Entrez le chemin d'acces du jingle e comparer :");
 			chemin = scanner.next();
 			
 			f = new File(chemin);
@@ -43,7 +43,7 @@ public class BRechercheAudio {
 		
 		resultats = control.rechercherAudio(chemin, winStep, nbSampWin, nbIntAmp);
 		
-		System.out.println("Résultats :");
+		System.out.println("Rï¿½sultats :");
 		for(int i = 0 ; i < resultats.size() ; i++)
 			System.out.println(resultats.get(i));
 		

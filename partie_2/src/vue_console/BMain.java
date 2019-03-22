@@ -38,7 +38,7 @@ public class BMain {
 		if(bIdentification.isIdentified())
 		{
 			// TODO
-			System.out.println("Pas encore implement�...");
+			System.out.println("Pas encore implemente...");
 		}
 		else
 		{
@@ -53,7 +53,7 @@ public class BMain {
 		while(choix != 6)
 		{
 			System.out.println("1 - Recherche de fichiers textes par fichier");
-			System.out.println("2 - Recherche de fichiers textes par mots cl�s");
+			System.out.println("2 - Recherche de fichiers textes par mots cles");
 			System.out.println("3 - Recherche de fichiers images par fichier");
 			System.out.println("4 - Recherche de fichiers images par couleurs");
 			System.out.println("5 - Recherche de fichiers audio par jingle");
@@ -114,7 +114,7 @@ public class BMain {
 				case 5:
 					return;
 				default:
-					System.out.println("Erreur de saisie, choisissez � nouveau :");
+					System.out.println("Erreur de saisie, choisissez a nouveau :");
 					break;
 			}
 		}

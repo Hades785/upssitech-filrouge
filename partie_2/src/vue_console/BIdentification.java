@@ -27,7 +27,7 @@ public class BIdentification {
 		
 		if(control.identification(mdp))
 		{
-			System.out.println("Connecté en temps qu'admin.");
+			System.out.println("Connecte en temps qu'admin.");
 		}
 		else
 		{
