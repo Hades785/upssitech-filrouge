@@ -1,4 +1,5 @@
 #include "jni_MoteurC.h"
+#include "utility.h"
 
 #include <stdio.h>
 #include <assert.h>
@@ -43,7 +44,7 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerTexteC(JNIEnv* jniEnv,
     tailleMinMot = (int) jTailleMinMot;
 
     printf("DEBUG : %s %s %s %d %d\n", bdd, map, id, nbMotsMax, tailleMinMot);
-    /*
+    
     Capsule descs = newCapsule(&flag);
     if(flag != SUCCES)
         return;
@@ -94,7 +95,6 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerTexteC(JNIEnv* jniEnv,
         puts("Erreur seuvegarde descripteurs");
         assert(flag != ECHEC);
     }
-    */
 }
 
 JNIEXPORT void JNICALL Java_jni_MoteurC_indexerImageC(JNIEnv* jniEnv,
