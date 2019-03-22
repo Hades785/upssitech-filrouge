@@ -57,6 +57,8 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerTexteC(JNIEnv* jniEnv,
     if(flag != SUCCES)
         return;
 
+    getAllFiles(bdd,".xml",&fichiers);
+
     for(unsigned int i = 0;i < fichiers.nbDescripteurs;i++){
         printf("Indexation texte : %s\n",fichiers.descripteurs[i]);
         addElement(&mapNoms, 
