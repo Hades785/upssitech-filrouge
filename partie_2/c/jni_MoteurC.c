@@ -31,15 +31,11 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerTexteC(JNIEnv* jniEnv,
                                                       jint jTailleMinMot)
 {
     const char* bdd;
-    const char* map;
-    const char* id;
     int nbMotsMax;
     int tailleMinMot;
     unsigned char flag;
 
     bdd = (*jniEnv)->GetStringUTFChars(jniEnv, jBdd, NULL);
-    map = (*jniEnv)->GetStringUTFChars(jniEnv, jMap, NULL);
-    id = (*jniEnv)->GetStringUTFChars(jniEnv, jId, NULL);
     nbMotsMax = (int) jNbMotsMax;
     tailleMinMot = (int) jTailleMinMot;
 
