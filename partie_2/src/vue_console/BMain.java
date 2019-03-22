@@ -9,6 +9,7 @@ import controlleur.CRechercheImageCouleur;
 import controlleur.CRechercheImageFichier;
 import controlleur.CRechercheTexteFichier;
 import controlleur.CRechercheTexteMotsCles;
+import jni.MoteurC;
 
 public class BMain {
 	private static Scanner scanner = new Scanner(System.in);
@@ -84,6 +85,8 @@ public class BMain {
 	}
 	
 	public static void main(String[] args) {
+		MoteurC.setTest(true);
+		
 		int choix = 0;
 		
 		System.out.println("Bienvenu sur notre moteur de recherche.\nVeuillez choisir une option :");
