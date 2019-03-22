@@ -18,10 +18,10 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_initC
 /*
  * Class:     jni_MoteurC
  * Method:    indexerTexteC
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;II)V
+ * Signature: (Ljava/lang/String;II)V
  */
 JNIEXPORT void JNICALL Java_jni_MoteurC_indexerTexteC
-  (JNIEnv *, jclass, jstring, jstring, jstring, jint, jint);
+  (JNIEnv *, jclass, jstring, jint, jint);
 
 /*
  * Class:     jni_MoteurC
@@ -42,42 +42,42 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerAudioC
 /*
  * Class:     jni_MoteurC
  * Method:    rechercherTexteC
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;
+ * Signature: (Ljava/lang/String;I)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherTexteC
-  (JNIEnv *, jclass, jstring, jstring, jstring, jint);
+  (JNIEnv *, jclass, jstring, jint);
 
 /*
  * Class:     jni_MoteurC
  * Method:    rechercherMotsC
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;
+ * Signature: (Ljava/lang/String;I)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherMotsC
-  (JNIEnv *, jclass, jstring, jstring, jstring, jint);
+  (JNIEnv *, jclass, jstring, jint);
 
 /*
  * Class:     jni_MoteurC
  * Method:    rechercherImageC
- * Signature: (Ljava/lang/String;Ljava/lang/String;II)Ljava/lang/String;
+ * Signature: (Ljava/lang/String;II)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherImageC
-  (JNIEnv *, jclass, jstring, jstring, jint, jint);
+  (JNIEnv *, jclass, jstring, jint, jint);
 
 /*
  * Class:     jni_MoteurC
  * Method:    rechercherCouleurC
- * Signature: (Ljava/lang/String;III)Ljava/lang/String;
+ * Signature: (III)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherCouleurC
-  (JNIEnv *, jclass, jstring, jint, jint, jint);
+  (JNIEnv *, jclass, jint, jint, jint);
 
 /*
  * Class:     jni_MoteurC
  * Method:    rechercherAudioC
- * Signature: (Ljava/lang/String;Ljava/lang/String;III)Ljava/lang/String;
+ * Signature: (Ljava/lang/String;III)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherAudioC
-  (JNIEnv *, jclass, jstring, jstring, jint, jint, jint);
+  (JNIEnv *, jclass, jstring, jint, jint, jint);
 
 #ifdef __cplusplus
 }
