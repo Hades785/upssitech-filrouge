@@ -112,7 +112,7 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerImageC(JNIEnv* jniEnv,
     seuilCouleur = (float) jSeuilCouleur;
     nbBits = (int) jNbBits;
 
-    printf("DEBUG : %s %d %d %d\n", bdd, nbCouleursMax, seuilCouleur, nbBits);
+    printf("DEBUG : %s %d %f %d\n", bdd, nbCouleursMax, seuilCouleur, nbBits);
     
     Capsule descs = newCapsule(&flag);
     if (flag != SUCCES)
