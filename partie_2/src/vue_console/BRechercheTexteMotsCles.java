@@ -11,31 +11,30 @@ public class BRechercheTexteMotsCles {
 	private CRechercheTexteMotsCles control;
 	//private Historique hist;
 	private ArrayList<String> resultats;
-	private String motsClés;
+	private String motsCles;
 	
 	
 	
 	public BRechercheTexteMotsCles(CRechercheTexteMotsCles control)
 	{
 		this.control = control;
-		motsClés = new String();
+		motsCles = new String();
 	}
 	
 	
 	
 	public void Recherche(int nbRes)
 	{
-		System.out.println("Entrez votre/vos mot(s)-clé(s), séparés d'un espace "
-				+ "[ajouter + ou - devant le mot pour inclure ou exclure]:");
-		motsClés = scanner.nextLine();
+		System.out.println("Entrez votre/vos mot(s)-cle(s), separe(s) d'un espace :");
+		motsCles = scanner.nextLine();
 		
-		resultats = control.rechercherMotsCles(motsClés, nbRes);
+		resultats = control.rechercherMotsCles(motsCles, nbRes);
 		
-		System.out.println("Résultats :");
+		System.out.println("Resultats :");
 		for(int i = 0 ; i < resultats.size() ; i++)
 			System.out.println(resultats.get(i));
 		
-		//hist.Historique(motsClés, resultats);
+		//hist.Historique(motsCles, resultats);
 		
 		resultats.clear();
 	}

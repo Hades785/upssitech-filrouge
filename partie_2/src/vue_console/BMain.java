@@ -9,6 +9,7 @@ import controlleur.CRechercheImageCouleur;
 import controlleur.CRechercheImageFichier;
 import controlleur.CRechercheTexteFichier;
 import controlleur.CRechercheTexteMotsCles;
+import jni.MoteurC;
 
 public class BMain {
 	private static Scanner scanner = new Scanner(System.in);
@@ -38,7 +39,7 @@ public class BMain {
 		if(bIdentification.isIdentified())
 		{
 			// TODO
-			System.out.println("Pas encore implementé...");
+			System.out.println("Pas encore implemente...");
 		}
 		else
 		{
@@ -53,7 +54,7 @@ public class BMain {
 		while(choix != 6)
 		{
 			System.out.println("1 - Recherche de fichiers textes par fichier");
-			System.out.println("2 - Recherche de fichiers textes par mots clés");
+			System.out.println("2 - Recherche de fichiers textes par mots cles");
 			System.out.println("3 - Recherche de fichiers images par fichier");
 			System.out.println("4 - Recherche de fichiers images par couleurs");
 			System.out.println("5 - Recherche de fichiers audio par jingle");
@@ -84,6 +85,8 @@ public class BMain {
 	}
 	
 	public static void main(String[] args) {
+		MoteurC.setTest(true);
+		
 		int choix = 0;
 		
 		System.out.println("Bienvenu sur notre moteur de recherche.\nVeuillez choisir une option :");
@@ -103,7 +106,7 @@ public class BMain {
 					afficherMenuRecherche();
 					break;
 				case 2:
-					bIndexation.indexation(NB_COULEURS_MAX, SEUIL_COULEUR, NB_BITS, NB_ECHANTILLON_FENETRE, NB_INT_AMP);
+					bIndexation.indexation(NB_MOTS_MAX,TAILLE_MIN_MOTS,NB_COULEURS_MAX, SEUIL_COULEUR, NB_BITS, NB_ECHANTILLON_FENETRE, NB_INT_AMP);
 					break;
 				case 3:
 					afficherMenuConfig();
@@ -114,7 +117,7 @@ public class BMain {
 				case 5:
 					return;
 				default:
-					System.out.println("Erreur de saisie, choisissez à nouveau :");
+					System.out.println("Erreur de saisie, choisissez a nouveau :");
 					break;
 			}
 		}

@@ -31,7 +31,7 @@ public class BRechercheImageFichier {
 			if(chemin != "")
 				System.out.println("Fichier introuvable !");
 			
-			System.out.println("Entrez le chemin d'accès de l'image à comparer :");
+			System.out.println("Entrez le chemin d'acces de l'image e comparer :");
 			chemin = scanner.next();
 			
 			f = new File(chemin);
@@ -41,7 +41,7 @@ public class BRechercheImageFichier {
 		
 		resultats = control.rechercherImageFichier(chemin, nbRes, nbBits);
 		
-		System.out.println("Résultats :");
+		System.out.println("Resultats :");
 		for(int i = 0 ; i < resultats.size() ; i++)
 			System.out.println(resultats.get(i));
 		
