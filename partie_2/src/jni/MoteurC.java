@@ -63,32 +63,36 @@ public class MoteurC {
 			indexerAudioC(cheminBdd, nbEchantillonPFenetre, nbIntAmp);
 	}
 
-	private static native String rechercherTexteC(String cheminFichier,int nbRes);
-	private static String rechercherTexteTest(String cheminFichier,int nbRes) {
+	private static native String rechercherTexteC(String cheminFichier,int nbRes,int nbMotsMax,int tailleminMot);
+	private static String rechercherTexteTest(String cheminFichier,int nbRes,int nbMotsMax,int tailleminMot) {
 		System.out.println("rechercheTexteC");
 		System.out.println("cheminFichier : "+cheminFichier);
 		System.out.println("nbRes : "+nbRes);
+		System.out.println("nbMotsMax : "+nbMotsMax);
+		System.out.println("tailleminMot : "+tailleminMot);
 		return "Attention\nFonction non faite";
 	}
-	public static String rechercherTexte(String cheminFichier,int nbRes) {
+	public static String rechercherTexte(String cheminFichier,int nbRes,int nbMotsMax,int tailleminMot) {
 		if(test)
-			return rechercherTexteTest(cheminFichier, nbRes);
+			return rechercherTexteTest(cheminFichier, nbRes,nbMotsMax,tailleminMot);
 		else
-			return rechercherTexteC(cheminFichier, nbRes);
+			return rechercherTexteC(cheminFichier, nbRes,nbMotsMax,tailleminMot);
 	}
 
-	private static native String rechercherMotsC(String mots,int nbRes);
-	private static String rechercherMotsTest(String mots,int nbRes) {
+	private static native String rechercherMotsC(String mots,int nbRes,int nbMotsMax,int tailleminMot);
+	private static String rechercherMotsTest(String mots,int nbRes,int nbMotsMax,int tailleminMot) {
 		System.out.println("RechercheMotsC");
 		System.out.println("mots : "+mots);
 		System.out.println("nbRes : "+nbRes);
+		System.out.println("nbMotsMax : "+nbMotsMax);
+		System.out.println("tailleminMot : "+tailleminMot);
 		return "Attention\nFonction non faite";
 	}
-	public static String rechercherMots(String mots,int nbRes) {
+	public static String rechercherMots(String mots,int nbRes,int nbMotsMax,int tailleminMot) {
 		if(test)
-			return rechercherMotsTest(mots, nbRes);
+			return rechercherMotsTest(mots, nbRes,nbMotsMax,tailleminMot);
 		else
-			return rechercherMotsC(mots, nbRes);
+			return rechercherMotsC(mots, nbRes,nbMotsMax,tailleminMot);
 	}
 
 	private static native String rechercherImageC(String cheminImage,int nbRes,int nbBits);
