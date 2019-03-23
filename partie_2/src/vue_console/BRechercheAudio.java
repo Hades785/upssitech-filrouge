@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import controlleur.CRechercheAudio;
-import controlleur.CRechercheTexteFichier;
 
 public class BRechercheAudio {
 	

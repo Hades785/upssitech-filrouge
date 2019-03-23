@@ -1,7 +1,5 @@
 package vue_console;
 
-import java.util.Scanner;
-
 import controlleur.CIndexation;
 
 public class BIndexation {

@@ -14,7 +14,7 @@ public class Tester {
 		
 		String a = MoteurC.rechercherTexte("FICHIER", 5,50,3);
 		String b = MoteurC.rechercherMots("+Chat -Chien", 5,50,3);
-		String c = MoteurC.rechercherImage("FICHIER", 5, 8);
+		String c = MoteurC.rechercherImage("FICHIER", 5, 8,255,8);
 		String d = MoteurC.rechercherCouleur(4, 5, 8);
 		String e = MoteurC.rechercherAudio("FICHIER", 5, 1000, 10);
 
