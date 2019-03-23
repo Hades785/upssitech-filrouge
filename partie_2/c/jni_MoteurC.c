@@ -37,6 +37,7 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerTexteC(JNIEnv* jniEnv,
     nbMotsMax = (int) jNbMotsMax;
     tailleMinMot = (int) jTailleMinMot;
 
+    // TODO remove debug print
     printf("DEBUG : %s %d %d\n", bdd, nbMotsMax, tailleMinMot);
     
     Capsule descs = newCapsule(&flag);
@@ -112,6 +113,7 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerImageC(JNIEnv* jniEnv,
     seuilCouleur = (float) jSeuilCouleur;
     nbBits = (int) jNbBits;
 
+    // TODO remove debug print
     printf("DEBUG : %s %d %f %d\n", bdd, nbCouleursMax, seuilCouleur, nbBits);
     
     Capsule descs = newCapsule(&flag);
@@ -157,6 +159,7 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerAudioC(JNIEnv* jniEnv,
     nbEchantillonsParFenetre = (int) jNbSanplePFenetre;
     nbIntervallesAmplitude = (int) jNbInterAmplitude;
 
+    // TODO remove debug print
     printf("DEBUG : %s %d %d\n", bdd, nbEchantillonsParFenetre, nbIntervallesAmplitude);
 
     Capsule descs = newCapsule(&flag);
@@ -212,6 +215,7 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherTexteC(JNIEnv* jniEnv,
     nbMotsMax = (int) jNbMotsMax;
     tailleMinMot = (int) jTailleMinMot;
 
+    // TODO remove debug print
     printf("DEBUG : %s %d\n", cheminFichier, nbResultats);
 
     sds dirPath = sdscat(getDirPath(),"/");
@@ -247,6 +251,7 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherTexteC(JNIEnv* jniEnv,
     freeCapsule(base_mots);
     freeCapsule(mapNoms);
 
+    // TODO return resultats
     return (*jniEnv)->NewStringUTF(jniEnv, "DEBUG : RECHERCHE_TEXTE");
 }
 
@@ -264,6 +269,7 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherMotsC(JNIEnv* jniEnv,
     motsCles = (*jniEnv)->GetStringUTFChars(jniEnv, jMotsCles, NULL);
     nbResultats = (int) jNbResults;
 
+    // TODO remove debug print
     printf("DEBUG : %s %d\n", motsCles, nbResultats);
 
     sds dirPath = sdscat(getDirPath(),"/");
@@ -302,6 +308,7 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherMotsC(JNIEnv* jniEnv,
     freeCapsule(base_mots);
     freeCapsule(mapNoms);
 
+    // TODO return resultats
     return (*jniEnv)->NewStringUTF(jniEnv, "DEBUG : RECHERCHE_MOTS");
 }
 
@@ -324,6 +331,7 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherImageC(JNIEnv* jniEnv,
     nbResultats = (int) jNbResults;
     nbBits = (int) jNbBits;
 
+    // TODO remove debug print
     printf("DEBUG : %s %d %d \n", cheminFichier, nbResultats, nbBits);
 
     sds dirPath = sdscat(sdscat(getDirPath(),"/"),NOM_FICH_DESC_IMG);
@@ -352,6 +360,7 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherImageC(JNIEnv* jniEnv,
         free(reponse);
     }
 
+    // TODO return resultats
     return (*jniEnv)->NewStringUTF(jniEnv, "DEBUG : RECHERCHE_IMAGE");
 }
 
@@ -364,12 +373,43 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherCouleurC(JNIEnv* jniEnv,
     int codeCouleur;
     int nbResultats;
     int nbBits;
+    unsigned char flag;
 
     codeCouleur = (int) jColorCode;
     nbResultats = (int) jNbResults;
     nbBits = (int) jNbBits;
 
+    // TODO remove debug print
     printf("DEBUG : %d %d %d\n", codeCouleur, nbResultats, nbBits);
+
+    sds dirPath = sdscat(sdscat(getDirPath(),"/"),NOM_FICH_DESC_IMG);
+
+    Capsule base = loadDescripteurs(&flag,dirPath);
+    if(flag != SUCCES){
+        printf("Echec ouverture base descripteurs : %s\n",dirPath);
+        sdsfree(dirPath);
+        assert(flag != ECHEC);
+    }
+
+    sdsfree(dirPath);
+
+    sds * reponse;
+    reponse = recherche_image(simpColor(codeCouleur, nbBits), 
+                              base, nbResultats, nbBits);
+    
+    freeCapsule(base);
+
+    // TODO traitement resultats
+    //fin_rech_image(reponse);
+
+    unsigned int i = 0;
+    while(reponse[i] != NULL){
+        sdsfree(reponse[i]);
+        i++;
+    }
+    free(reponse);
+
+    // TODO return resultats
     return (*jniEnv)->NewStringUTF(jniEnv, "DEBUG : RECHERCHE_COULEUR");
 }
 
@@ -391,6 +431,7 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherAudioC(JNIEnv* jniEnv,
     nbEchantillonsParFenetre = (int) jNbSampleFen;
     nbIntervallesAmplitude = (int) jNbInterAmp;
 
+    // TODO remove debug print
     printf("DEBUG : %s %d %d %d\n", cheminFichier, pasFenetre, nbEchantillonsParFenetre, nbIntervallesAmplitude);
 
     sds dirPath = sdscat(sdscat(getDirPath(),"/"),NOM_FICH_DESC_AUD);
@@ -402,7 +443,8 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherAudioC(JNIEnv* jniEnv,
     }
     sdsfree(dirPath);
 
-    RESULT_RECHERCHE_AUDIO* resultats = recherche_audio(cheminFichier, base, 
+    RESULT_RECHERCHE_AUDIO* resultats = recherche_audio((char*) cheminFichier, 
+                                                        base, 
                                                         pasFenetre, 
                                                         nbEchantillonsParFenetre,
                                                         nbIntervallesAmplitude);
@@ -420,5 +462,6 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherAudioC(JNIEnv* jniEnv,
     
     freeCapsule(base);
 
+    // TODO return resultats
     return (*jniEnv)->NewStringUTF(jniEnv, "DEBUG : RECHERCHE_AUDIO");
 }
