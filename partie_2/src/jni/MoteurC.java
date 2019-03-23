@@ -95,19 +95,21 @@ public class MoteurC {
 			return rechercherMotsC(mots, nbRes,nbMotsMax,tailleminMot);
 	}
 
-	private static native String rechercherImageC(String cheminImage,int nbRes,int nbBits);
-	private static String rechercherImageTest(String cheminImage,int nbRes,int nbBits) {
+	private static native String rechercherImageC(String cheminImage,int nbRes,int nbBits,int nbCouleursMax,float seuil);
+	private static String rechercherImageTest(String cheminImage,int nbRes,int nbBits,int nbCouleursMax,float seuil) {
 		System.out.println("RechercheImageC");
 		System.out.println("cheminImage : "+cheminImage);
 		System.out.println("nbRes : "+nbRes);
 		System.out.println("nbBits : "+nbBits);
+		System.out.println("nbCouleursMax : "+nbCouleursMax);
+		System.out.println("seuil : "+seuil);
 		return "Attention\nFonction non faite";
 	}
-	public static String rechercherImage(String cheminImage,int nbRes,int nbBits) {
+	public static String rechercherImage(String cheminImage,int nbRes,int nbBits,int nbCouleursMax,float seuil) {
 		if(test)
-			return rechercherImageTest(cheminImage, nbRes, nbBits);
+			return rechercherImageTest(cheminImage, nbRes, nbBits,nbCouleursMax,seuil);
 		else
-			return rechercherImageC(cheminImage, nbRes, nbBits);
+			return rechercherImageC(cheminImage, nbRes, nbBits,nbCouleursMax,seuil);
 	}
 
 	private static native String rechercherCouleurC(int colorCode,int nbRes,int nbBits);

@@ -28,7 +28,7 @@ public class BMain {
 	private static final int TAILLE_MIN_MOTS = 3;
 	private static final int NB_MOTS_MAX = 50;
 	private static final int NB_COULEURS_MAX = 50;
-	private static final int SEUIL_COULEUR = 30;
+	private static final float SEUIL_COULEUR = 2.5f;
 	private static final int NB_BITS = 4;
 	private static final int PAS_DECALAGE_FENETRE = 1;
 	private static final int NB_ECHANTILLON_FENETRE = 1000;
@@ -70,7 +70,7 @@ public class BMain {
 					bRechercheTexteMotsCles.Recherche(NB_RES,NB_MOTS_MAX,TAILLE_MIN_MOTS);
 					break;
 				case 3:
-					bRechercheImageFichier.Recherche(NB_RES, NB_BITS);
+					bRechercheImageFichier.Recherche(NB_RES, NB_BITS, NB_COULEURS_MAX,SEUIL_COULEUR);
 					break;
 				case 4:
 					bRechercheImageCouleur.Recherche(NB_RES, NB_BITS);

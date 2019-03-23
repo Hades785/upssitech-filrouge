@@ -6,13 +6,13 @@ import jni.MoteurC;
 
 public class CRechercheImageFichier {
 
-	public ArrayList<String> rechercherImageFichier(String chemin, int nbRes, int nbBits)
+	public ArrayList<String> rechercherImageFichier(String chemin, int nbRes, int nbBits,int nbCouleursMax,float seuil)
 	{
 		String resultats;
 		ArrayList<String> resFormattes = new ArrayList<>();
 		
 		//TODO ajouter nom classe de la methode statique
-		resultats = MoteurC.rechercherImage(chemin, nbRes, nbBits);
+		resultats = MoteurC.rechercherImage(chemin, nbRes, nbBits,nbCouleursMax,seuil);
 		
 		// separations des resultats
 		String[] tmp = resultats.split("\n");
