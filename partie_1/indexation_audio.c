@@ -14,13 +14,14 @@ sds indexation_audio(const sds chemin_fichier, const int nb_sample_window, const
     sds desc = sdsempty();                      // Descripteur
     double amp;                                 // Amplitude
     int desc_frame[nb_intervalle_amp];          // Trame de descripteur (une fenetre d'echantillons)
+    int test = 1;
 
     if(file == NULL) {
         puts("Fichier non ouvrable / inexistant");
     }
     else {
         // Scan tout le fichier
-        while(!feof(file)) {
+        while(!feof(file) && test > 0) {
             desc = sdscat(desc, "[");
             // Reset trame descripteur
             for(int j=0; j<nb_intervalle_amp; ++j)
@@ -28,7 +29,8 @@ sds indexation_audio(const sds chemin_fichier, const int nb_sample_window, const
 
             // Scan fenetre d'echantillons
             for(int i=0; i<nb_sample_window; ++i) {
-                fscanf(file, "%lf", &amp);
+                test = fscanf(file, "%lf", &amp);
+                printf("%lf\n", amp);
 
                 // Segmentation par amplitude
                 for(int j=0; j<nb_intervalle_amp; ++j)
