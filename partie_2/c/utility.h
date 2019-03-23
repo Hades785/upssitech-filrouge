@@ -4,4 +4,6 @@
 
 sds getDirPathI();
 
+sds getDirPath();
+
 void getAllFiles(const char * chemin_fichiers,const char * extension,Capsule * caps);

@@ -10,6 +10,10 @@ sds getDirPathI(){
 	return sdscat(sdscat(sdsnew(getenv("HOME")),"/"),STORAGE_FOLDER_NAME);
 }
 
+sds getDirPath(){
+	return sdscat(sdscat(sdsnew(getenv("HOME")),"/"),STORAGE_FOLDER_NAME);
+}
+
 void getAllFiles(const char * chemin_fichiers,const char * extension,Capsule * caps){
 	printf("Indexation dossier : %s\n",chemin_fichiers);
 	DIR * fileDirectory = opendir(chemin_fichiers);
