@@ -8,15 +8,17 @@ public class Tester {
 	}
 
 	public static void main(String[] args) {
-		MoteurC.indexerTexte(CIndexation.CHEMIN_FICHIERS_TEXTE,15, 3);
-		MoteurC.indexerImage(CIndexation.CHEMIN_FICHIERS_IMAGE,3, 255, 8);
-		MoteurC.indexerAudio(CIndexation.CHEMIN_FICHIERS_AUDIO,1000, 10);
-		
-		String a = MoteurC.rechercherTexte("FICHIER", 5);
-		String b = MoteurC.rechercherMots("+Chat -Chien", 5);
-		String c = MoteurC.rechercherImage("FICHIER", 5, 8);
-		String d = MoteurC.rechercherCouleur(4, 5, 8);
-		String e = MoteurC.rechercherAudio("FICHIER", 5, 1000, 10);
+		MoteurC.setTest(false);
+
+		MoteurC.indexerTexte(CIndexation.CHEMIN_FICHIERS_TEXTE, 30, 3);
+		MoteurC.indexerImage(CIndexation.CHEMIN_FICHIERS_IMAGE, 3, 255, 4);
+		MoteurC.indexerAudio(CIndexation.CHEMIN_FICHIERS_AUDIO, 1000, 16);
+
+		String a = MoteurC.rechercherTexte("FICHIER", 15);
+		String b = MoteurC.rechercherMots("+Chat -Chien", 15);
+		String c = MoteurC.rechercherImage("FICHIER", 15, 4);
+		String d = MoteurC.rechercherCouleur(4, 15, 4);
+		String e = MoteurC.rechercherAudio("FICHIER", 1, 1000, 16);
 
 		System.out.println(a);
 		System.out.println(b);
