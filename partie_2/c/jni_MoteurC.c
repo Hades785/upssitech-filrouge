@@ -201,11 +201,48 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherTexteC(JNIEnv* jniEnv,
 {
     const char* cheminFichier;
     int nbResultats;
+    int tailleMinMot;
+    int nbMotsMax;
+    unsigned char flag;
 
     cheminFichier = (*jniEnv)->GetStringUTFChars(jniEnv, jFilePath, NULL);
     nbResultats = (int) jNbResults;
 
     printf("DEBUG : %s %d\n", cheminFichier, nbResultats);
+
+    sds dirPath = sdscat(getDirPath(),"/");
+
+    sds temp = sdscat(sdsdup(dirPath),NOM_FICH_MAP_MOTS);
+    Capsule base_mots = loadDescripteurs(&flag,temp);
+    sdsfree(temp);
+
+    temp = sdscat(sdsdup(dirPath),NOM_FICH_MAP_NOM_TEXT);
+    Capsule mapNoms = loadDescripteurs(&flag,temp);
+    sdsfree(temp);
+
+    sdsfree(dirPath);
+    
+    sds * resultats = malloc(sizeof(sds*)*nbResultats);
+    assert(resultats != NULL);
+    for(unsigned int i = 0;i < nbResultats;i++){
+        resultats[i] = NULL;
+    }
+
+    sds descripteur = indexation_texte(cheminFichier, 0, nbMotsMax, tailleMinMot);
+    recherche_texte_fichier(descripteur, mapNoms, base_mots, nbResultats, resultats);
+    sdsfree(descripteur);
+    
+    // TODO traitement resultats
+    //fin_rech_texte(resultats,nb_res_max);
+    
+    for(int i = 0; i < nbResultats; i++)
+    {
+        sdsfree(resultats[i]);
+    }
+    free(resultats);
+    freeCapsule(base_mots);
+    freeCapsule(mapNoms);
+
     return (*jniEnv)->NewStringUTF(jniEnv, "DEBUG : RECHERCHE_TEXTE");
 }
 
@@ -216,11 +253,49 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherMotsC(JNIEnv* jniEnv,
 {
     const char* motsCles;
     int nbResultats;
+    unsigned char flag;
 
     motsCles = (*jniEnv)->GetStringUTFChars(jniEnv, jMotsCles, NULL);
     nbResultats = (int) jNbResults;
 
     printf("DEBUG : %s %d\n", motsCles, nbResultats);
+
+    sds dirPath = sdscat(getDirPath(),"/");
+
+    sds temp = sdscat(sdsdup(dirPath),NOM_FICH_MAP_MOTS);
+    Capsule base_mots = loadDescripteurs(&flag,temp);
+    sdsfree(temp);
+
+    temp = sdscat(sdsdup(dirPath),NOM_FICH_MAP_NOM_TEXT);
+    Capsule mapNoms = loadDescripteurs(&flag,temp);
+    sdsfree(temp);
+
+    sdsfree(dirPath);
+    
+    sds * resultats = malloc(sizeof(sds*)*nbResultats);
+    assert(resultats != NULL);
+    for(unsigned int i = 0;i < nbResultats;i++){
+        resultats[i] = NULL;
+    }
+    
+    sds sMotsCles = sdsnew(motsCles);
+    recherche_texte_motscles(sMotsCles, mapNoms, base_mots,
+                             nbResultats, resultats);
+    sdsfree(sMotsCles);
+    
+    // TODO traitement du resultat
+    // fin_rech_texte(resultats,nb_res_max);
+    
+    int i = 0;
+    while(resultats[i] != NULL && i < nbResultats)
+    {
+        sdsfree(resultats[i]);
+        i++;
+    }
+    free(resultats);
+    freeCapsule(base_mots);
+    freeCapsule(mapNoms);
+
     return (*jniEnv)->NewStringUTF(jniEnv, "DEBUG : RECHERCHE_MOTS");
 }
 
