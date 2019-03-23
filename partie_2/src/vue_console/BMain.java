@@ -64,10 +64,10 @@ public class BMain {
 			switch(choix)
 			{
 				case 1:
-					bRechercheTexteFichier.Recherche(NB_RES);
+					bRechercheTexteFichier.Recherche(NB_RES,NB_MOTS_MAX,TAILLE_MIN_MOTS);
 					break;
 				case 2:
-					bRechercheTexteMotsCles.Recherche(NB_RES);
+					bRechercheTexteMotsCles.Recherche(NB_RES,NB_MOTS_MAX,TAILLE_MIN_MOTS);
 					break;
 				case 3:
 					bRechercheImageFichier.Recherche(NB_RES, NB_BITS);

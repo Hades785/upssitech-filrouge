@@ -42,18 +42,18 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerAudioC
 /*
  * Class:     jni_MoteurC
  * Method:    rechercherTexteC
- * Signature: (Ljava/lang/String;I)Ljava/lang/String;
+ * Signature: (Ljava/lang/String;III)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherTexteC
-  (JNIEnv *, jclass, jstring, jint);
+  (JNIEnv *, jclass, jstring, jint, jint, jint);
 
 /*
  * Class:     jni_MoteurC
  * Method:    rechercherMotsC
- * Signature: (Ljava/lang/String;I)Ljava/lang/String;
+ * Signature: (Ljava/lang/String;III)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherMotsC
-  (JNIEnv *, jclass, jstring, jint);
+  (JNIEnv *, jclass, jstring, jint, jint, jint);
 
 /*
  * Class:     jni_MoteurC

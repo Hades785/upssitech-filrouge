@@ -6,13 +6,13 @@ import jni.MoteurC;
 
 public class CRechercheTexteMotsCles {
 
-	public ArrayList<String> rechercherMotsCles(String motsCles, int nbRes)
+	public ArrayList<String> rechercherMotsCles(String motsCles, int nbRes,int nbMotsMax,int tailleminMot)
 	{
 		String resultats;
 		ArrayList<String> resFormattes = new ArrayList<>();
 		
 		//TODO ajouter nom classe de la methode statique
-		resultats = MoteurC.rechercherMots(motsCles+" ", nbRes);
+		resultats = MoteurC.rechercherMots(motsCles+" ", nbRes,nbMotsMax,tailleminMot);
 		
 		// separations des resultats
 		String[] tmp = resultats.split("\n");
