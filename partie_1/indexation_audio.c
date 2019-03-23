@@ -30,7 +30,6 @@ sds indexation_audio(const sds chemin_fichier, const int nb_sample_window, const
             // Scan fenetre d'echantillons
             for(int i=0; i<nb_sample_window; ++i) {
                 test = fscanf(file, "%lf", &amp);
-                printf("%lf\n", amp);
 
                 // Segmentation par amplitude
                 for(int j=0; j<nb_intervalle_amp; ++j)
