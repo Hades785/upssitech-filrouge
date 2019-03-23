@@ -253,7 +253,7 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherTexteC(JNIEnv* jniEnv,
 JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherMotsC(JNIEnv* jniEnv,
                                                            jclass jClass,
                                                            jstring jMotsCles,
-                                                           jint jNbResults
+                                                           jint jNbResults,
                                                            jint jNbMotsMax,
                                                            jint jTailleMinMot)
 {
