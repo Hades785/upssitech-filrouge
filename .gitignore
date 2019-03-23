@@ -63,3 +63,4 @@ documents/
 .vscode
 MENU_prop.txt
 *.desc
+*.jar
