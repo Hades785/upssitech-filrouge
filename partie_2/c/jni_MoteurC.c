@@ -197,16 +197,20 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerAudioC(JNIEnv* jniEnv,
 JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherTexteC(JNIEnv* jniEnv,
                                                             jclass jClass,
                                                             jstring jFilePath,
-                                                            jint jNbResults)
+                                                            jint jNbResults,
+                                                            jint jNbMotsMax,
+                                                            jint jTailleMinMot)
 {
     const char* cheminFichier;
     int nbResultats;
-    int tailleMinMot;
     int nbMotsMax;
+    int tailleMinMot;
     unsigned char flag;
 
     cheminFichier = (*jniEnv)->GetStringUTFChars(jniEnv, jFilePath, NULL);
     nbResultats = (int) jNbResults;
+    nbMotsMax = (int) jNbMotsMax;
+    tailleMinMot = (int) jTailleMinMot;
 
     printf("DEBUG : %s %d\n", cheminFichier, nbResultats);
 
@@ -249,7 +253,9 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherTexteC(JNIEnv* jniEnv,
 JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherMotsC(JNIEnv* jniEnv,
                                                            jclass jClass,
                                                            jstring jMotsCles,
-                                                           jint jNbResults)
+                                                           jint jNbResults
+                                                           jint jNbMotsMax,
+                                                           jint jTailleMinMot)
 {
     const char* motsCles;
     int nbResultats;
