@@ -58,10 +58,10 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherMotsC
 /*
  * Class:     jni_MoteurC
  * Method:    rechercherImageC
- * Signature: (Ljava/lang/String;II)Ljava/lang/String;
+ * Signature: (Ljava/lang/String;IIIF)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherImageC
-  (JNIEnv *, jclass, jstring, jint, jint);
+  (JNIEnv *, jclass, jstring, jint, jint, jint, jfloat);
 
 /*
  * Class:     jni_MoteurC
