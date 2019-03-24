@@ -240,27 +240,24 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherTexteC(JNIEnv* jniEnv,
     recherche_texte_fichier(descripteur, mapNoms, base_mots, nbResultats, resultats);
     sdsfree(descripteur);
     
-    // TODO traitement resultats
-    //fin_rech_texte(resultats,nb_res_max);
-	
+    // Traitement resultats
 	sds s = sdsempty();
-    
     for(int i = 0; i < nbResultats && resultats[i] != NULL; i++)
     {
-		printf("%s\n",resultats[i]);
-		s = sdscat(s,descripteur);
-		s = sdscat(s,"\n");
+        // Formatage chaine de retour
+		s = sdscat(s, resultats[i]);
+		s = sdscat(s, "\n");
+
         sdsfree(resultats[i]);
     }
     free(resultats);
     freeCapsule(base_mots);
     freeCapsule(mapNoms);
-	
+
+    // Retour resultats
 	jstring res = (*jniEnv)->NewStringUTF(jniEnv,s);
 	sdsfree(s);
 	return res;
-    // TODO return resultats
-	//return (*jniEnv)->NewStringUTF(jniEnv, "DEBUG : RECHERCHE_TEXTE");
 }
 
 JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherMotsC(JNIEnv* jniEnv,
