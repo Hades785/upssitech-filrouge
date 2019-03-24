@@ -38,7 +38,7 @@ public class BRechercheImageCouleur {
 		
 		resultats = control.rechercherImageCouleur(couleur, nbRes, nbBits);
 		
-		System.out.println("Résultats :");
+		System.out.println("Resultats :");
 		for(int i = 0 ; i < resultats.size() ; i++)
 			System.out.println(resultats.get(i));
 		

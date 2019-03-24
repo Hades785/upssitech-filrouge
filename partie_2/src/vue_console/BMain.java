@@ -85,7 +85,7 @@ public class BMain {
 	}
 	
 	public static void main(String[] args) {
-		MoteurC.setTest(true);
+		//MoteurC.setTest(true);
 		
 		int choix = 0;
 		

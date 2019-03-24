@@ -3,9 +3,6 @@ package jni;
 import controlleur.CIndexation;
 
 public class Tester {
-	static {
-		System.loadLibrary("MoteurC");
-	}
 
 	public static void main(String[] args) {
 		MoteurC.setTest(false);

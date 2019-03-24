@@ -3,6 +3,10 @@ package jni;
 public class MoteurC {
 	private MoteurC() {};
 	
+	static {
+		System.loadLibrary("MoteurC");
+	}
+	
 	private static boolean test = false;
 	
 	public static void setTest(boolean t) {
