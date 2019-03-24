@@ -20,11 +20,11 @@ public class Tester {
 		String d = MoteurC.rechercherCouleur(4, 15, 4);
 		String e = MoteurC.rechercherAudio("FICHIER", 1, 1000, 16);
 
-		System.out.println(a);
-		System.out.println(b);
-		System.out.println(c);
-		System.out.println(d);
-		System.out.println(e);
+		System.out.println("Recherche texte:\n" + a);
+		System.out.println("Recherche mot-cle:\n" + b);
+		System.out.println("Recherche image:\n" + c);
+		System.out.println("Recherche couleur:\n" + d);
+		System.out.println("Recherche audio:\n" + e);
 	}
 
 }
