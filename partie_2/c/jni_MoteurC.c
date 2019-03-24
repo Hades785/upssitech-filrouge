@@ -37,8 +37,8 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerTexteC(JNIEnv* jniEnv,
     nbMotsMax = (int) jNbMotsMax;
     tailleMinMot = (int) jTailleMinMot;
 
-    // TODO remove debug print
-    printf("DEBUG : %s %d %d\n", bdd, nbMotsMax, tailleMinMot);
+    // debug print
+    // printf("DEBUG : %s %d %d\n", bdd, nbMotsMax, tailleMinMot);
     
     Capsule descs = newCapsule(&flag);
     if(flag != SUCCES)
@@ -113,8 +113,8 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerImageC(JNIEnv* jniEnv,
     seuilCouleur = (float) jSeuilCouleur;
     nbBits = (int) jNbBits;
 
-    // TODO remove debug print
-    printf("DEBUG : %s %d %f %d\n", bdd, nbCouleursMax, seuilCouleur, nbBits);
+    // debug print
+    // printf("DEBUG : %s %d %f %d\n", bdd, nbCouleursMax, seuilCouleur, nbBits);
     
     Capsule descs = newCapsule(&flag);
     if (flag != SUCCES)
@@ -159,8 +159,8 @@ JNIEXPORT void JNICALL Java_jni_MoteurC_indexerAudioC(JNIEnv* jniEnv,
     nbEchantillonsParFenetre = (int) jNbSanplePFenetre;
     nbIntervallesAmplitude = (int) jNbInterAmplitude;
 
-    // TODO remove debug print
-    printf("DEBUG : %s %d %d\n", bdd, nbEchantillonsParFenetre, nbIntervallesAmplitude);
+    // debug print
+    // printf("DEBUG : %s %d %d\n", bdd, nbEchantillonsParFenetre, nbIntervallesAmplitude);
 
     Capsule descs = newCapsule(&flag);
     if(flag != SUCCES)
@@ -215,8 +215,8 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherTexteC(JNIEnv* jniEnv,
     nbMotsMax = (int) jNbMotsMax;
     tailleMinMot = (int) jTailleMinMot;
 
-    // TODO remove debug print
-    printf("DEBUG : %s %d\n", cheminFichier, nbResultats);
+    // debug print
+    // printf("DEBUG : %s %d %d %d\n", cheminFichier, nbResultats, nbMotsMax, tailleMinMot);
 
     sds dirPath = sdscat(getDirPath(),"/");
 
@@ -274,8 +274,8 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherMotsC(JNIEnv* jniEnv,
     motsCles = (*jniEnv)->GetStringUTFChars(jniEnv, jMotsCles, NULL);
     nbResultats = (int) jNbResults;
 
-    // TODO remove debug print
-    printf("DEBUG : %s %d\n", motsCles, nbResultats);
+    // debug print
+    // printf("DEBUG : %s %d\n", motsCles, nbResultats);
 
     sds dirPath = sdscat(getDirPath(),"/");
 
@@ -339,8 +339,8 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherImageC(JNIEnv* jniEnv,
     nbResultats = (int) jNbResults;
     nbBits = (int) jNbBits;
 
-    // TODO remove debug print
-    printf("DEBUG : %s %d %d \n", cheminFichier, nbResultats, nbBits);
+    // debug print
+    // printf("DEBUG : %s %d %d %d %f\n", cheminFichier, nbResultats, nbBits, nbCouleursMax, seuilCouleur);
 
     sds dirPath = sdscat(sdscat(getDirPath(),"/"),NOM_FICH_DESC_IMG);
     Capsule base = loadDescripteurs(&flag,dirPath);
@@ -387,8 +387,8 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherCouleurC(JNIEnv* jniEnv,
     nbResultats = (int) jNbResults;
     nbBits = (int) jNbBits;
 
-    // TODO remove debug print
-    printf("DEBUG : %d %d %d\n", codeCouleur, nbResultats, nbBits);
+    // debug print
+    // printf("DEBUG : %d %d %d\n", codeCouleur, nbResultats, nbBits);
 
     sds dirPath = sdscat(sdscat(getDirPath(),"/"),NOM_FICH_DESC_IMG);
 
@@ -439,8 +439,8 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherAudioC(JNIEnv* jniEnv,
     nbEchantillonsParFenetre = (int) jNbSampleFen;
     nbIntervallesAmplitude = (int) jNbInterAmp;
 
-    // TODO remove debug print
-    printf("DEBUG : %s %d %d %d\n", cheminFichier, pasFenetre, nbEchantillonsParFenetre, nbIntervallesAmplitude);
+    // debug print
+    // printf("DEBUG : %s %d %d %d\n", cheminFichier, pasFenetre, nbEchantillonsParFenetre, nbIntervallesAmplitude);
 
     sds dirPath = sdscat(sdscat(getDirPath(),"/"),NOM_FICH_DESC_AUD);
     Capsule base = loadDescripteurs(&flag,dirPath);
