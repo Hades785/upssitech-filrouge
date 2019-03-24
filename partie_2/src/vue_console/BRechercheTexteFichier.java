@@ -42,7 +42,7 @@ public class BRechercheTexteFichier {
 		
 		resultats = control.rechercherFichier(chemin, nbRes,nbMotsMax,tailleminMot);
 		
-		System.out.println("R�sultats :");
+		System.out.println("Resultats :");
 		for(int i = 0 ; i < resultats.size() ; i++)
 			System.out.println(resultats.get(i));
 		

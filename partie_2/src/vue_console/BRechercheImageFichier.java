@@ -31,7 +31,7 @@ public class BRechercheImageFichier {
 			if(chemin != "")
 				System.out.println("Fichier introuvable !");
 			
-			System.out.println("Entrez le chemin d'acces de l'image e comparer :");
+			System.out.println("Entrez le chemin d'acces de l'image a comparer :");
 			chemin = scanner.next();
 			
 			f = new File(chemin);
