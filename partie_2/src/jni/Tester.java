@@ -13,9 +13,9 @@ public class Tester {
 
 		String a = MoteurC.rechercherTexte("../documents/texte/03-Mimer_un_signal_nerveux_pour.xml", 15, 30, 3);
 		String b = MoteurC.rechercherMots("sur ", 15, 30, 3);
-		String c = MoteurC.rechercherImage("FICHIER", 15, 4, 3, 2.5f);
-		String d = MoteurC.rechercherCouleur(4, 15, 4);
-		String e = MoteurC.rechercherAudio("FICHIER", 1, 1000, 16);
+		String c = MoteurC.rechercherImage("../documents/images/rgb/16.txt", 15, 4, 3, 2.5f);
+		String d = MoteurC.rechercherCouleur(0xff0000, 15, 4);
+		String e = MoteurC.rechercherAudio("../documents/audio/jingle_fi.txt", 1, 1000, 16);
 
 		System.out.println("Recherche texte:\n" + a);
 		System.out.println("Recherche mot-cle:\n" + b);
