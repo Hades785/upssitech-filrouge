@@ -332,7 +332,7 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherImageC(JNIEnv* jniEnv,
     int nbResultats;
     int nbBits;
     int nbCouleursMax;
-    float seuil;
+    float seuilCouleur;
     unsigned char flag;
 
     cheminFichier = (*jniEnv)->GetStringUTFChars(jniEnv, jFilePath, NULL);
@@ -352,7 +352,7 @@ JNIEXPORT jstring JNICALL Java_jni_MoteurC_rechercherImageC(JNIEnv* jniEnv,
     sdsfree(dirPath);
 
     sds * reponse;    
-    reponse = recherche_image_file(cheminFichier, base, nbResultats, nbBits, nbCouleursMax, seuil);
+    reponse = recherche_image_file(cheminFichier, base, nbResultats, nbBits, nbCouleursMax, seuilCouleur);
     
     freeCapsule(base);
     if(reponse == NULL){
