@@ -36,6 +36,17 @@ public class BRechercheImageCouleur {
 		}
 		while(couleur < 1 || couleur > 8);
 		
+		switch(couleur) {
+			case 1: couleur = 0x000000; break;
+			case 2: couleur = 0xffffff; break;
+			case 3: couleur = 0xff0000; break;
+			case 4: couleur = 0x00ff00; break;
+			case 5: couleur = 0x0000ff; break;
+			case 6: couleur = 0x00ffff; break;
+			case 7: couleur = 0xff00ff; break;
+			case 8: couleur = 0xffff00; break;
+		}
+		
 		resultats = control.rechercherImageCouleur(couleur, nbRes, nbBits);
 		
 		System.out.println("Resultats :");
