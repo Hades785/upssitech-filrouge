@@ -34,7 +34,7 @@ public class BIdentification {
 		}
 		else
 		{
-			System.out.println("Mot de passe invalide.");
+			System.out.println("Login ou mot de passe invalide.");
 		}
 	}
 }
