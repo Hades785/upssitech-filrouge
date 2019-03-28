@@ -20,12 +20,15 @@ public class BIdentification {
 	
 	public void identification()
 	{
+		String login;
 		String mdp;
 		
+		System.out.println("Veuillez entrer le login utilisateur");
+		login = scanner.nextLine();
 		System.out.println("Veuillez entrer le mot de passe administrateur :");
 		mdp = scanner.nextLine();
 		
-		if(control.identification(mdp))
+		if(control.connexionAdmin(login, mdp))
 		{
 			System.out.println("Connecte en temps qu'admin.");
 		}

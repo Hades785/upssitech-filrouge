@@ -15,7 +15,7 @@ public class BMain {
 	private static Scanner scanner = new Scanner(System.in);
 	//private static Historique historique = Historique.getInstance(); // TODO en supposant qu'il s'agisse d'un singleton
 	
-	private static BIdentification bIdentification = new BIdentification(CIdentification.getInstance());
+	private static BIdentification bIdentification = new BIdentification(new CIdentification());
 	private static BIndexation bIndexation = new BIndexation(new CIndexation());
 	private static BRechercheImageCouleur bRechercheImageCouleur = new BRechercheImageCouleur(new CRechercheImageCouleur());
 	private static BRechercheImageFichier bRechercheImageFichier = new BRechercheImageFichier(new CRechercheImageFichier());
