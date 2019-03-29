@@ -12,8 +12,8 @@ import javax.swing.JButton;
 import java.awt.Dimension;
 
 public class PanTexte extends JPanel {
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField champNomFichier;
+	private JTextField champMotsCle;
 
 	/**
 	 * Create the panel.
@@ -38,16 +38,15 @@ public class PanTexte extends JPanel {
 		add(rdbtnRechFichiersTextes, gbc_rdbtnRechFichiersTextes);
 		radioBtnGroup.add(rdbtnRechFichiersTextes);
 		
-		textField = new JTextField();
-		textField.setMargin(new Insets(2, 0, 2, 2));
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.gridwidth = 3;
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.BOTH;
-		gbc_textField.gridx = 0;
-		gbc_textField.gridy = 1;
-		add(textField, gbc_textField);
-		textField.setColumns(10);
+		champNomFichier = new JTextField();
+		champNomFichier.setMargin(new Insets(2, 0, 2, 2));
+		GridBagConstraints gbc_champNomFichier = new GridBagConstraints();
+		gbc_champNomFichier.gridwidth = 3;
+		gbc_champNomFichier.fill = GridBagConstraints.BOTH;
+		gbc_champNomFichier.gridx = 0;
+		gbc_champNomFichier.gridy = 1;
+		add(champNomFichier, gbc_champNomFichier);
+		champNomFichier.setColumns(10);
 		
 		JButton btnParcourir = new JButton("...");
 		btnParcourir.setMargin(new Insets(2, 2, 2, 0));
@@ -57,7 +56,6 @@ public class PanTexte extends JPanel {
 		GridBagConstraints gbc_btnParcourir = new GridBagConstraints();
 		gbc_btnParcourir.anchor = GridBagConstraints.WEST;
 		gbc_btnParcourir.fill = GridBagConstraints.VERTICAL;
-		gbc_btnParcourir.insets = new Insets(0, 0, 5, 0);
 		gbc_btnParcourir.gridx = 3;
 		gbc_btnParcourir.gridy = 1;
 		add(btnParcourir, gbc_btnParcourir);
@@ -71,16 +69,15 @@ public class PanTexte extends JPanel {
 		add(rdbtnRechMotsCle, gbc_rdbtnRechMotsCle);
 		radioBtnGroup.add(rdbtnRechMotsCle);
 		
-		textField_1 = new JTextField();
-		textField_1.setMargin(new Insets(2, 0, 2, 0));
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.gridwidth = 4;
-		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_1.fill = GridBagConstraints.BOTH;
-		gbc_textField_1.gridx = 0;
-		gbc_textField_1.gridy = 3;
-		add(textField_1, gbc_textField_1);
-		textField_1.setColumns(10);
+		champMotsCle = new JTextField();
+		champMotsCle.setMargin(new Insets(2, 0, 2, 0));
+		GridBagConstraints gbc_champMotsCle = new GridBagConstraints();
+		gbc_champMotsCle.gridwidth = 4;
+		gbc_champMotsCle.fill = GridBagConstraints.BOTH;
+		gbc_champMotsCle.gridx = 0;
+		gbc_champMotsCle.gridy = 3;
+		add(champMotsCle, gbc_champMotsCle);
+		champMotsCle.setColumns(10);
 		
 		JButton btnValider = new JButton("Rechercher");
 		btnValider.setMargin(new Insets(2, 0, 0, 0));
