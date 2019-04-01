@@ -17,6 +17,7 @@ import java.text.ParseException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JFormattedTextField;
@@ -109,6 +110,20 @@ public class PanImage extends JPanel {
 		
 		JButton btnColorPicker = new JButton("Color picker");
 		panel.add(btnColorPicker, BorderLayout.EAST);
+		btnColorPicker.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Color newColor = JColorChooser.showDialog(panel, "Choisissez la couleur a rechercher", panelColor.getBackground());
+				if(newColor != null) {
+					newColor = new Color(newColor.getRed(),newColor.getGreen(),newColor.getBlue());
+					fieldRouge.setValue(newColor.getRed());
+					fieldVert.setValue(newColor.getGreen());
+					fieldBleu.setValue(newColor.getBlue());
+					panelColor.setBackground(newColor);
+				}
+			}
+		});
 		
 		JPanel panel_1 = new JPanel();
 		panel.add(panel_1, BorderLayout.CENTER);
