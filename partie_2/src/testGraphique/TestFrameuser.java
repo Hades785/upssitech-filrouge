@@ -15,7 +15,7 @@ public class TestFrameuser {
 					| UnsupportedLookAndFeelException e1) {
 				System.out.println("GTK and system skin cannot be found. You are stuck with this ugly thing, sorry !");
 			}
-		}else {
+		}else if(args.length == 0){
 			try {
 				
 				UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
