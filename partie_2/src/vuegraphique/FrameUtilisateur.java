@@ -2,6 +2,7 @@ package vuegraphique;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,6 +15,9 @@ import javax.swing.JTabbedPane;
 
 public class FrameUtilisateur extends JFrame {
 
+	//sert a positionner les popup parcourir dans le dernier dossier vise
+	public static File lastFile;
+	
 	private JPanel contentPane;
 
 	/**

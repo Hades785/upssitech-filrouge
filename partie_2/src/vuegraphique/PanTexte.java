@@ -5,10 +5,17 @@ import java.awt.GridBagLayout;
 import javax.swing.JRadioButton;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.Dimension;
 
 public class PanTexte extends JPanel {
@@ -59,6 +66,13 @@ public class PanTexte extends JPanel {
 		gbc_btnParcourir.gridx = 3;
 		gbc_btnParcourir.gridy = 1;
 		add(btnParcourir, gbc_btnParcourir);
+		btnParcourir.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parcourir();
+			}
+		});
 		
 		JRadioButton rdbtnRechMotsCle = new JRadioButton("Recherche par mots clés");
 		GridBagConstraints gbc_rdbtnRechMotsCle = new GridBagConstraints();
@@ -88,7 +102,43 @@ public class PanTexte extends JPanel {
 		gbc_btnValider.gridx = 2;
 		gbc_btnValider.gridy = 5;
 		add(btnValider, gbc_btnValider);
+		btnValider.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(rdbtnRechFichiersTextes.isSelected())
+					rechercheFichier(champNomFichier.getText());
+				else
+					rechercheMotsCle(champMotsCle.getText());
+			}
+		});
 
+	}
+	
+	private void parcourir() {
+		JFileChooser fc = new JFileChooser();
+		FileNameExtensionFilter fnef = new FileNameExtensionFilter("Fichier texte (.xml)", "xml");
+		fc.setFileFilter(fnef);
+		fc.setDialogTitle("Choix du fichier texte");
+		File f = FrameUtilisateur.lastFile;
+		if(f != null)
+			fc.setCurrentDirectory(f);
+		int rVal = fc.showOpenDialog(this);
+		if(rVal == JFileChooser.APPROVE_OPTION) {
+			f = fc.getSelectedFile();
+			FrameUtilisateur.lastFile = f.getParentFile();
+			champNomFichier.setText(f.getAbsolutePath());
+		}
+	}
+	
+	private void rechercheFichier(String path) {
+		System.out.println("TODO recherche fichier texte\n"+path);
+		//TODO Loic
+	}
+	
+	private void rechercheMotsCle(String mots) {
+		System.out.println("TODO recherche texte mots cle\n"+mots);
+		//TODO Loic
 	}
 
 }

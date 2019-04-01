@@ -5,10 +5,19 @@ import java.awt.GridBagLayout;
 import javax.swing.JRadioButton;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.text.Format;
+import java.text.NumberFormat;
+import java.text.ParseException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JFormattedTextField;
 import java.awt.Dimension;
@@ -21,7 +30,16 @@ public class PanImage extends JPanel {
 	/**
 	 * Create the panel.
 	 */
+	
+	private JFormattedTextField fieldRouge;
+	private JFormattedTextField fieldVert;
+	private JFormattedTextField fieldBleu;
+	private JPanel panelColor;
+	
 	public PanImage() {
+		
+		Format numberFormat = NumberFormat.getIntegerInstance();
+		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 78, 12, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -59,6 +77,13 @@ public class PanImage extends JPanel {
 		gbc_btnParcourir.gridx = 6;
 		gbc_btnParcourir.gridy = 1;
 		add(btnParcourir, gbc_btnParcourir);
+		btnParcourir.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parcourir();
+			}
+		});
 		
 		JRadioButton rdbtnRechercheParCouleur = new JRadioButton("Recherche par couleur");
 		GridBagConstraints gbc_rdbtnRechercheParCouleur = new GridBagConstraints();
@@ -69,24 +94,6 @@ public class PanImage extends JPanel {
 		gbc_rdbtnRechercheParCouleur.gridy = 2;
 		add(rdbtnRechercheParCouleur, gbc_rdbtnRechercheParCouleur);
 		radioGroup.add(rdbtnRechercheParCouleur);
-		
-		JLabel lblRouge = new JLabel("Rouge :");
-		GridBagConstraints gbc_lblRouge = new GridBagConstraints();
-		gbc_lblRouge.anchor = GridBagConstraints.EAST;
-		gbc_lblRouge.insets = new Insets(0, 5, 5, 5);
-		gbc_lblRouge.gridx = 0;
-		gbc_lblRouge.gridy = 3;
-		add(lblRouge, gbc_lblRouge);
-		
-		JFormattedTextField fieldRouge = new JFormattedTextField();
-		fieldRouge.setPreferredSize(new Dimension(40, 20));
-		fieldRouge.setMinimumSize(new Dimension(40, 20));
-		GridBagConstraints gbc_fieldRouge = new GridBagConstraints();
-		gbc_fieldRouge.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldRouge.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldRouge.gridx = 1;
-		gbc_fieldRouge.gridy = 3;
-		add(fieldRouge, gbc_fieldRouge);
 		
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(50, 10));
@@ -112,15 +119,53 @@ public class PanImage extends JPanel {
 		gbl_panel_1.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(Color.GREEN);
-		panel_2.setPreferredSize(new Dimension(70, 10));
+		panelColor = new JPanel();
+		panelColor.setBackground(new Color(255,0,0));
+		panelColor.setPreferredSize(new Dimension(70, 10));
 		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
 		gbc_panel_2.insets = new Insets(0, 0, 0, 5);
 		gbc_panel_2.fill = GridBagConstraints.BOTH;
 		gbc_panel_2.gridx = 1;
 		gbc_panel_2.gridy = 0;
-		panel_1.add(panel_2, gbc_panel_2);
+		panel_1.add(panelColor, gbc_panel_2);
+		
+		JLabel lblRouge = new JLabel("Rouge :");
+		GridBagConstraints gbc_lblRouge = new GridBagConstraints();
+		gbc_lblRouge.anchor = GridBagConstraints.EAST;
+		gbc_lblRouge.insets = new Insets(0, 5, 5, 5);
+		gbc_lblRouge.gridx = 0;
+		gbc_lblRouge.gridy = 3;
+		add(lblRouge, gbc_lblRouge);
+		
+		fieldRouge = new JFormattedTextField(numberFormat);
+		fieldRouge.setPreferredSize(new Dimension(40, 20));
+		fieldRouge.setMinimumSize(new Dimension(40, 20));
+		GridBagConstraints gbc_fieldRouge = new GridBagConstraints();
+		gbc_fieldRouge.insets = new Insets(0, 0, 5, 5);
+		gbc_fieldRouge.fill = GridBagConstraints.HORIZONTAL;
+		gbc_fieldRouge.gridx = 1;
+		gbc_fieldRouge.gridy = 3;
+		add(fieldRouge, gbc_fieldRouge);
+		fieldRouge.setValue(255);
+		fieldRouge.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					fieldRouge.commitEdit();
+					Object value = fieldRouge.getValue();
+					if(value == null)
+						fieldRouge.setValue(0);
+					if((long)value < 0)
+						fieldRouge.setValue(0);
+					if((long)value > 255)
+						fieldRouge.setValue(255);
+					majColor();
+				} catch(ParseException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		
 		JLabel lblVert = new JLabel("Vert :");
 		GridBagConstraints gbc_lblVert = new GridBagConstraints();
@@ -130,7 +175,7 @@ public class PanImage extends JPanel {
 		gbc_lblVert.gridy = 4;
 		add(lblVert, gbc_lblVert);
 		
-		JFormattedTextField fieldVert = new JFormattedTextField();
+		fieldVert = new JFormattedTextField(numberFormat);
 		fieldVert.setMinimumSize(new Dimension(40, 20));
 		fieldVert.setPreferredSize(new Dimension(40, 20));
 		GridBagConstraints gbc_fieldVert = new GridBagConstraints();
@@ -139,6 +184,26 @@ public class PanImage extends JPanel {
 		gbc_fieldVert.gridx = 1;
 		gbc_fieldVert.gridy = 4;
 		add(fieldVert, gbc_fieldVert);
+		fieldVert.setValue(0);
+		fieldVert.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					fieldVert.commitEdit();
+					Object value = fieldVert.getValue();
+					if(value == null)
+						fieldVert.setValue(0);
+					if((long)value < 0)
+						fieldVert.setValue(0);
+					if((long)value > 255)
+						fieldVert.setValue(255);
+					majColor();
+				}catch(ParseException ev) {
+					ev.printStackTrace();
+				}
+			}
+		});
 		
 		JLabel lblBleu = new JLabel("Bleu :");
 		GridBagConstraints gbc_lblBleu = new GridBagConstraints();
@@ -148,7 +213,7 @@ public class PanImage extends JPanel {
 		gbc_lblBleu.gridy = 5;
 		add(lblBleu, gbc_lblBleu);
 		
-		JFormattedTextField fieldBleu = new JFormattedTextField();
+		fieldBleu = new JFormattedTextField(numberFormat);
 		fieldBleu.setMinimumSize(new Dimension(40, 20));
 		fieldBleu.setPreferredSize(new Dimension(40, 20));
 		GridBagConstraints gbc_fieldBleu = new GridBagConstraints();
@@ -157,6 +222,26 @@ public class PanImage extends JPanel {
 		gbc_fieldBleu.gridx = 1;
 		gbc_fieldBleu.gridy = 5;
 		add(fieldBleu, gbc_fieldBleu);
+		fieldBleu.setValue(0);
+		fieldBleu.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					fieldBleu.commitEdit();
+					Object value = fieldBleu.getValue();
+					if(value == null)
+						fieldBleu.setValue(0);
+					if((long)value < 0)
+						fieldBleu.setValue(0);
+					if((long)value > 255)
+						fieldBleu.setValue(255);
+					majColor();
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		
 		JButton btnValider = new JButton("Rechercher");
 		btnValider.setPreferredSize(new Dimension(150, 40));
@@ -166,7 +251,68 @@ public class PanImage extends JPanel {
 		gbc_btnValider.gridx = 4;
 		gbc_btnValider.gridy = 7;
 		add(btnValider, gbc_btnValider);
+		btnValider.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(rdbtnRechercheParComparaison.isSelected())
+					rechercherFichierImage(champCheminImage.getText());
+				else
+					rechercherCouleur((int)fieldRouge.getValue(), (int)fieldVert.getValue(), (int)fieldBleu.getValue());
+			}
+		});
 
+	}
+	
+	private void parcourir() {
+		JFileChooser fc = new JFileChooser();
+		FileNameExtensionFilter fnef = new FileNameExtensionFilter("Fichier image en texte (.txt)", "txt");
+		fc.setFileFilter(fnef);
+		fc.setDialogTitle("Choix du fichier image");
+		File f = FrameUtilisateur.lastFile;
+		if(f != null)
+			fc.setCurrentDirectory(f);
+		int rVal = fc.showOpenDialog(this);
+		if(rVal == JFileChooser.APPROVE_OPTION) {
+			f = fc.getSelectedFile();
+			FrameUtilisateur.lastFile = f.getParentFile();
+			champCheminImage.setText(f.getAbsolutePath());
+		}
+	}
+	
+	private void rechercherFichierImage(String path) {
+		System.out.println("TODO recherche Image\n"+path);
+		//TODO Loic
+	}
+	
+	private void rechercherCouleur(int r,int g,int b) {
+		System.out.println("TODO recherche couleur\n"+r+" "+g+" "+b);
+		//TODO Loic
+	}
+	
+	private void majColor() {
+		Object rouge = fieldRouge.getValue();
+		Object vert = fieldVert.getValue();
+		Object bleu = fieldBleu.getValue();
+		long r,g,b;
+		//me demandez pas pouquoi
+		//mais quand je met le sysout il me dit que c'est un long et quand je cast il me dit que c'est un int et qu'il sait pas faire
+		//et quand je cast en int il me dit que c'est un long et qu'il sait pas faire non plus
+		//donc fuck la logique
+		if(rouge.getClass() == Integer.class)
+			r = (int)rouge;
+		else
+			r = (long) rouge;
+		if(vert.getClass() == Integer.class)
+			g = (int)vert;
+		else
+			g = (long) vert;
+		if(bleu.getClass() == Integer.class)
+			b = (int)bleu;
+		else
+			b = (long) bleu;
+		System.out.println("r:"+r+" g:"+g+" b:"+b);
+		panelColor.setBackground(new Color((int)r,(int)g,(int)b));
 	}
 
 }
