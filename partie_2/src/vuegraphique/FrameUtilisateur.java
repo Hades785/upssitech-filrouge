@@ -7,6 +7,9 @@ import java.io.File;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import modele.Recherche;
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -71,6 +74,10 @@ public class FrameUtilisateur extends JFrame {
 		
 		PanAudio panAudio = new PanAudio();
 		tabbedPane.addTab("Audio", null, panAudio, "Recherche de fichiers son");
+	}
+	
+	public void actionFromHistory(Recherche rech) {
+		
 	}
 
 }
