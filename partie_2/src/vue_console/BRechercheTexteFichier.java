@@ -1,7 +1,7 @@
 package vue_console;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import controlleur.CRechercheTexteFichier;
@@ -11,7 +11,7 @@ public class BRechercheTexteFichier {
 	private static Scanner scanner = new Scanner(System.in);
 	private CRechercheTexteFichier control;
 	//private Historique hist;
-	private ArrayList<String> resultats;
+	private List<String> resultats;
 	
 	
 	
