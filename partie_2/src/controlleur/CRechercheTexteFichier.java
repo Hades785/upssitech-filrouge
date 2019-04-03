@@ -1,6 +1,7 @@
 package controlleur;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import jni.MoteurC;
 import modele.Recherche;
@@ -14,10 +15,10 @@ public class CRechercheTexteFichier {
 		historique = h;
 	}
 
-	public ArrayList<String> rechercherFichier(String chemin, int nbRes,int nbMotsMax,int tailleminMot)
+	public List<String> rechercherFichier(String chemin, int nbRes,int nbMotsMax,int tailleminMot)
 	{
 		String resultats;
-		ArrayList<String> resFormattes = new ArrayList<>();
+		List<String> resFormattes = new ArrayList<>();
 		
 		//TODO ajouter nom classe de la methode statique
 		resultats = MoteurC.rechercherTexte(chemin, nbRes,nbMotsMax,tailleminMot);
