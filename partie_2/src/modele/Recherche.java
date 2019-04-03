@@ -23,4 +23,17 @@ public class Recherche {
 	public void setListResultatsRequete(List<String> listResultatsRequete){
 		this.listResultatsRequete=listResultatsRequete;
 	}
+
+	public String getRequete() {
+		return requete;
+	}
+
+	public void setTypeFichier(TypeFichier typeFichier) {
+		this.typeFichier = typeFichier;
+	}
+	
+	public String ResultatsToString() {
+		return listResultatsRequete.toString();
+		
+	}
 }
