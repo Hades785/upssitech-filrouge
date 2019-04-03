@@ -7,6 +7,9 @@ import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import controlleur.CRechercheImageCouleur;
+import controlleur.CRechercheImageFichier;
+
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,18 +29,22 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 public class PanImage extends JPanel {
-	private JTextField champCheminImage;
-
-	/**
-	 * Create the panel.
-	 */
+	private CRechercheImageFichier controllerRechercheFichier;
+	private CRechercheImageCouleur controllerRechercheCouleur;
 	
+	private JTextField champCheminImage;	
 	private JFormattedTextField fieldRouge;
 	private JFormattedTextField fieldVert;
 	private JFormattedTextField fieldBleu;
 	private JPanel panelColor;
 	
-	public PanImage() {
+	/**
+	 * Create the panel.
+	 */
+	public PanImage(CRechercheImageFichier controllerImageRechercheFichier,
+			CRechercheImageCouleur controllerImageRechercheCouleur) {
+		this.controllerRechercheFichier = controllerImageRechercheFichier;
+		this.controllerRechercheCouleur = controllerImageRechercheCouleur;
 		
 		Format numberFormat = NumberFormat.getIntegerInstance();
 		

@@ -9,6 +9,8 @@ import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import controlleur.CRechercheAudio;
+
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,12 +20,16 @@ import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
 public class PanAudio extends JPanel {
+	private CRechercheAudio controllerRechercheFichier;
+	
 	private JTextField textField;
 
 	/**
 	 * Create the panel.
 	 */
-	public PanAudio() {
+	public PanAudio(CRechercheAudio controllerAudioRechercheFichier) {
+		this.controllerRechercheFichier = controllerAudioRechercheFichier;
+		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {30, 30, 0};
 		gridBagLayout.rowHeights = new int[] {0, 0, 0, 0};

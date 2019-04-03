@@ -7,6 +7,9 @@ import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import controlleur.CRechercheTexteFichier;
+import controlleur.CRechercheTexteMotsCles;
+
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,13 +22,20 @@ import javax.swing.JFileChooser;
 import java.awt.Dimension;
 
 public class PanTexte extends JPanel {
+	private CRechercheTexteFichier controllerRechercheFichier;
+	private CRechercheTexteMotsCles controllerRechercheMots;
+	
 	private JTextField champNomFichier;
 	private JTextField champMotsCle;
 
 	/**
 	 * Create the panel.
 	 */
-	public PanTexte() {
+	public PanTexte(CRechercheTexteFichier controllerTexteRechercheFichier,
+			CRechercheTexteMotsCles controllerTexteRechercheMotsCles) {
+		this.controllerRechercheFichier = controllerTexteRechercheFichier;
+		this.controllerRechercheMots = controllerTexteRechercheMotsCles;
+		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {0, 0, 126, 0};
 		gridBagLayout.rowHeights = new int[] {0, 0, 0, 0, 0, 0};
