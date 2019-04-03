@@ -1,0 +1,8 @@
+exemple de recherche d'image :
+se placer dans le dossier partie_2
+lancer le script launchApp.sh (si sa ne marche pas taper son contenu directement)
+2 - indexer les fichiers
+1 - lancer une recherche
+4 - recherche de fichier image par couleur
+3-rouge
+Les chemins des images les plus rouges s'affichent.

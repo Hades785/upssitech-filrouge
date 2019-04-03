@@ -15,4 +15,12 @@ public class Recherche {
 	public TypeFichier getTypeFichier() {
 		return typeFichier;
 	}
+
+	public void setRequete(String requete){
+		this.requete=requete;
+	}
+
+	public void setListResultatsRequete(List<String> listResultatsRequete){
+		this.listResultatsRequete=listResultatsRequete;
+	}
 }
