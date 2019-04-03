@@ -18,4 +18,13 @@ public class Historique {
 		historiqueRecherches.clear();
 	}
 
+	public List<Recherche> getHistoriqueRecherches() {
+		return historiqueRecherches;
+	}
+
+	public void setHistoriqueRecherches(List<Recherche> historiqueRecherches) {
+		this.historiqueRecherches = historiqueRecherches;
+	}
+
+	
 }

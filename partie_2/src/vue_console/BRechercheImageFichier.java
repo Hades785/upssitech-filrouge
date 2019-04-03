@@ -1,7 +1,7 @@
 package vue_console;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import controlleur.CRechercheImageFichier;
@@ -11,7 +11,7 @@ public class BRechercheImageFichier {
 	private static Scanner scanner = new Scanner(System.in);
 	private CRechercheImageFichier control;
 	//private Historique hist;
-	private ArrayList<String> resultats;
+	private List<String> resultats;
 	
 	
 	

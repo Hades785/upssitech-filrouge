@@ -2,6 +2,7 @@ package vue_console;
 
 import java.util.Scanner;
 
+import controlleur.CHistorique;
 import controlleur.CIdentification;
 import controlleur.CIndexation;
 import controlleur.CRechercheAudio;
@@ -13,15 +14,16 @@ import jni.MoteurC;
 
 public class BMain {
 	private static Scanner scanner = new Scanner(System.in);
-	//private static Historique historique = Historique.getInstance(); // TODO en supposant qu'il s'agisse d'un singleton
+
+	private static CHistorique historique = new CHistorique();
 	
 	private static BIdentification bIdentification = new BIdentification(new CIdentification());
 	private static BIndexation bIndexation = new BIndexation(new CIndexation());
-	private static BRechercheImageCouleur bRechercheImageCouleur = new BRechercheImageCouleur(new CRechercheImageCouleur());
-	private static BRechercheImageFichier bRechercheImageFichier = new BRechercheImageFichier(new CRechercheImageFichier());
-	private static BRechercheTexteFichier bRechercheTexteFichier = new BRechercheTexteFichier(new CRechercheTexteFichier());
-	private static BRechercheTexteMotsCles bRechercheTexteMotsCles = new BRechercheTexteMotsCles(new CRechercheTexteMotsCles());
-	private static BRechercheAudio bRechercheAudio = new BRechercheAudio(new CRechercheAudio());
+	private static BRechercheImageCouleur bRechercheImageCouleur = new BRechercheImageCouleur(new CRechercheImageCouleur(historique));
+	private static BRechercheImageFichier bRechercheImageFichier = new BRechercheImageFichier(new CRechercheImageFichier(historique));
+	private static BRechercheTexteFichier bRechercheTexteFichier = new BRechercheTexteFichier(new CRechercheTexteFichier(historique));
+	private static BRechercheTexteMotsCles bRechercheTexteMotsCles = new BRechercheTexteMotsCles(new CRechercheTexteMotsCles(historique));
+	private static BRechercheAudio bRechercheAudio = new BRechercheAudio(new CRechercheAudio(historique));
 	
 	// TODO variables de configurations a deplacer
 	private static final int NB_RES = 10;
