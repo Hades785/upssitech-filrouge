@@ -3,8 +3,16 @@ package controlleur;
 import java.util.ArrayList;
 
 import jni.MoteurC;
+import modele.Recherche;
+import modele.TypeFichier;
 
 public class CRechercheImageFichier {
+	private CHistorique historique;
+	
+	public CRechercheImageFichier(CHistorique h)
+	{
+		historique = h;
+	}
 
 	public ArrayList<String> rechercherImageFichier(String chemin, int nbRes, int nbBits,int nbCouleursMax,float seuil)
 	{
@@ -22,6 +30,12 @@ public class CRechercheImageFichier {
 		{
 			resFormattes.add(tmp[i]);
 		}
+		
+		// ajout dans l'historique
+		Recherche recherche = new Recherche(TypeFichier.IMAGES);
+		recherche.setRequete(chemin);
+		recherche.setListResultatsRequete(resFormattes);
+		historique.ajoutRecherche(recherche);
 		
 		return resFormattes;
 	}
