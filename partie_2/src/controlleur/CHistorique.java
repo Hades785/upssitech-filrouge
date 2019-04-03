@@ -10,7 +10,7 @@ public class CHistorique {
 
 	public List<Recherche> consulterHistorique()
 	{
-		return historique.getHistorique();
+		return historique.getHistoriqueRecherches();
 	}
 	
 	public void ajoutRecherche(Recherche recherche) {
