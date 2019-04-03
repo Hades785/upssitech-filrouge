@@ -20,7 +20,7 @@ public class Utilisateur {
 		// si les variables locales n avaient pas le meme nom que les attributs,
 		// le mot-cle this n aurait pas ete necessaire
 		if(this.login.equals(login) && this.motDePasse.equals(motDePasse))
-			definirAdmin(); 
+			definirAdmin();
 		return admin;
 	}
 
