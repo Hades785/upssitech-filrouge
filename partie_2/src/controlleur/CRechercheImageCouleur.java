@@ -8,15 +8,19 @@ import modele.Recherche;
 import modele.TypeFichier;
 
 public class CRechercheImageCouleur {
+	private CConfiguration configuration;
 	private CHistorique historique;
 	
-	public CRechercheImageCouleur(CHistorique h)
+	public CRechercheImageCouleur(CConfiguration c, CHistorique h)
 	{
 		historique = h;
 	}
 
-	public List<String> rechercherImageCouleur(int couleur, int nbRes, int nbBits)
+	public List<String> rechercherImageCouleur(int couleur)
 	{
+		int nbRes = configuration.getNbResImage();
+		int nbBits = configuration.getNbBitsImage();
+		
 		String resultats;
 		List<String> resFormattes = new ArrayList<>();
 		

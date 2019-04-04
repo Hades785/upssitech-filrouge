@@ -8,15 +8,20 @@ import modele.Recherche;
 import modele.TypeFichier;
 
 public class CRechercheTexteFichier {
+	private CConfiguration configuration;
 	private CHistorique historique;
 	
-	public CRechercheTexteFichier(CHistorique h)
+	public CRechercheTexteFichier(CConfiguration c, CHistorique h)
 	{
 		historique = h;
 	}
 
-	public List<String> rechercherFichier(String chemin, int nbRes,int nbMotsMax,int tailleminMot)
+	public List<String> rechercherFichier(String chemin)
 	{
+		int nbRes = configuration.getNbrResTexte();
+		int nbMotsMax = configuration.getNbMotsMaxTexte();
+		int tailleminMot = configuration.getTailleMinMot();
+		
 		String resultats;
 		List<String> resFormattes = new ArrayList<>();
 		

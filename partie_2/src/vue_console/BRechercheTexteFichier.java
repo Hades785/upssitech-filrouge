@@ -22,7 +22,7 @@ public class BRechercheTexteFichier {
 	
 	
 	
-	public void Recherche(int nbRes,int nbMotsMax,int tailleminMot)
+	public void Recherche()
 	{
 		String chemin = "";
 		File f;
@@ -40,7 +40,7 @@ public class BRechercheTexteFichier {
 		while(!f.exists() || f.isDirectory());
 		
 		
-		resultats = control.rechercherFichier(chemin, nbRes,nbMotsMax,tailleminMot);
+		resultats = control.rechercherFichier(chemin);
 		
 		System.out.println("Resultats :");
 		for(int i = 0 ; i < resultats.size() ; i++)

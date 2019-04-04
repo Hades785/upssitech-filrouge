@@ -27,9 +27,9 @@ public class Configuration {
 	public Configuration() {
 
 		// Initialisation des param�tres par d�faut
-		cheminBDTexte = "/mnt/e/upssitech-filrouge/documents/texte";
-		cheminBDImage = "/mnt/e/upssitech-filrouge/documents/images";
-		cheminBDAudio = "/mnt/e/upssitech-filrouge/documents/audio";
+		cheminBDTexte = "../documents/texte";
+		cheminBDImage = "../documents/images";
+		cheminBDAudio = "../documents/audio";
 
 		nbMotsMaxTexte = 30;
 		tailleMinMot = 3;

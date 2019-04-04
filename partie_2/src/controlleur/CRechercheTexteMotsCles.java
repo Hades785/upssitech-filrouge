@@ -8,15 +8,20 @@ import modele.Recherche;
 import modele.TypeFichier;
 
 public class CRechercheTexteMotsCles {
+	private CConfiguration configuration;
 	private CHistorique historique;
 	
-	public CRechercheTexteMotsCles(CHistorique h)
+	public CRechercheTexteMotsCles(CConfiguration c, CHistorique h)
 	{
 		historique = h;
 	}
 
-	public List<String> rechercherMotsCles(String motsCles, int nbRes,int nbMotsMax,int tailleminMot)
+	public List<String> rechercherMotsCles(String motsCles)
 	{
+		int nbRes = configuration.getNbrResTexte();
+		int nbMotsMax = configuration.getNbMotsMaxTexte();
+		int tailleminMot = configuration.getTailleMinMot();
+		
 		String resultats;
 		List<String> resFormattes = new ArrayList<>();
 		

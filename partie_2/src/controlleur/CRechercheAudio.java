@@ -8,15 +8,21 @@ import modele.Recherche;
 import modele.TypeFichier;
 
 public class CRechercheAudio {
+	private CConfiguration configuration;
 	private CHistorique historique;
 	
-	public CRechercheAudio(CHistorique h)
+	public CRechercheAudio(CConfiguration c, CHistorique h)
 	{
+		configuration = c;
 		historique = h;
 	}
 
-	public List<String> rechercherAudio(String chemin, int winStep, int nbSampWin, int nbIntAmp)
+	public List<String> rechercherAudio(String chemin)
 	{
+		int winStep = configuration.getNbrFenetres();
+		int nbSampWin = configuration.getNbEchantParFen();
+		int nbIntAmp = configuration.getNbInterAmp();
+		
 		String resultats;
 		List<String> resFormattes = new ArrayList<>();
 		

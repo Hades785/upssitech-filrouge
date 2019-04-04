@@ -10,8 +10,8 @@ public class BIndexation {
 		control = c;
 	}
 	
-	public void indexation(int nbMotsMax,int tailleMinMot,int nbCouleursMax, float seuilCouleur, int nbBits, int nbEchantillonPFenetre, int nbIntAmp)
+	public void indexation()
 	{
-		control.indexation(nbMotsMax,tailleMinMot,nbCouleursMax, seuilCouleur, nbBits, nbEchantillonPFenetre, nbIntAmp);
+		control.indexation();
 	}
 }

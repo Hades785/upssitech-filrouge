@@ -23,12 +23,12 @@ public class BRechercheTexteMotsCles {
 	
 	
 	
-	public void Recherche(int nbRes,int nbMotsMax,int tailleminMot)
+	public void Recherche()
 	{
 		System.out.println("Entrez votre/vos mot(s)-cle(s), separe(s) d'un espace :");
 		motsCles = scanner.nextLine();
 		
-		resultats = control.rechercherMotsCles(motsCles, nbRes,nbMotsMax,tailleminMot);
+		resultats = control.rechercherMotsCles(motsCles);
 		
 		System.out.println("Resultats :");
 		for(int i = 0 ; i < resultats.size() ; i++)

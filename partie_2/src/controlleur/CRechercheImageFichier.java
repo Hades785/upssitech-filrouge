@@ -8,15 +8,21 @@ import modele.Recherche;
 import modele.TypeFichier;
 
 public class CRechercheImageFichier {
+	private CConfiguration configuration;
 	private CHistorique historique;
 	
-	public CRechercheImageFichier(CHistorique h)
+	public CRechercheImageFichier(CConfiguration c, CHistorique h)
 	{
 		historique = h;
 	}
 
-	public List<String> rechercherImageFichier(String chemin, int nbRes, int nbBits,int nbCouleursMax,float seuil)
+	public List<String> rechercherImageFichier(String chemin)
 	{
+		int nbRes = configuration.getNbResImage();
+		int nbBits = configuration.getNbBitsImage();
+		int nbCouleursMax = configuration.getNbCouleursMaxImage();
+		float seuil = configuration.getSeuilCouleurImage();
+		
 		String resultats;
 		List<String> resFormattes = new ArrayList<>();
 		

@@ -2,6 +2,7 @@ package vue_console;
 
 import java.util.Scanner;
 
+import controlleur.CConfiguration;
 import controlleur.CHistorique;
 import controlleur.CIdentification;
 import controlleur.CIndexation;
@@ -15,26 +16,16 @@ import jni.MoteurC;
 public class BMain {
 	private static Scanner scanner = new Scanner(System.in);
 
+	private static CConfiguration configuration = new CConfiguration();
 	private static CHistorique historique = new CHistorique();
 	
 	private static BIdentification bIdentification = new BIdentification(new CIdentification());
-	private static BIndexation bIndexation = new BIndexation(new CIndexation());
-	private static BRechercheImageCouleur bRechercheImageCouleur = new BRechercheImageCouleur(new CRechercheImageCouleur(historique));
-	private static BRechercheImageFichier bRechercheImageFichier = new BRechercheImageFichier(new CRechercheImageFichier(historique));
-	private static BRechercheTexteFichier bRechercheTexteFichier = new BRechercheTexteFichier(new CRechercheTexteFichier(historique));
-	private static BRechercheTexteMotsCles bRechercheTexteMotsCles = new BRechercheTexteMotsCles(new CRechercheTexteMotsCles(historique));
-	private static BRechercheAudio bRechercheAudio = new BRechercheAudio(new CRechercheAudio(historique));
-	
-	// TODO variables de configurations a deplacer
-	private static final int NB_RES = 10;
-	private static final int TAILLE_MIN_MOTS = 3;
-	private static final int NB_MOTS_MAX = 50;
-	private static final int NB_COULEURS_MAX = 50;
-	private static final float SEUIL_COULEUR = 2.5f;
-	private static final int NB_BITS = 4;
-	private static final int PAS_DECALAGE_FENETRE = 1;
-	private static final int NB_ECHANTILLON_FENETRE = 1000;
-	private static final int NB_INT_AMP = 16;
+	private static BIndexation bIndexation = new BIndexation(new CIndexation(configuration));
+	private static BRechercheImageCouleur bRechercheImageCouleur = new BRechercheImageCouleur(new CRechercheImageCouleur(configuration, historique));
+	private static BRechercheImageFichier bRechercheImageFichier = new BRechercheImageFichier(new CRechercheImageFichier(configuration, historique));
+	private static BRechercheTexteFichier bRechercheTexteFichier = new BRechercheTexteFichier(new CRechercheTexteFichier(configuration, historique));
+	private static BRechercheTexteMotsCles bRechercheTexteMotsCles = new BRechercheTexteMotsCles(new CRechercheTexteMotsCles(configuration, historique));
+	private static BRechercheAudio bRechercheAudio = new BRechercheAudio(new CRechercheAudio(configuration, historique));
 
 	private static void afficherMenuConfig()
 	{
@@ -66,19 +57,19 @@ public class BMain {
 			switch(choix)
 			{
 				case 1:
-					bRechercheTexteFichier.Recherche(NB_RES,NB_MOTS_MAX,TAILLE_MIN_MOTS);
+					bRechercheTexteFichier.Recherche();
 					break;
 				case 2:
-					bRechercheTexteMotsCles.Recherche(NB_RES,NB_MOTS_MAX,TAILLE_MIN_MOTS);
+					bRechercheTexteMotsCles.Recherche();
 					break;
 				case 3:
-					bRechercheImageFichier.Recherche(NB_RES, NB_BITS, NB_COULEURS_MAX,SEUIL_COULEUR);
+					bRechercheImageFichier.Recherche();
 					break;
 				case 4:
-					bRechercheImageCouleur.Recherche(NB_RES, NB_BITS);
+					bRechercheImageCouleur.Recherche();
 					break;
 				case 5:
-					bRechercheAudio.Recherche(PAS_DECALAGE_FENETRE, NB_ECHANTILLON_FENETRE, NB_INT_AMP);
+					bRechercheAudio.Recherche();
 					break;
 				case 6:
 					return;
@@ -108,7 +99,7 @@ public class BMain {
 					afficherMenuRecherche();
 					break;
 				case 2:
-					bIndexation.indexation(NB_MOTS_MAX,TAILLE_MIN_MOTS,NB_COULEURS_MAX, SEUIL_COULEUR, NB_BITS, NB_ECHANTILLON_FENETRE, NB_INT_AMP);
+					bIndexation.indexation();
 					break;
 				case 3:
 					afficherMenuConfig();

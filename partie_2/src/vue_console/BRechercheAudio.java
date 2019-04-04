@@ -22,7 +22,7 @@ public class BRechercheAudio {
 	
 	
 	
-	public void Recherche(int winStep, int nbSampWin, int nbIntAmp)
+	public void Recherche()
 	{
 		String chemin = "";
 		File f;
@@ -40,7 +40,7 @@ public class BRechercheAudio {
 		while(!f.exists() || f.isDirectory());
 		
 		
-		resultats = control.rechercherAudio(chemin, winStep, nbSampWin, nbIntAmp);
+		resultats = control.rechercherAudio(chemin);
 		
 		System.out.println("Resultats :");
 		for(int i = 0 ; i < resultats.size() ; i++)
