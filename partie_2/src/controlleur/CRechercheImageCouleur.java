@@ -13,6 +13,7 @@ public class CRechercheImageCouleur {
 	
 	public CRechercheImageCouleur(CConfiguration c, CHistorique h)
 	{
+		configuration = c;
 		historique = h;
 	}
 

@@ -1,15 +1,18 @@
 package jni;
 
+import controlleur.CConfiguration;
 import controlleur.CIndexation;
 
 public class Tester {
 
 	public static void main(String[] args) {
 		MoteurC.setTest(false);
+		
+		CConfiguration config = new CConfiguration();
 
-		MoteurC.indexerTexte(CIndexation.CHEMIN_FICHIERS_TEXTE, 30, 3);
-		MoteurC.indexerImage(CIndexation.CHEMIN_FICHIERS_IMAGE, 3, 2.5f, 4);
-		MoteurC.indexerAudio(CIndexation.CHEMIN_FICHIERS_AUDIO, 1000, 16);
+		MoteurC.indexerTexte(config.getCheminBDTexte(), 30, 3);
+		MoteurC.indexerImage(config.getCheminBDImage(), 3, 2.5f, 4);
+		MoteurC.indexerAudio(config.getCheminBDAudio(), 1000, 16);
 
 		String a = MoteurC.rechercherTexte("../documents/texte/03-Mimer_un_signal_nerveux_pour.xml", 15, 30, 3);
 		String b = MoteurC.rechercherMots("sur ", 15, 30, 3);

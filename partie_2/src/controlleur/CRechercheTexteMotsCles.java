@@ -13,6 +13,7 @@ public class CRechercheTexteMotsCles {
 	
 	public CRechercheTexteMotsCles(CConfiguration c, CHistorique h)
 	{
+		configuration = c;
 		historique = h;
 	}
 
