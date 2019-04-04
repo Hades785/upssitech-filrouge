@@ -73,13 +73,14 @@ public class FrameUtilisateur extends JFrame {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 
-		PanTexte panTexte = new PanTexte(controllerTexteRechercheFichier, controllerTexteRechercheMotsCles);
+		PanTexte panTexte = new PanTexte(controllerTexteRechercheFichier, controllerTexteRechercheMotsCles,
+				panResultat);
 		tabbedPane.addTab("Texte", null, panTexte, "Recherche dans les fichiers de texte");
 
-		PanImage panImage = new PanImage(controllerImageRechercheFichier, controllerImageRechercheCouleur);
+		PanImage panImage = new PanImage(controllerImageRechercheFichier, controllerImageRechercheCouleur, panResultat);
 		tabbedPane.addTab("Image", null, panImage, "Recherche d'image");
 
-		PanAudio panAudio = new PanAudio(controllerAudioRechercheFichier);
+		PanAudio panAudio = new PanAudio(controllerAudioRechercheFichier, panResultat);
 		tabbedPane.addTab("Audio", null, panAudio, "Recherche de fichiers son");
 	}
 
