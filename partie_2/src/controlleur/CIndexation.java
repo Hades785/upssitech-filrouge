@@ -3,16 +3,28 @@ package controlleur;
 import jni.MoteurC;
 
 public class CIndexation {
-	
-	public static final String CHEMIN_FICHIERS_TEXTE = "../documents/texte";
-	public static final String CHEMIN_FICHIERS_IMAGE = "../documents/images/rgb";
-	public static final String CHEMIN_FICHIERS_AUDIO = "../documents/audio";
+	private CConfiguration configuration;
 
-	public void indexation(int nbMotsMax,int tailleMinMot,int nbCouleursMax, float seuilCouleur, int nbBits, int nbEchantillonPFenetre, int nbIntAmp)
-	{
+	public CIndexation(CConfiguration c) {
+		configuration = c;
+	}
+
+	public void indexation() {
+		int nbMotsMax = configuration.getNbMotsMaxTexte();
+		int tailleMinMot = configuration.getTailleMinMot();
+		int nbCouleursMax = configuration.getNbCouleursMaxImage();
+		float seuilCouleur = configuration.getSeuilCouleurImage();
+		int nbBits = configuration.getNbBitsImage();
+		int nbEchantillonPFenetre = configuration.getNbEchantParFen();
+		int nbIntAmp = configuration.getNbInterAmp();
+
+		String cheminTexte = configuration.getCheminBDTexte();
+		String cheminImage = configuration.getCheminBDImage();
+		String cheminAudio = configuration.getCheminBDAudio();
+
 		// TODO rajouter le nom de la classe pour les methodes statiques
-		MoteurC.indexerTexte(CHEMIN_FICHIERS_TEXTE,nbMotsMax,tailleMinMot);
-		MoteurC.indexerImage(CHEMIN_FICHIERS_IMAGE,nbCouleursMax, seuilCouleur, nbBits);
-		MoteurC.indexerAudio(CHEMIN_FICHIERS_AUDIO,nbEchantillonPFenetre, nbIntAmp);
+		MoteurC.indexerTexte(cheminTexte, nbMotsMax, tailleMinMot);
+		MoteurC.indexerImage(cheminImage, nbCouleursMax, seuilCouleur, nbBits);
+		MoteurC.indexerAudio(cheminAudio, nbEchantillonPFenetre, nbIntAmp);
 	}
 }

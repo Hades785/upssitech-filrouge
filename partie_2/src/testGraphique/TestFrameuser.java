@@ -3,6 +3,8 @@ package testGraphique;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import controlleur.CConfiguration;
+import controlleur.CHistorique;
 import controlleur.CRechercheAudio;
 import controlleur.CRechercheImageCouleur;
 import controlleur.CRechercheImageFichier;
@@ -37,11 +39,13 @@ public class TestFrameuser {
 			}
 		}
 
-		CRechercheTexteFichier controllerRechercheTexteFichier = new CRechercheTexteFichier();
-		CRechercheTexteMotsCles controllerRechercheTexteMotsCles = new CRechercheTexteMotsCles();
-		CRechercheImageFichier controllerRechercheImageFichier = new CRechercheImageFichier();
-		CRechercheImageCouleur controllerRechercheImageCouleur = new CRechercheImageCouleur();
-		CRechercheAudio controllerRechercheAudio = new CRechercheAudio();
+		CConfiguration controllerConfiguration = new CConfiguration();
+		CHistorique controllerHistorique = new CHistorique();
+		CRechercheTexteFichier controllerRechercheTexteFichier = new CRechercheTexteFichier(controllerConfiguration, controllerHistorique);
+		CRechercheTexteMotsCles controllerRechercheTexteMotsCles = new CRechercheTexteMotsCles(controllerConfiguration, controllerHistorique);
+		CRechercheImageFichier controllerRechercheImageFichier = new CRechercheImageFichier(controllerConfiguration, controllerHistorique);
+		CRechercheImageCouleur controllerRechercheImageCouleur = new CRechercheImageCouleur(controllerConfiguration, controllerHistorique);
+		CRechercheAudio controllerRechercheAudio = new CRechercheAudio(controllerConfiguration, controllerHistorique);
 
 		FrameUtilisateur frame = new FrameUtilisateur(controllerRechercheTexteFichier, controllerRechercheTexteMotsCles,
 				controllerRechercheImageFichier, controllerRechercheImageCouleur, controllerRechercheAudio);

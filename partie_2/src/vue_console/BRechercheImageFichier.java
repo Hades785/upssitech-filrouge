@@ -1,7 +1,7 @@
 package vue_console;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import controlleur.CRechercheImageFichier;
@@ -11,7 +11,7 @@ public class BRechercheImageFichier {
 	private static Scanner scanner = new Scanner(System.in);
 	private CRechercheImageFichier control;
 	//private Historique hist;
-	private ArrayList<String> resultats;
+	private List<String> resultats;
 	
 	
 	
@@ -21,7 +21,7 @@ public class BRechercheImageFichier {
 	}
 	
 	
-	public void Recherche(int nbRes, int nbBits,int nbCouleursMax,float seuil)
+	public void Recherche()
 	{
 		String chemin = "";
 		File f;
@@ -39,7 +39,7 @@ public class BRechercheImageFichier {
 		while(!f.exists() || f.isDirectory());
 		
 		
-		resultats = control.rechercherImageFichier(chemin, nbRes, nbBits,nbCouleursMax,seuil);
+		resultats = control.rechercherImageFichier(chemin);
 		
 		System.out.println("Resultats :");
 		for(int i = 0 ; i < resultats.size() ; i++)

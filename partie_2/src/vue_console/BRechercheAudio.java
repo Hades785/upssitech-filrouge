@@ -1,7 +1,7 @@
 package vue_console;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import controlleur.CRechercheAudio;
@@ -11,7 +11,7 @@ public class BRechercheAudio {
 	private static Scanner scanner = new Scanner(System.in);
 	private CRechercheAudio control;
 	//private Historique hist;
-	private ArrayList<String> resultats;
+	private List<String> resultats;
 	
 	
 	
@@ -22,7 +22,7 @@ public class BRechercheAudio {
 	
 	
 	
-	public void Recherche(int winStep, int nbSampWin, int nbIntAmp)
+	public void Recherche()
 	{
 		String chemin = "";
 		File f;
@@ -40,7 +40,7 @@ public class BRechercheAudio {
 		while(!f.exists() || f.isDirectory());
 		
 		
-		resultats = control.rechercherAudio(chemin, winStep, nbSampWin, nbIntAmp);
+		resultats = control.rechercherAudio(chemin);
 		
 		System.out.println("Resultats :");
 		for(int i = 0 ; i < resultats.size() ; i++)

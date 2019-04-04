@@ -1,7 +1,7 @@
 package vue_console;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import controlleur.CRechercheTexteFichier;
@@ -11,7 +11,7 @@ public class BRechercheTexteFichier {
 	private static Scanner scanner = new Scanner(System.in);
 	private CRechercheTexteFichier control;
 	//private Historique hist;
-	private ArrayList<String> resultats;
+	private List<String> resultats;
 	
 	
 	
@@ -22,7 +22,7 @@ public class BRechercheTexteFichier {
 	
 	
 	
-	public void Recherche(int nbRes,int nbMotsMax,int tailleminMot)
+	public void Recherche()
 	{
 		String chemin = "";
 		File f;
@@ -40,7 +40,7 @@ public class BRechercheTexteFichier {
 		while(!f.exists() || f.isDirectory());
 		
 		
-		resultats = control.rechercherFichier(chemin, nbRes,nbMotsMax,tailleminMot);
+		resultats = control.rechercherFichier(chemin);
 		
 		System.out.println("Resultats :");
 		for(int i = 0 ; i < resultats.size() ; i++)
