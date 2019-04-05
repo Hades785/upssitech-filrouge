@@ -13,6 +13,7 @@ public class CRechercheImageFichier {
 	
 	public CRechercheImageFichier(CConfiguration c, CHistorique h)
 	{
+		configuration = c;
 		historique = h;
 	}
 

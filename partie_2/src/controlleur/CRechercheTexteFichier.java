@@ -13,6 +13,7 @@ public class CRechercheTexteFichier {
 	
 	public CRechercheTexteFichier(CConfiguration c, CHistorique h)
 	{
+		configuration = c;
 		historique = h;
 	}
 
