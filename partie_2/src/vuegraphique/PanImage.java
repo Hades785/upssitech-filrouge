@@ -313,7 +313,7 @@ public class PanImage extends JPanel {
 	}
 
 	private void rechercherCouleur(int r, int g, int b) {
-		int couleur = 0;
+		int couleur = ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
 		List<String> resultats = controllerRechercheCouleur.rechercherImageCouleur(couleur);
 		panResultat.setListContent(resultats);
 	}
