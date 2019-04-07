@@ -24,7 +24,7 @@ public class PanResultat extends JPanel {
 		
 		list = new JList<>();
 		list.setMinimumSize(new Dimension(50, 0));
-		list.setPreferredSize(new Dimension(100, 0));
+		list.setPreferredSize(new Dimension(200, 0));
 		GridBagConstraints gbc_list = new GridBagConstraints();
 		gbc_list.insets = new Insets(0, 0, 5, 0);
 		gbc_list.fill = GridBagConstraints.BOTH;
