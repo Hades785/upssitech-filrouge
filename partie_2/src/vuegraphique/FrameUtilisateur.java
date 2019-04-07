@@ -35,7 +35,7 @@ public class FrameUtilisateur extends JFrame {
 			CRechercheImageFichier controllerImageRechercheFichier,
 			CRechercheImageCouleur controllerImageRechercheCouleur, CRechercheAudio controllerAudioRechercheFichier) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 650, 300);
 		setLocationRelativeTo(null);
 
 		JMenuBar menuBar = new JMenuBar();

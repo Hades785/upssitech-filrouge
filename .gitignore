@@ -64,3 +64,4 @@ documents/
 MENU_prop.txt
 *.desc
 *.xml
+*.prefs
