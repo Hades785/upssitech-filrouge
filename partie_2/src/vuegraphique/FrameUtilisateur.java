@@ -1,12 +1,9 @@
 package vuegraphique;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.io.File;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.JSplitPane;
 
 import controlleur.CRechercheAudio;
 import controlleur.CRechercheImageCouleur;
@@ -22,22 +19,20 @@ import javax.swing.JTabbedPane;
 
 public class FrameUtilisateur extends JFrame {
 
+	private static final long serialVersionUID = 4575907753415724077L;
+	
+	private CRechercheTexteFichier crtf;
+	private CRechercheTexteMotsCles crtmc;
+	private CRechercheImageFichier crif;
+	private CRechercheImageCouleur cric;
+	private CRechercheAudio cra;
+	
+	private PanResultat panRes;
+
 	// sert a positionner les popup parcourir dans le dernier dossier vise
 	public static File lastFile;
-
-	private JPanel contentPane;
-
-	/**
-	 * Create the frame.
-	 */
-	public FrameUtilisateur(CRechercheTexteFichier controllerTexteRechercheFichier,
-			CRechercheTexteMotsCles controllerTexteRechercheMotsCles,
-			CRechercheImageFichier controllerImageRechercheFichier,
-			CRechercheImageCouleur controllerImageRechercheCouleur, CRechercheAudio controllerAudioRechercheFichier) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 650, 300);
-		setLocationRelativeTo(null);
-
+	
+	private void setupMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
@@ -62,26 +57,51 @@ public class FrameUtilisateur extends JFrame {
 
 		JMenuItem mntmAPropos = new JMenuItem("A propos");
 		menu.add(mntmAPropos);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
-
-		PanResultat panResultat = new PanResultat();
-		contentPane.add(panResultat, BorderLayout.EAST);
-
+	}
+	
+	private JTabbedPane setupTabPane() {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		contentPane.add(tabbedPane, BorderLayout.CENTER);
-
-		PanTexte panTexte = new PanTexte(controllerTexteRechercheFichier, controllerTexteRechercheMotsCles,
-				panResultat);
+		
+		PanTexte panTexte = new PanTexte(crtf, crtmc, panRes);
 		tabbedPane.addTab("Texte", null, panTexte, "Recherche dans les fichiers de texte");
 
-		PanImage panImage = new PanImage(controllerImageRechercheFichier, controllerImageRechercheCouleur, panResultat);
+		PanImage panImage = new PanImage(crif, cric, panRes);
 		tabbedPane.addTab("Image", null, panImage, "Recherche d'image");
 
-		PanAudio panAudio = new PanAudio(controllerAudioRechercheFichier, panResultat);
+		PanAudio panAudio = new PanAudio(cra,panRes);
 		tabbedPane.addTab("Audio", null, panAudio, "Recherche de fichiers son");
+		
+		return tabbedPane;
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public FrameUtilisateur(CRechercheTexteFichier crtf,
+			CRechercheTexteMotsCles crtmc,
+			CRechercheImageFichier crif,
+			CRechercheImageCouleur cric,
+			CRechercheAudio cra) {
+		
+		this.crtf = crtf;
+		this.crtmc = crtmc;
+		this.crif = crif;
+		this.cric = cric;
+		this.cra = cra;
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 650, 300);
+		setLocationRelativeTo(null);
+
+		setupMenuBar();
+		
+		JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		
+		sp.setLeftComponent(setupTabPane());
+
+		PanResultat panResultat = new PanResultat();
+		sp.setRightComponent(panResultat);
+		
+		this.setContentPane(sp);
 	}
 
 }

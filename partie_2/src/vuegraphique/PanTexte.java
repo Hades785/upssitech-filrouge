@@ -23,6 +23,7 @@ import javax.swing.JFileChooser;
 import java.awt.Dimension;
 
 public class PanTexte extends JPanel {
+	private static final long serialVersionUID = -2028779124140208538L;
 	private CRechercheTexteFichier controllerRechercheFichier;
 	private CRechercheTexteMotsCles controllerRechercheMots;
 	private PanResultat panResultat;

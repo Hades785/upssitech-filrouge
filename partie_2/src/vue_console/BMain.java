@@ -11,7 +11,6 @@ import controlleur.CRechercheImageCouleur;
 import controlleur.CRechercheImageFichier;
 import controlleur.CRechercheTexteFichier;
 import controlleur.CRechercheTexteMotsCles;
-import jni.MoteurC;
 
 public class BMain {
 	private static Scanner scanner = new Scanner(System.in);

@@ -30,6 +30,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 public class PanImage extends JPanel {
+	private static final long serialVersionUID = 4411841161293103582L;
 	private CRechercheImageFichier controllerRechercheFichier;
 	private CRechercheImageCouleur controllerRechercheCouleur;
 	private PanResultat panResultat;

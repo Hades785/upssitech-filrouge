@@ -65,3 +65,5 @@ MENU_prop.txt
 *.desc
 *.xml
 *.prefs
+*.jar
+partie_2/.classpath

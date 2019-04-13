@@ -1,7 +1,6 @@
 package jni;
 
 import controlleur.CConfiguration;
-import controlleur.CIndexation;
 
 public class Tester {
 
