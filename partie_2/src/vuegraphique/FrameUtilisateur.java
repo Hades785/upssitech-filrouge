@@ -70,7 +70,7 @@ public class FrameUtilisateur extends JFrame {
 		PanImage panImage = new PanImage(crif, cric, panRes);
 		tabbedPane.addTab("Image", null, panImage, "Recherche d'image");
 
-		PanAudio panAudio = new PanAudio(cra,panRes);
+		PanAudio panAudio = new PanAudio(cra, panRes);
 		tabbedPane.addTab("Audio", null, panAudio, "Recherche de fichiers son");
 		
 		return tabbedPane;
