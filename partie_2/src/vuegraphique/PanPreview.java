@@ -7,10 +7,11 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.stream.Stream;
 
-import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -86,26 +87,16 @@ public class PanPreview extends JPanel {
 
 	public void previewImage(File file) {
 		if (file.exists()) {
-			cl.show(this, "image");
-			if (file.getName().endsWith(".txt")) {
-				String name = file.getAbsolutePath();
-				File im = new File(name.substring(0, name.length() - 4) + ".jpg");
-				if (im.exists()) {
-					file = im;
-				} else {
-					
-				}
-				BufferedImage myPicture;
-				try {
-					myPicture = ImageIO.read(file);
-					ImageIcon image = new ImageIcon(myPicture);
-					lb.setIcon(image);
-					lb.setText("");
-				} catch (IOException e) {
-					lb.setIcon(null);
-					lb.setText("Unable to load image");
-					e.printStackTrace();
-				}
+		cl.show(this, "image");
+			try {
+				BufferedImage myPicture = decodeImTXT(file);
+				ImageIcon image = new ImageIcon(myPicture);
+				lb.setIcon(image);
+				lb.setText("");
+			} catch (IOException e) {
+				lb.setIcon(null);
+				lb.setText("Unable to load image");
+				e.printStackTrace();
 			}
 		}
 	}
@@ -113,5 +104,60 @@ public class PanPreview extends JPanel {
 	public void previewAudio(File file) {
 		audioFile = file;
 		cl.show(this, "audio");
+	}
+	
+	private static BufferedImage decodeImTXT(File file) throws IOException{
+		StringBuilder build = new StringBuilder();
+		try (Stream<String> stream = Files.lines( Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8))
+	    {
+	        stream.forEach(s -> build.append(s).append("\n"));
+	    }
+	    catch (IOException e)
+	    {
+	        e.printStackTrace();
+	        throw e;
+	    }
+		String[] lines = build.toString().split("\n");
+		if(lines.length < 2) throw new RuntimeException("Fichier vide.");
+		String[] coords = lines[0].split(" ");
+		if(coords.length != 3) throw new RuntimeException("Fichier invalide.");
+		int x,y,z;
+		x = Integer.parseInt(coords[0]);
+		y = Integer.parseInt(coords[1]);
+		z = Integer.parseInt(coords[2]);
+		int[][][] resp = new int[z][x][y];
+		if(lines.length < x) throw new RuntimeException("Fichier incomplet.");
+		for(int zt = 0;zt < z;zt++) {
+			for(int yt = 0;yt < y;yt++) {
+				String numbers[] = lines[zt*y+yt+1].split(" ");
+				if(numbers.length != x) throw new RuntimeException("Fichier invalide. Ligne "+(yt+zt*y));
+				for(int xt = 0;xt < x;xt++) {
+					resp[zt][xt][yt] = Integer.parseInt(numbers[xt]);
+				}
+			}
+		}
+		return getImage(resp);
+	}
+	
+	private static BufferedImage getImage(int[][][] mapPix) throws IOException {
+		BufferedImage image;
+		if(mapPix.length == 1) {
+			image = new BufferedImage(mapPix[0].length, mapPix[0][0].length, BufferedImage.TYPE_BYTE_GRAY);
+			for(int y = 0;y < mapPix[0][0].length;y++) {
+				for(int x = 0;x < mapPix[0].length;x++) {
+					image.setRGB(x, y, mapPix[0][x][y]);
+				}
+			}
+		}else {
+			image = new BufferedImage(mapPix[0].length, mapPix[0][0].length, BufferedImage.TYPE_INT_RGB);
+			for(int z = 0;z < mapPix.length;z++) {
+				for(int y = 0;y < mapPix[0][0].length;y++) {
+					for(int x = 0;x < mapPix[0].length;x++) {
+						image.setRGB(x, y, (mapPix[0][x][y]<<16)+(mapPix[1][x][y]<<8)+(mapPix[2][x][y]));
+					}
+				}
+			}
+		}
+		return image;
 	}
 }
