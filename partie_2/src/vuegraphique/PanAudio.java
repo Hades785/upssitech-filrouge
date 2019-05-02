@@ -112,7 +112,7 @@ public class PanAudio extends JPanel {
 
 	private void rechercheAudio(String chemin) {
 		List<String> resultats = controllerRechercheFichier.rechercherAudio(chemin);
-		panResultat.setListContent(resultats);
+		panResultat.setListContent(resultats,TypeRecherche.AUDIO);
 	}
 
 }

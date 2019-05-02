@@ -147,12 +147,12 @@ public class PanTexte extends JPanel {
 
 	private void rechercheFichier(String path) {
 		List<String> resultats = controllerRechercheFichier.rechercherFichier(path);
-		panResultat.setListContent(resultats);
+		panResultat.setListContent(resultats,TypeRecherche.TEXTE);
 	}
 
 	private void rechercheMotsCle(String mots) {
 		List<String> resultats = controllerRechercheMots.rechercherMotsCles(mots);
-		panResultat.setListContent(resultats);
+		panResultat.setListContent(resultats,TypeRecherche.TEXTE);
 	}
 
 }

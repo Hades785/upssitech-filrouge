@@ -1,13 +1,18 @@
 package vuegraphique;
 
 import javax.swing.JSplitPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.JList;
 import java.util.List;
 import java.awt.Dimension;
+import java.io.File;
 
 public class PanResultat extends JSplitPane {
 	private static final long serialVersionUID = 9096459222103020402L;
 	private JList<String> list;
+	
+	private TypeRecherche tr;
 
 	/**
 	 * Create the panel.
@@ -21,10 +26,32 @@ public class PanResultat extends JSplitPane {
 		
 		PanPreview panPreview = new PanPreview();
 		this.setBottomComponent(panPreview);
+		
+		list.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				File f = new File(list.getSelectedValue());
+				switch(tr) {
+				case AUDIO:
+					panPreview.previewAudio(f);
+					break;
+				case IMAGE:
+					panPreview.previewImage(f);
+					break;
+				case TEXTE:
+					panPreview.previewTexte(f);
+					break;
+				default:
+					break;
+				}
+			}
+		});
+		
 	}
 	
-	public void setListContent(List<String> resultats) {
+	public void setListContent(List<String> resultats,TypeRecherche tr) {
 		this.list.setListData((String[]) resultats.toArray(new String[0]));
+		this.tr = tr;
 	}
 
 }
