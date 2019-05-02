@@ -25,5 +25,4 @@ public class Tester {
 		System.out.println("Recherche couleur:\n" + d);
 		System.out.println("Recherche audio:\n" + e);
 	}
-
 }

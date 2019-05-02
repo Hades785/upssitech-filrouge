@@ -60,6 +60,8 @@ public class FrameUtilisateur extends JFrame {
 	}
 	
 	private JTabbedPane setupTabPane() {
+		if(panRes == null)
+			throw new Error("Cannot instanciate Panels without panRes set (Arthur)");
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		
 		PanTexte panTexte = new PanTexte(crtf, crtmc, panRes);
@@ -91,6 +93,9 @@ public class FrameUtilisateur extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 650, 300);
 		setLocationRelativeTo(null);
+		setTitle("Soft search");
+		
+		this.panRes = new PanResultat();
 
 		setupMenuBar();
 		
@@ -98,8 +103,7 @@ public class FrameUtilisateur extends JFrame {
 		
 		sp.setLeftComponent(setupTabPane());
 
-		PanResultat panResultat = new PanResultat();
-		sp.setRightComponent(panResultat);
+		sp.setRightComponent(panRes);
 		
 		this.setContentPane(sp);
 	}
