@@ -17,9 +17,10 @@ public class BMain {
 
 	private static CConfiguration configuration = new CConfiguration();
 	private static CHistorique historique = new CHistorique();
+	private static CIndexation cindex = new CIndexation(configuration);
 	
 	private static BIdentification bIdentification = new BIdentification(new CIdentification());
-	private static BIndexation bIndexation = new BIndexation(new CIndexation(configuration));
+	private static BIndexation bIndexation = new BIndexation(cindex);
 	private static BRechercheImageCouleur bRechercheImageCouleur = new BRechercheImageCouleur(new CRechercheImageCouleur(configuration, historique));
 	private static BRechercheImageFichier bRechercheImageFichier = new BRechercheImageFichier(new CRechercheImageFichier(configuration, historique));
 	private static BRechercheTexteFichier bRechercheTexteFichier = new BRechercheTexteFichier(new CRechercheTexteFichier(configuration, historique));
@@ -78,6 +79,8 @@ public class BMain {
 	
 	public static void main(String[] args) {
 		//MoteurC.setTest(true);
+		
+		cindex.setup();
 		
 		int choix = 0;
 		

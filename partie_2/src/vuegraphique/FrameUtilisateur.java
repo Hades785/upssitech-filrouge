@@ -1,10 +1,13 @@
 package vuegraphique;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
+import controlleur.CIndexation;
 import controlleur.CRechercheAudio;
 import controlleur.CRechercheImageCouleur;
 import controlleur.CRechercheImageFichier;
@@ -27,6 +30,8 @@ public class FrameUtilisateur extends JFrame {
 	private CRechercheImageCouleur cric;
 	private CRechercheAudio cra;
 	
+	private CIndexation cindex;
+	
 	private PanResultat panRes;
 
 	// sert a positionner les popup parcourir dans le dernier dossier vise
@@ -48,6 +53,16 @@ public class FrameUtilisateur extends JFrame {
 
 		JMenuItem mntmModifierConfiguration = new JMenuItem("Modifier configuration");
 		mnConfiguration.add(mntmModifierConfiguration);
+		
+		JMenuItem mntmReindexer = new JMenuItem("Reindexer les bases de fichiers");
+		mnConfiguration.add(mntmReindexer);
+		mntmReindexer.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 		JMenu menu = new JMenu("?");
 		menuBar.add(menu);
@@ -83,13 +98,15 @@ public class FrameUtilisateur extends JFrame {
 			CRechercheTexteMotsCles crtmc,
 			CRechercheImageFichier crif,
 			CRechercheImageCouleur cric,
-			CRechercheAudio cra) {
+			CRechercheAudio cra,
+			CIndexation cindex) {
 		
 		this.crtf = crtf;
 		this.crtmc = crtmc;
 		this.crif = crif;
 		this.cric = cric;
 		this.cra = cra;
+		this.cindex = cindex;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 650, 300);
 		setLocationRelativeTo(null);

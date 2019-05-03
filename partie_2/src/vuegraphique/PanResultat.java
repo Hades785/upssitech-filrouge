@@ -30,19 +30,23 @@ public class PanResultat extends JSplitPane {
 		list.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				File f = new File(list.getSelectedValue());
-				switch(tr) {
-				case AUDIO:
-					panPreview.previewAudio(f);
-					break;
-				case IMAGE:
-					panPreview.previewImage(f);
-					break;
-				case TEXTE:
-					panPreview.previewTexte(f);
-					break;
-				default:
-					break;
+				if(!list.isSelectionEmpty()) {
+					File f = new File(list.getSelectedValue());
+					switch(tr) {
+					case AUDIO:
+						panPreview.previewAudio(f);
+						break;
+					case IMAGE:
+						panPreview.previewImage(f);
+						break;
+					case TEXTE:
+						panPreview.previewTexte(f);
+						break;
+					default:
+						break;
+					}
+				}else {
+					panPreview.previewVoid();
 				}
 			}
 		});

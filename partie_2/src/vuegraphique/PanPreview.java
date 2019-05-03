@@ -106,6 +106,11 @@ public class PanPreview extends JPanel {
 		cl.show(this, "audio");
 	}
 	
+	public void previewVoid() {
+		cl.show(this, "texte");
+		tp.setText("");
+	}
+	
 	private static BufferedImage decodeImTXT(File file) throws IOException{
 		StringBuilder build = new StringBuilder();
 		try (Stream<String> stream = Files.lines( Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8))

@@ -5,11 +5,13 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import controlleur.CConfiguration;
 import controlleur.CHistorique;
+import controlleur.CIndexation;
 import controlleur.CRechercheAudio;
 import controlleur.CRechercheImageCouleur;
 import controlleur.CRechercheImageFichier;
 import controlleur.CRechercheTexteFichier;
 import controlleur.CRechercheTexteMotsCles;
+import vue_console.BIndexation;
 import vuegraphique.FrameUtilisateur;
 
 public class TestFrameuser {
@@ -38,8 +40,11 @@ public class TestFrameuser {
 				}
 			}
 		}
+		
 
 		CConfiguration controllerConfiguration = new CConfiguration();
+		CIndexation cindex = new CIndexation(controllerConfiguration);
+		BIndexation bIndexation = new BIndexation(cindex);
 		CHistorique controllerHistorique = new CHistorique();
 		CRechercheTexteFichier controllerRechercheTexteFichier = new CRechercheTexteFichier(controllerConfiguration, controllerHistorique);
 		CRechercheTexteMotsCles controllerRechercheTexteMotsCles = new CRechercheTexteMotsCles(controllerConfiguration, controllerHistorique);
@@ -47,8 +52,10 @@ public class TestFrameuser {
 		CRechercheImageCouleur controllerRechercheImageCouleur = new CRechercheImageCouleur(controllerConfiguration, controllerHistorique);
 		CRechercheAudio controllerRechercheAudio = new CRechercheAudio(controllerConfiguration, controllerHistorique);
 
+		//cindex.setup();
+		
 		FrameUtilisateur frame = new FrameUtilisateur(controllerRechercheTexteFichier, controllerRechercheTexteMotsCles,
-				controllerRechercheImageFichier, controllerRechercheImageCouleur, controllerRechercheAudio);
+				controllerRechercheImageFichier, controllerRechercheImageCouleur, controllerRechercheAudio, cindex);
 		frame.setVisible(true);
 	}
 }
