@@ -34,7 +34,8 @@ public class PanResultat extends JSplitPane {
 					File f = new File(list.getSelectedValue());
 					switch(tr) {
 					case AUDIO:
-						panPreview.previewAudio(f);
+						String path = list.getSelectedValue().split(".txt ")[0]+".wav";
+						panPreview.previewAudio(new File(path));
 						break;
 					case IMAGE:
 						panPreview.previewImage(f);
