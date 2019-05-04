@@ -52,7 +52,7 @@ public class TestFrameuser {
 		CRechercheImageCouleur controllerRechercheImageCouleur = new CRechercheImageCouleur(controllerConfiguration, controllerHistorique);
 		CRechercheAudio controllerRechercheAudio = new CRechercheAudio(controllerConfiguration, controllerHistorique);
 
-		//cindex.setup();
+		cindex.setup();
 		
 		FrameUtilisateur frame = new FrameUtilisateur(controllerRechercheTexteFichier, controllerRechercheTexteMotsCles,
 				controllerRechercheImageFichier, controllerRechercheImageCouleur, controllerRechercheAudio, cindex);
